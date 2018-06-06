@@ -209,10 +209,10 @@ def build_time_model(events, hour_range)
   hour_range.each do |hour|
 
     utc_now = Time.now.utc
-    utc_hour = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour) + (hour * 60 * 60)
+    utc_hour = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour) + (hour * SECONDS_IN_HOUR)
     time_from_now = Fmt.time(utc_hour.clone.localtime - utc_now.clone.localtime).as_relative_time
     local_hour = utc_hour.clone.localtime
-    utc_hour_epoch = utc_hour.tv_sec / 60 / 60
+    utc_hour_epoch = utc_hour.tv_sec / SECONDS_IN_HOUR
 
     hour_epoch_index = utc_hour_epoch % 24
 
@@ -277,8 +277,8 @@ end
 
 rvr = {
   :epoch => 1527897600,
-  :interval => 60 * 60 * 24 * 7,
-  :duration => 60 * 60 * 24
+  :interval => 7 * SECONDS_IN_DAY,
+  :duration => SECONDS_IN_DAY
 }
 
 assert( (hourly_event.length == 24), "There should be 24 mini hourly_event per day")

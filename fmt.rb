@@ -20,6 +20,7 @@ class TimeFmt
   end
 
   def as_relative_time
+    #puts @time_in_seconds
     relative_time = @time_in_seconds
     return "past" if relative_time <= -(60*60)
     return "now" if relative_time <= 0
@@ -45,12 +46,12 @@ class TimeFmt
 
   def humanify_hours(time_in_seconds)
     return "0:" if time_in_seconds < SECONDS_IN_HOUR
-    hours = time_in_seconds / SECONDS_IN_HOUR
+    hours = (time_in_seconds / SECONDS_IN_HOUR).truncate
     return "#{hours}:"
   end
 
   def humanify_minutes(time_in_seconds)
-    puts time_in_seconds
+    #puts time_in_seconds
     return (time_in_seconds / 60).truncate.to_s.rjust(2, "0")
   end
 end
