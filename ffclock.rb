@@ -1,4 +1,5 @@
 
+require_relative 'fmt'
 # Friday 5pm -> Saturday, RVR
 # Monday 5pm -> start 2 day event
 
@@ -329,8 +330,8 @@ while true
       output = "=>"
     end
 
-    output += " #{hour_data[:local_hour].strftime("%I")}:00#{hour_data[:local_hour].strftime("%P")}"
-    output += " (#{hour_data[:local_hour].strftime("%m-%d")}) (#{hour_data[:time_from_now]}) ".ljust(29, "-")
+    output += " " + Fmt.time(hour_data[:local_hour]).as_local_hour_and_day
+    output += " (#{hour_data[:time_from_now]}) ".ljust(29, "-")
     output += " #{hour_data[:mini_event]} ".ljust(19, "-")
     output += " #{hour_data[:luna_event]}".ljust(15, "-")
     output += " #{hour_data[:four_hour_extra]} ".ljust(15, "-")
