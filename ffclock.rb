@@ -1,4 +1,5 @@
 
+#require 'test/unit'
 require_relative 'fmt'
 # Friday 5pm -> Saturday, RVR
 # Monday 5pm -> start 2 day event
@@ -208,35 +209,13 @@ def assert(condition, message)
   end
 end
 
-def humanify_days(time_in_seconds)
-  return "" if time_in_seconds < SECONDS_IN_DAY
-  days = time_in_seconds / SECONDS_IN_DAY
-  return "#{days}:"
-end
-
-def humanify(future_time)
-  future_time = (future_time / 60).truncate
-
-  return "past" if future_time <= -60
-  return "now" if future_time <= 0
-  return "in 0:#{future_time}" if future_time < 60
-
-  #puts "ft = #{future_time}"
-  days = humanify_days(future_time * 60)
-  future_time = ( (future_time * 60) % SECONDS_IN_DAY ) / 60
-  hours = (future_time / 60).truncate
-  minutes = (future_time % 60).truncate
-  minutes = minutes.to_s.rjust(2, "0")
-  return "in #{days}#{hours}:#{minutes}"
-end
-
 def build_time_model(events, hour_range)
   result = []
   hour_range.each do |hour|
 
     utc_now = Time.now.utc
     utc_hour = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour) + (hour * 60 * 60)
-    time_from_now = humanify(utc_hour.clone.localtime - utc_now.clone.localtime)
+    time_from_now = Fmt.time(utc_hour.clone.localtime - utc_now.clone.localtime).as_relative_time
     local_hour = utc_hour.clone.localtime
     utc_hour_epoch = utc_hour.tv_sec / 60 / 60
 
@@ -318,7 +297,7 @@ while true
   puts "Current time is #{now_local.strftime("%I:%M (%m-%d)")}"
 
   next_rvr = calculate_next_rvr(rvr)
-  puts "Next RVR in #{humanify(next_rvr)}"
+  puts "Next RVR in #{Fmt.time(next_rvr).as_relative_time}"
 
   hour_range = (-historical_hours..8)
   model = build_time_model(events, hour_range)
