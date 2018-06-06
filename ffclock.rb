@@ -74,8 +74,8 @@ hourly_event = [
   { :local=>"1am", :event=>unknown },
   { :local=>"2am", :event=>unknown },
   { :local=>"3am", :event=>unknown },
-  { :local=>"4am", :event=>unknown },
-  { :local=>"5am", :event=>unknown },
+  { :local=>"4am", :event=>training },
+  { :local=>"5am", :event=>monster_hunt },
   { :local=>"6am", :event=>spin },
   { :local=>"7am", :event=>secret },
   { :local=>"8am", :event=>training },
@@ -89,9 +89,9 @@ hourly_event = [
   { :local=>"4pm", :event=>hero_quests },
 ]
 
-hourly_event.each do |e|
-  puts e
-end
+# hourly_event.each do |e|
+#   puts e
+# end
 
 luna_schedule = [
   "",
@@ -152,8 +152,8 @@ hourly_extras = [
   [ new_major ],
   [  ],
   [  ],
-  [ rvr_blitz ],
-  [ rvr_blitz ],
+  [  ],
+  [  ],
   [  ],
   [  ],
   [  ],
@@ -175,6 +175,13 @@ hourly_extras = [
   [  ],
 ]
 
+events = {
+  :mini_events => hourly_event,
+  :luna_events => luna_schedule,
+  :four_hour_extras => four_hour_extras,
+  :hourly_notes => hourly_extras,
+}
+
 def assert(condition, message)
   if !condition
     raise message
@@ -194,6 +201,33 @@ def humanify(future_time)
   return "in #{hours}:#{minutes}"
 end
 
+def build_time_model(events, hour_range)
+  result = []
+  hour_range.each do |hour|
+
+    utc_now = Time.now.utc
+    utc_hour = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour) + (hour * 60 * 60)
+    time_from_now = humanify(utc_hour.clone.localtime - utc_now.clone.localtime)
+    local_hour = utc_hour.clone.localtime
+    utc_hour_epoch = utc_hour.tv_sec / 60 / 60
+
+    hour_epoch_index = utc_hour_epoch % 24
+
+    hour_info = {
+      :hour_index => hour,
+      :time_from_now => time_from_now,
+      :local_hour => local_hour,
+      :hour_epoch => utc_hour_epoch,
+      :mini_event => events[:mini_events][hour_epoch_index][:event],
+      :luna_event => events[:luna_events][hour_epoch_index],
+      :four_hour_extra => events[:four_hour_extras][hour_epoch_index],
+      :hourly_notes => events[:hourly_notes][hour_epoch_index],
+    }
+    result << hour_info
+  end
+  return result
+end
+
 assert( (hourly_event.length == 24), "There should be 24 mini hourly_event per day")
 assert( (hourly_extras.length == 24), "There should be 24 mini hourly_extras per day")
 
@@ -201,37 +235,27 @@ historical_hours = 3
 
 while true
   utc_now = Time.now.utc
-  utc_time = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour)
-  utc_time = utc_time - (historical_hours * (60 * 60))
   now_local = utc_now.clone.localtime
   puts "Current time is #{now_local.strftime("%I:%M (%m-%d)")}"
-  (-historical_hours..5).each do |index|
-    utc_hour_epoch = utc_time.tv_sec / 60 / 60
 
-    local_time = utc_time.clone.localtime
-    time_from_now = utc_time.clone.localtime - utc_now.clone.localtime
-    time_from_now = humanify(time_from_now)
+  hour_range = (-historical_hours..8)
+  model = build_time_model(events, hour_range)
 
-    prefix = "  "
-    if utc_now.hour == utc_time.hour
-      prefix = "=>"
+  model.each do |hour|
+    output = "  "
+    if hour[:hour_index] == 0
+      output = "=>"
     end
 
-    localtime_info = "#{local_time.strftime("%I")}:00#{local_time.strftime("%P")} (#{local_time.strftime("%m-%d")}) (#{time_from_now}) ".ljust(29, "-")
-    the_hourly_event = "#{hourly_event[utc_hour_epoch%24][:event]} ".ljust(19, "-")
-    luna_event = "#{luna_schedule[utc_hour_epoch%24]}".ljust(15, "-")
-    four_hour_extra = "#{four_hour_extras[utc_hour_epoch%24]} ".ljust(15, "-")
-    hourly_extra = "#{hourly_extras[utc_hour_epoch%24]} ".ljust(15, "-")
-    puts "#{prefix} #{localtime_info} #{the_hourly_event} #{luna_event} #{four_hour_extra} #{hourly_extra}"
-    # hourly_extras[utc_hour_epoch % 24].each do |event|
-    #   puts "     #{event}"
-    # end
-
-    utc_time = utc_time + (60 * 60)
+    output += " #{hour[:local_hour].strftime("%I")}:00#{hour[:local_hour].strftime("%P")} (#{hour[:local_hour].strftime("%m-%d")}) (#{hour[:time_from_now]}) ".ljust(29, "-")
+    output += " #{hour[:mini_event]} ".ljust(19, "-")
+    output += " #{hour[:luna_event]} ".ljust(15, "-")
+    output += " #{hour[:four_hour_extra]} ".ljust(15, "-")
+    output += " #{hour[:hourly_notes]} ".ljust(15, "-")
+    puts output
   end
   puts "sleeping"
   sleep 5 until Time.now.utc > (utc_now.clone + 60 * 5)
-#  sleep 5*60
 end
 
 
