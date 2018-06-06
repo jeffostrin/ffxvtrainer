@@ -12,7 +12,7 @@ class TestFmt < Test::Unit::TestCase
   end
 
   def test_a_few_minutes
-    assert_equal("in 0:6", Fmt.time(6 * 60).as_relative_time)
+    assert_equal("in 0:06", Fmt.time(6 * 60).as_relative_time)
   end
 
   def test_next_hour
