@@ -1,3 +1,5 @@
+require_relative 'time_constants'
+
 class Fmt
   def self.time(time_in_seconds)
     return TimeFmt.new(time_in_seconds)

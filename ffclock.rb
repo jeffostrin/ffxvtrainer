@@ -1,17 +1,12 @@
 
-#require 'test/unit'
 require_relative 'fmt'
+require_relative 'time_constants'
 # Friday 5pm -> Saturday, RVR
 # Monday 5pm -> start 2 day event
 
 
 # 2:53:52
 
-
-SECONDS_IN_MINUTE = 60
-SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60
-SECONDS_IN_DAY = SECONDS_IN_HOUR * 24
-SECONDS_IN_WEEK = SECONDS_IN_DAY * 7
 
 new_major = "New Rotation / Major Events may end"
 
