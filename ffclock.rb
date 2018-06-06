@@ -18,32 +18,34 @@ luna = "Luna Gifts"
 ghalad = "Ghalad, start harvest for Gather RSS"
 kellebram = "Kellebram, start harvest for Gather RSS"
 
+empire_ascend = "Empire Ascend"
+research = "Research"
 
 events = [
-  [ new_major, training, ],
-  [ monster_hunt, ],
-  [ spin, luna, ghalad, ],
-  [ secret, ],
-  [ guild_defend, kellebram, ],
-  [ gather_rss, ],
-  [ guild_quests, luna, ],
-  [ training, ],
-  [ monster_hunt, ],
-  [ guild_rss_trade, ],
-  [ "#{guild_quests} #{unconfirmed}", luna, ],
-  [ "#{training} #{unconfirmed}", ghalad, ],
-  [ guild_help, ],
-  [ guild_defend, kellebram, ],
-  [ gather_rss, luna, ],
-  [ training, ],
-  [ guild_quests, ],
-  [ monster_hunt, ],
-  [ guild_rss_trade, luna, ghalad, ],
-  [ guild_defend, ],
-  [ spin, kellebram, ],
-  [ gather_rss, ],
-  [ monster_hunt, luna, ],
-  [ hero_quests, ],
+  [ new_major, training, empire_ascend],
+  [ monster_hunt, empire_ascend ],
+  [ spin, luna, ghalad, empire_ascend ],
+  [ secret, empire_ascend ],
+  [ guild_defend, kellebram, research ],
+  [ gather_rss, research ],
+  [ guild_quests, luna, research ],
+  [ training, research ],
+  [ monster_hunt, empire_ascend ],
+  [ guild_rss_trade, empire_ascend ],
+  [ "#{guild_quests} #{unconfirmed}", luna, empire_ascend ],
+  [ "#{training} #{unconfirmed}", ghalad, empire_ascend ],
+  [ guild_help, research ],
+  [ guild_defend, kellebram, research ],
+  [ gather_rss, luna, research ],
+  [ training, research ],
+  [ guild_quests, empire_ascend ],
+  [ monster_hunt, empire_ascend ],
+  [ guild_rss_trade, luna, ghalad, empire_ascend ],
+  [ guild_defend, empire_ascend ],
+  [ spin, kellebram, research ],
+  [ gather_rss, research ],
+  [ monster_hunt, luna, research ],
+  [ hero_quests, research ],
 ]
 
 
