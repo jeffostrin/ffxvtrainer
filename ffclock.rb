@@ -300,16 +300,18 @@ while true
 
   model.each do |hour_data|
     output = "  "
+    line_connector = "-"
     if hour_data[:hour_index] == 0
       output = "=>"
+      line_connector = "="
     end
 
     output += " " + Fmt.time(hour_data[:local_hour]).as_local_hour_and_day
-    output += " (#{hour_data[:time_from_now]}) ".ljust(29, "-")
-    output += " #{hour_data[:mini_event]} ".ljust(19, "-")
-    output += " #{hour_data[:luna_event]}".ljust(15, "-")
-    output += " #{hour_data[:four_hour_extra]} ".ljust(15, "-")
-    output += " #{hour_data[:hourly_notes]} ".ljust(15, "-")
+    output += " (#{hour_data[:time_from_now]}) ".ljust(12, line_connector)
+    output += " #{hour_data[:mini_event]} ".ljust(19, line_connector)
+    output += " #{hour_data[:luna_event]}".ljust(15, line_connector)
+    output += " #{hour_data[:four_hour_extra]} ".ljust(15, line_connector)
+    output += " #{hour_data[:hourly_notes]} ".ljust(15, line_connector)
     puts output
   end
   puts "sleeping"
