@@ -24,6 +24,16 @@ kellebram = "Kellebram, start harvest for Gather RSS"
 empire_ascend = "Empire Ascend"
 research = "Research"
 
+ghalad_settings = {
+  :training => 150,
+  :gather_25k => 70,
+}
+
+kellebram_settings = {
+  :training => 150,
+  :gather_25k => 45
+}
+
 hourly_extras_1 = [
   [  ],
   [  ],
@@ -53,30 +63,30 @@ hourly_extras_1 = [
 
 
 hourly_event = [
-  training,
-  guild_help,
-  guild_defend,
-  gather_rss,
-  guild_defend,
-  gather_rss,
-  guild_quests,
-  training,
-  unknown,
-  unknown,
-  unknown,
-  unknown,
-  unknown,
-  spin,
-  secret,
-  training,
-  guild_quests,
-  monster_hunt,
-  guild_rss_trade,
-  guild_defend,
-  spin,
-  gather_rss,
-  monster_hunt,
-  hero_quests,
+  { :local=>"5pm", :event=>training },
+  { :local=>"6pm", :event=>guild_help },
+  { :local=>"7pm", :event=>guild_defend },
+  { :local=>"8pm", :event=>gather_rss },
+  { :local=>"9pm", :event=>guild_defend },
+  { :local=>"10pm", :event=>gather_rss },
+  { :local=>"11pm", :event=>guild_quests },
+  { :local=>"12pm", :event=>training },
+  { :local=>"1am", :event=>unknown },
+  { :local=>"2am", :event=>unknown },
+  { :local=>"3am", :event=>unknown },
+  { :local=>"4am", :event=>unknown },
+  { :local=>"5am", :event=>unknown },
+  { :local=>"6am", :event=>spin },
+  { :local=>"7am", :event=>secret },
+  { :local=>"8am", :event=>training },
+  { :local=>"9am", :event=>guild_quests },
+  { :local=>"10am", :event=>monster_hunt },
+  { :local=>"11am", :event=>guild_rss_trade },
+  { :local=>"12am", :event=>guild_defend },
+  { :local=>"1pm", :event=>spin },
+  { :local=>"2pm", :event=>gather_rss },
+  { :local=>"3pm", :event=>monster_hunt },
+  { :local=>"4pm", :event=>hero_quests },
 ]
 
 hourly_event.each do |e|
@@ -208,7 +218,7 @@ while true
     end
 
     localtime_info = "#{local_time.strftime("%I")}:00#{local_time.strftime("%P")} (#{local_time.strftime("%m-%d")}) (#{time_from_now}) ".ljust(29, "-")
-    the_hourly_event = "#{hourly_event[utc_hour_epoch%24]} ".ljust(19, "-")
+    the_hourly_event = "#{hourly_event[utc_hour_epoch%24][:event]} ".ljust(19, "-")
     luna_event = "#{luna_schedule[utc_hour_epoch%24]}".ljust(15, "-")
     four_hour_extra = "#{four_hour_extras[utc_hour_epoch%24]} ".ljust(15, "-")
     hourly_extra = "#{hourly_extras[utc_hour_epoch%24]} ".ljust(15, "-")
