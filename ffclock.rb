@@ -1,33 +1,15 @@
 
 require_relative 'fmt'
 require_relative 'time_constants'
+require_relative 'mini_events'
 # Friday 5pm -> Saturday, RVR
 # Monday 5pm -> start 2 day event
-
-
-# 2:53:52
-
+# Wednesday 5pm -> start 2 day event
 
 new_major = "New Rotation / Major Events may end"
 
-class MiniEvents
-  GatherRSS = "Gather RSS <==="
-  Training = "Training <==="
-end
 
-training = MiniEvents::Training
-monster_hunt = "Monster Hunt <==="
-spin = "Spin the Wheel"
-secret = "Secret Gift"
-guild_defend = "Guild Defend"
-guild_quests = "Guild Quests"
-guild_rss_trade = "Guild RSS Trade"
-guild_help = "Guild Help"
-hero_quests = "Hero Quests"
 
-unconfirmed = "{Unconfirmed (Crowd Source)}"
-
-unknown = "Unknown"
 rvr_blitz = "RVR Blitz"
 
 luna = "Luna Gifts "
@@ -76,38 +58,6 @@ hourly_extras_1 = [
   [  ],
   [  ],
 ]
-
-
-hourly_event = [
-  { :local=>"5pm", :event=>training },
-  { :local=>"6pm", :event=>guild_help },
-  { :local=>"7pm", :event=>guild_defend },
-  { :local=>"8pm", :event=>MiniEvents::GatherRSS },
-  { :local=>"9pm", :event=>guild_defend },
-  { :local=>"10pm", :event=>MiniEvents::GatherRSS },
-  { :local=>"11pm", :event=>guild_quests },
-  { :local=>"12pm", :event=>training },
-  { :local=>"1am", :event=>monster_hunt },
-  { :local=>"2am", :event=>guild_rss_trade },
-  { :local=>"3am", :event=>unknown },
-  { :local=>"4am", :event=>training },
-  { :local=>"5am", :event=>monster_hunt },
-  { :local=>"6am", :event=>spin },
-  { :local=>"7am", :event=>secret },
-  { :local=>"8am", :event=>training },
-  { :local=>"9am", :event=>guild_quests },
-  { :local=>"10am", :event=>monster_hunt },
-  { :local=>"11am", :event=>guild_rss_trade },
-  { :local=>"12am", :event=>guild_defend },
-  { :local=>"1pm", :event=>spin },
-  { :local=>"2pm", :event=>MiniEvents::GatherRSS },
-  { :local=>"3pm", :event=>monster_hunt },
-  { :local=>"4pm", :event=>hero_quests },
-]
-
-# hourly_event.each do |e|
-#   puts e
-# end
 
 luna_schedule = [
   "",
@@ -192,7 +142,7 @@ hourly_extras = [
 ]
 
 events = {
-  :mini_events => hourly_event,
+  :mini_events => MiniEvents::HourlyEvents,
   :luna_events => luna_schedule,
   :four_hour_extras => four_hour_extras,
   :hourly_notes => hourly_extras,
@@ -281,7 +231,7 @@ rvr = {
   :duration => SECONDS_IN_DAY
 }
 
-assert( (hourly_event.length == 24), "There should be 24 mini hourly_event per day")
+assert( (MiniEvents::HourlyEvents.length == 24), "There should be 24 mini hourly_event per day")
 assert( (hourly_extras.length == 24), "There should be 24 mini hourly_extras per day")
 
 historical_hours = 3
@@ -317,35 +267,3 @@ while true
   puts "sleeping"
   sleep 5 until Time.now.utc > (utc_now.clone + 60 * 1)
 end
-
-
-
-
-
-
-hourly_event_1 = [
-  training,
-  monster_hunt,
-  spin,
-  secret,
-  guild_defend,
-  MiniEvents::GatherRSS,
-  guild_quests,
-  training,
-  monster_hunt,
-  guild_rss_trade,
-  "#{guild_quests} #{unconfirmed}",
-  "#{training} #{unconfirmed}",
-  guild_help,
-  guild_defend,
-  MiniEvents::GatherRSS,
-  training,
-  guild_quests,
-  monster_hunt,
-  guild_rss_trade,
-  guild_defend,
-  spin,
-  MiniEvents::GatherRSS,
-  monster_hunt,
-  hero_quests,
-]
