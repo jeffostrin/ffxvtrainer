@@ -3,6 +3,7 @@ require_relative 'assert'
 require_relative 'fmt'
 require_relative 'time_constants'
 
+require_relative 'events_four_hours'
 require_relative 'events_mini'
 
 # Friday 5pm -> Saturday, RVR
@@ -11,14 +12,7 @@ require_relative 'events_mini'
 
 new_major = "New Rotation / Major Events may end"
 
-
-
-rvr_blitz = "RVR Blitz"
-
 luna = "Luna Gifts "
-
-empire_ascend = "Empire Ascend"
-research = "Research"
 
 ghalad_settings = {
   :realm => "Ghalad (ipad)",
@@ -59,34 +53,6 @@ luna_schedule = [
   "",
 ]
 
-four_hour_extras = [
-  empire_ascend,
-  empire_ascend,
-  empire_ascend,
-  empire_ascend,
-  research,
-  research,
-  research,
-  research,
-  empire_ascend,
-  empire_ascend,
-  empire_ascend,
-  empire_ascend,
-  research,
-  research,
-  research,
-  research,
-  empire_ascend,
-  empire_ascend,
-  empire_ascend,
-  empire_ascend,
-  research,
-  research,
-  research,
-  research,
-]
-
-
 hourly_extras = [
   [ new_major ],
   [  ],
@@ -117,7 +83,7 @@ hourly_extras = [
 events = {
   :mini_events => MiniEvents::HourlyEvents,
   :luna_events => luna_schedule,
-  :four_hour_extras => four_hour_extras,
+  :four_hour_extras => FourHourEvents::Events,
   :hourly_notes => hourly_extras,
 }
 
