@@ -3,7 +3,7 @@ require_relative 'assert'
 require_relative 'fmt'
 require_relative 'time_constants'
 
-require_relative 'mini_events'
+require_relative 'events_mini'
 
 # Friday 5pm -> Saturday, RVR
 # Monday 5pm -> start 2 day event
