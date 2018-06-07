@@ -1,7 +1,10 @@
 
+require_relative 'assert'
 require_relative 'fmt'
 require_relative 'time_constants'
+
 require_relative 'mini_events'
+
 # Friday 5pm -> Saturday, RVR
 # Monday 5pm -> start 2 day event
 # Wednesday 5pm -> start 2 day event
@@ -147,12 +150,6 @@ events = {
   :four_hour_extras => four_hour_extras,
   :hourly_notes => hourly_extras,
 }
-
-def assert(condition, message)
-  if !condition
-    raise message
-  end
-end
 
 def build_time_model(events, hour_range)
   result = []
