@@ -71,7 +71,7 @@ class EventSchedule
   end
 
   def lookup(hour_epoch)
-    
+
   end
 end
 
@@ -219,6 +219,10 @@ while true
     output += " #{hour_data[:luna_event]}".ljust(15, line_connector)
     output += " #{hour_data[:four_hour_extra]} ".ljust(15, line_connector)
     output += " #{hour_data[:hourly_notes]} ".ljust(15, line_connector)
+
+    if hour_data[:hour_index] == 0
+      output += " <="
+    end
     puts output
   end
   puts "sleeping"

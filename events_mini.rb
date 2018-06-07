@@ -46,7 +46,7 @@ end
 
 
 
-# hourly_event.each do |e|
+# MiniEvents::HourlyEvents.each do |e|
 #   puts e
 # end
 
