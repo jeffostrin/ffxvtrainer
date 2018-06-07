@@ -17,9 +17,6 @@ rvr_blitz = "RVR Blitz"
 
 luna = "Luna Gifts "
 
-ghalad = "Ghalad, start harvest for Gather RSS"
-kellebram = "Kellebram, start harvest for Gather RSS"
-
 empire_ascend = "Empire Ascend"
 research = "Research"
 
@@ -34,33 +31,6 @@ kellebram_settings = {
   :training_mins => 150,
   :gather_rss_mins => 89,
 }
-
-hourly_extras_1 = [
-  [  ],
-  [  ],
-  [ ghalad ],
-  [  ],
-  [ kellebram ],
-  [  ],
-  [  ],
-  [  ],
-  [  ],
-  [  ],
-  [  ],
-  [ ghalad ],
-  [  ],
-  [ kellebram ],
-  [  ],
-  [  ],
-  [  ],
-  [  ],
-  [ ghalad ],
-  [  ],
-  [ kellebram ],
-  [  ],
-  [  ],
-  [  ],
-]
 
 luna_schedule = [
   "",
