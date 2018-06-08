@@ -53,30 +53,6 @@ luna_schedule = [
   "",
 ]
 
-class EventSchedule
-  attr_reader :name
-  attr_reader :start_epoch
-  attr_reader :recurrence
-  attr_reader :duration
-
-  def initialize(params)
-    @name = params[:name]
-    @start_epoch = params[:start_epoch]
-    @recurrence = params[:recurrence]
-    @duration = params[:duration]
-    assert(@name != nil, "EventSchedule.name is required")
-    assert(@start_epoch != nil, "EventSchedule.start_epoch is required")
-    assert(@recurrence != nil, "EventSchedule.recurrence is required")
-    assert(@duration != nil, "EventSchedule.duration is required")
-  end
-
-  def lookup(hour_epoch)
-
-  end
-end
-
-luna_events = EventSchedule.new(:name => "Luna Gifts", :start_epoch => 0, :recurrence => (4 * SECONDS_IN_HOUR), :duration => (1 * SECONDS_IN_HOUR))
-
 hourly_extras = [
   [ new_major ],
   [  ],
