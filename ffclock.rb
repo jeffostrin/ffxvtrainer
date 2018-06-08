@@ -3,7 +3,6 @@ require_relative 'assert'
 require_relative 'fmt'
 require_relative 'time_constants'
 
-require_relative 'events_four_hours'
 require_relative 'events_mini'
 require_relative 'event_rotation'
 
@@ -55,16 +54,24 @@ hourly_extras = [
 ]
 
 luna_events = EventRotation.new(
-  :start_epoch => 2,
+  :start_epoch => 0,
   :events => [
+    { :name => "", :duration => 2, },
     { :name => "Luna Gifts", :duration => 1, },
-    { :name => "", :duration => 3, },
+    { :name => "", :duration => 1, },
+  ])
+
+four_hour_events = EventRotation.new(
+  :start_epoch => 0,
+  :events => [
+    { :name => "Empire Ascend", :duration => 4, },
+    { :name => "Research", :duration => 4, },
   ])
 
 events = {
   :mini_events => MiniEvents::HourlyEvents,
   :luna_events => luna_events,
-  :four_hour_extras => FourHourEvents::Events,
+  :four_hour_events => four_hour_events,
   :hourly_notes => hourly_extras,
 }
 
@@ -87,7 +94,7 @@ def build_time_model(events, hour_range)
       :hour_epoch => utc_hour_epoch,
       :mini_event => events[:mini_events][hour_epoch_index][:event],
       :luna_event => events[:luna_events].lookup(hour_epoch_index),
-      :four_hour_extra => events[:four_hour_extras][hour_epoch_index],
+      :four_hour_event => events[:four_hour_events].lookup(hour_epoch_index),
       :hourly_notes => events[:hourly_notes][hour_epoch_index].clone,
     }
     result << hour_info
@@ -174,7 +181,7 @@ while true
     output += " (#{hour_data[:time_from_now]}) ".ljust(12, line_connector)
     output += " #{hour_data[:mini_event]} ".ljust(19, line_connector)
     output += " #{hour_data[:luna_event]}".ljust(15, line_connector)
-    output += " #{hour_data[:four_hour_extra]} ".ljust(15, line_connector)
+    output += " #{hour_data[:four_hour_event]} ".ljust(15, line_connector)
     output += " #{hour_data[:hourly_notes]} ".ljust(15, line_connector)
 
     if hour_data[:hour_index] == 0
