@@ -5,6 +5,7 @@ require_relative 'time_constants'
 
 require_relative 'events_four_hours'
 require_relative 'events_mini'
+require_relative 'event_rotation'
 
 # Friday 5pm -> Saturday, RVR
 # Monday 5pm -> start 2 day event
@@ -25,33 +26,6 @@ kellebram_settings = {
   :training_mins => 150,
   :gather_rss_mins => 89,
 }
-
-luna_schedule = [
-  "",
-  "",
-  luna,
-  "",
-  "",
-  "",
-  luna,
-  "",
-  "",
-  "",
-  luna,
-  "",
-  "",
-  "",
-  luna,
-  "",
-  "",
-  "",
-  luna,
-  "",
-  "",
-  "",
-  luna,
-  "",
-]
 
 hourly_extras = [
   [ new_major ],
@@ -80,9 +54,16 @@ hourly_extras = [
   [  ],
 ]
 
+luna_events = EventRotation.new(
+  :start_epoch => 2,
+  :events => [
+    { :name => "Luna Gifts", :duration => 1, },
+    { :name => "", :duration => 3, },
+  ])
+
 events = {
   :mini_events => MiniEvents::HourlyEvents,
-  :luna_events => luna_schedule,
+  :luna_events => luna_events,
   :four_hour_extras => FourHourEvents::Events,
   :hourly_notes => hourly_extras,
 }
@@ -105,7 +86,7 @@ def build_time_model(events, hour_range)
       :local_hour => local_hour,
       :hour_epoch => utc_hour_epoch,
       :mini_event => events[:mini_events][hour_epoch_index][:event],
-      :luna_event => events[:luna_events][hour_epoch_index],
+      :luna_event => events[:luna_events].lookup(hour_epoch_index),
       :four_hour_extra => events[:four_hour_extras][hour_epoch_index],
       :hourly_notes => events[:hourly_notes][hour_epoch_index].clone,
     }
