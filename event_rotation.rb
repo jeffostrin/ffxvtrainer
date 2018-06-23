@@ -34,4 +34,40 @@ class EventRotation
     end
     raise "Should never get here"
   end
+
+  def find_next(event_name)
+    return EventFind.new(@events, event_name)
+  end
+end
+
+class EventFind
+  attr_reader :event_name
+  attr_reader :events
+
+  def initialize(events, event_name)
+    @events = events
+    @event_name = event_name
+  end
+
+  def after(epoch)
+    event = find_event
+    return 0
+
+    # def next_from(epoch)
+    #   next_rvr = rvr[:interval] - ( (current_epoch - rvr[:epoch]) % (rvr[:interval]) )
+    #   return next_rvr
+    #   return 0
+    # end
+
+  end
+
+  # Private
+  def find_event
+    @events.each do |event|
+      if event[:name] == @event_name
+        return event
+      end
+    end
+    raise "Could not find event #{@event_name}"
+  end
 end

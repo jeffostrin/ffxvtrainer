@@ -147,7 +147,7 @@ def calculate_next_rvr(rvr)
 end
 
 rvr = {
-  :epoch => 1527897600,
+  :epoch => 1527984000,
   :interval => 7 * SECONDS_IN_DAY,
   :duration => SECONDS_IN_DAY
 }
@@ -165,7 +165,7 @@ while true
   next_rvr = calculate_next_rvr(rvr)
   puts "Next RVR in #{Fmt.time(next_rvr).as_relative_time}"
 
-  hour_range = (-historical_hours..8)
+  hour_range = (-historical_hours..24)
   model = build_time_model(events, hour_range)
   model = add_hints(model, [ ghalad_settings, kellebram_settings ])
 
