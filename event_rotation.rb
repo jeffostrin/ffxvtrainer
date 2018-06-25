@@ -1,5 +1,20 @@
 require_relative 'assert'
 
+class Event
+  attr_reader :name
+  attr_reader :hour_epoch_start
+  attr_reader :hour_epoch_end
+
+  def initialize(params)
+    @name = params[:name]
+    assert(@name != nil, "Event.name is required")
+    @hour_epoch_start = params[:hour_epoch_start]
+    assert(@hour_epoch_start != nil, "Event.hour_epoch_start is required")
+    @hour_epoch_end = params[:hour_epoch_end]
+    assert(@hour_epoch_end != nil, "Event.hour_epoch_end is required")
+  end
+end
+
 class EventRotation
   attr_reader :start_epoch
   attr_reader :events
@@ -33,6 +48,23 @@ class EventRotation
       hour_finder = hour_finder - duration
     end
     raise "Should never get here"
+  end
+
+  def create_schedule(params)
+    schedule_start_epoch = params[:start_epoch]
+    assert(schedule_start_epoch != nil, "EventRotation.create_schedule.start_epoch is required")
+    number_of_hours = params[:number_of_hours]
+    assert(number_of_hours != nil, "EventRotation.create_schedule.number_of_hours is required")
+
+    result = []
+    (0..(number_of_hours-1)).each do |hour|
+      hour_epoch = schedule_start_epoch + hour
+      event_name = lookup(hour_epoch)
+      event = Event.new(:name => event_name, :hour_epoch_start => 0, :hour_epoch_end => 0)
+      result << event
+    end
+
+    return result
   end
 
   def find_next(event_name)
