@@ -1,25 +1,44 @@
+'use strict'
+
 var ctime = require('./ctime').create();
 var eventRotation = require('./event_rotation')
 
 module.exports = {
   generate_schedule: function () {
 
-    lunaRotation = eventRotation.create(0, [
-      { name: "", duration: 2 },
-      { name: "Luna Gifts", duration: 1 },
-      { name: "", duration: 1 },
-    ])
+    var lunaRotation = new eventRotation(
+      0,
+      [ { name: "", duration: 2 },
+        { name: "Luna Gifts", duration: 1 },
+        { name: "", duration: 1 },
+      ]);
 
-    // console.log("100: " + lunaRotation.lookup(100));
-    // console.log("101: " + lunaRotation.lookup(101));
-    // console.log("102: " + lunaRotation.lookup(102));
-    // console.log("103: " + lunaRotation.lookup(103));
-    // console.log("104: " + lunaRotation.lookup(104));
+    var fourHourEventRotation = new eventRotation(
+      0,
+      [ { name: "Empire Ascend", duration: 4 },
+        { name: "Research", duration: 4, },
+      ]);
+
     //
-    // console.log("105: " + lunaRotation.lookup(105));
-    // console.log("106: " + lunaRotation.lookup(106));
-
-    schedule = [
+    //   console.log("100: " + lunaRotation.lookup(100));
+    //   console.log("101: " + lunaRotation.lookup(101));
+    //   console.log("102: " + lunaRotation.lookup(102));
+    //   console.log("103: " + lunaRotation.lookup(103));
+    //   console.log("104: " + lunaRotation.lookup(104));
+    //   console.log("105: " + lunaRotation.lookup(105));
+    //   console.log("106: " + lunaRotation.lookup(106));
+    //
+    //
+    //   console.log("99: " + fourHourEventRotation.lookup(99));
+    // console.log("100: " + fourHourEventRotation.lookup(100));
+    // console.log("101: " + fourHourEventRotation.lookup(101));
+    // console.log("102: " + fourHourEventRotation.lookup(102));
+    // console.log("103: " + fourHourEventRotation.lookup(103));
+    // console.log("104: " + fourHourEventRotation.lookup(104));
+    // console.log("105: " + fourHourEventRotation.lookup(105));
+    // console.log("106: " + fourHourEventRotation.lookup(106));
+    //
+    var schedule = [
       "Current time is " + ctime.gmt(),
       "Current time is " + ctime.est(),
       "Current time is " + ctime.pst(),
