@@ -1,19 +1,19 @@
 'use strict'
 
 var ctime = require('./ctime').create();
-var eventRotation = require('./event_rotation')
+var EventRotation = require('./event_rotation')
 
 module.exports = {
   generate_schedule: function () {
 
-    var lunaRotation = new eventRotation(
+    var lunaRotation = new EventRotation(
       0,
       [ { name: "", duration: 2 },
         { name: "Luna Gifts", duration: 1 },
         { name: "", duration: 1 },
       ]);
 
-    var fourHourEventRotation = new eventRotation(
+    var fourHourEventRotation = new EventRotation(
       0,
       [ { name: "Empire Ascend", duration: 4 },
         { name: "Research", duration: 4, },
