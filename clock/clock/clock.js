@@ -1,14 +1,11 @@
-var moment = require('moment-timezone');
+var ctime = require('./ctime').create();
 
 module.exports = {
   generate_schedule: function () {
-    var mnow = moment();
-    console.log("in pst: " + mnow.tz("PST").format('hh:mm (MM-DD)'));
-    console.log("in gmt: " + mnow.tz("GMT").format('hh:mm (MM-DD)'));
-    console.log("in est: " + mnow.tz("EST").format('hh:mm (MM-DD)'));
-
     schedule = [
-      "Current time is 05:49 (06-24)",
+      "Current time is " + ctime.gmt(),
+      "Current time is " + ctime.est(),
+      "Current time is " + ctime.pst(),
       "Next RVR in in 5:23:10",
       '=> 05:00pm (06-24) (now) ===== Training <=== ==== ============== Empire Ascend  ["New Rotation / Major Events may end"]  <=',
       "   06:00pm (06-24) (in 0:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
