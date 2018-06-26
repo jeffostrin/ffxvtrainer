@@ -32,4 +32,16 @@ module.exports = class EventRotation {
     }
     throw "Could not find " + hourEpoch + " in " + events;
   }
+
+  createSchedule(firstHourEpoch, lastHourEpoch) {
+    var result = [];
+    for (var hourEpoch = firstHourEpoch; hourEpoch <= lastHourEpoch; hourEpoch++) {
+      var evt = {
+        hourEpoch: hourEpoch,
+        name: this.lookup(hourEpoch)
+      };
+      result.push(evt)
+    }
+    return result;
+  }
 };
