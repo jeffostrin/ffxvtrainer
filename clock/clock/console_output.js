@@ -5,6 +5,12 @@ module.exports = {
   },
   nextRVR: function(ctime, nextRVR) {
     return "Next RVR " + ctime.pp().asRelativeTime(nextRVR);
+  },
+  showSchedule: function(schedule) {
+    return [
+      "line 1",
+      "line 2",
+      "line 3"
+    ];
   }
-
 };

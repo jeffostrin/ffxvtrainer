@@ -3,6 +3,7 @@ var momentTZ = require('moment-timezone');
 
 module.exports = {
   create: function() {
+    var SECONDS_IN_HOUR = 60 * 60;
 
     var now = moment();
     var nowTZ = momentTZ();
@@ -16,9 +17,12 @@ module.exports = {
         return now.valueOf() / 1000;
       },
 
+      epochHour: function() {
+        return this.epochSeconds() / SECONDS_IN_HOUR;
+      },
+
       pp: function() {
         var ONE_HOUR_AGO = -1 * 60 * 60;
-        var SECONDS_IN_HOUR = 60 * 60;
         var SECONDS_IN_DAY = SECONDS_IN_HOUR * 24;
 
         return {

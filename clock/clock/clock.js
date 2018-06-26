@@ -23,10 +23,17 @@ module.exports = {
 
     var rvr = new RVR();
     var nextRVR = rvr.calculate_next(ctime.epochSeconds());
+    var sch = "abc";
 
     var schedule = [
       consoleView.currentTime(ctime),
-      consoleView.nextRVR(ctime, nextRVR),
+      consoleView.nextRVR(ctime, nextRVR)
+    ];
+    // schedule = schedule.concat(
+    //   consoleView.showSchedule(sch)
+    // );
+
+    schedule = schedule.concat( [
       '=> 05:00pm (06-24) (now) ===== Training <=== ==== ============== Empire Ascend  ["New Rotation / Major Events may end"]  <=',
       "   06:00pm (06-24) (in 0:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
       "   07:00pm (06-24) (in 1:10) - Unknown ---------- Luna Gifts---- Empire Ascend  [] -----------",
@@ -41,7 +48,7 @@ module.exports = {
       "   04:00am (06-25) (in 10:10)  Unknown ---------- -------------- Empire Ascend  [] -----------",
       "   05:00am (06-25) (in 11:10)  Unknown ---------- -------------- Research ----- [] -----------",
       "   06:00am (06-25) (in 12:10)  Unknown ---------- -------------- Research ----- [] -----------",
-    ]
+    ]);
     return schedule;
   },
 };
