@@ -63,6 +63,12 @@ module.exports = {
               return (str + pad).substring(0, pad.length);
             }
           },
+          _lpad: function(pad, str) {
+            return (pad + str).slice(-pad.length);
+          },
+          _rpad: function(pad, str) {
+            return (str + pad).substring(0, pad.length);
+          },
 
           _humanifyDays: function(timeInSeconds) {
             if (timeInSeconds < SECONDS_IN_DAY) {
@@ -84,7 +90,7 @@ module.exports = {
 
           _humanifyMinutes: function(timeInSeconds) {
             var minutes = Math.trunc(timeInSeconds / 60);
-            return this._pad("00", minutes.toString(), true)
+            return this._lpad("00", minutes.toString())
           }
         }
       }
