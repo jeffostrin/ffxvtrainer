@@ -3,6 +3,7 @@
 var ctime = require('./ctime').create();
 var EventRotation = require('./event_rotation')
 var RVR = require('./rvr')
+var consoleView = require('./console_output')
 
 module.exports = {
   generate_schedule: function () {
@@ -22,28 +23,10 @@ module.exports = {
 
     var rvr = new RVR();
     var nextRVR = rvr.calculate_next(ctime.epochSeconds());
-    //
-    //   console.log("100: " + lunaRotation.lookup(100));
-    //   console.log("101: " + lunaRotation.lookup(101));
-    //   console.log("102: " + lunaRotation.lookup(102));
-    //   console.log("103: " + lunaRotation.lookup(103));
-    //   console.log("104: " + lunaRotation.lookup(104));
-    //   console.log("105: " + lunaRotation.lookup(105));
-    //   console.log("106: " + lunaRotation.lookup(106));
-    //
-    //
-    //   console.log("99: " + fourHourEventRotation.lookup(99));
-    // console.log("100: " + fourHourEventRotation.lookup(100));
-    // console.log("101: " + fourHourEventRotation.lookup(101));
-    // console.log("102: " + fourHourEventRotation.lookup(102));
-    // console.log("103: " + fourHourEventRotation.lookup(103));
-    // console.log("104: " + fourHourEventRotation.lookup(104));
-    // console.log("105: " + fourHourEventRotation.lookup(105));
-    // console.log("106: " + fourHourEventRotation.lookup(106));
-    //
+
     var schedule = [
-      "Current time is --- " + ctime.pp().gmt() + " --- " + ctime.pp().est() + " --- " + ctime.pp().pst(),
-      "Next RVR " + ctime.pp().asRelativeTime(nextRVR),
+      consoleView.currentTime(ctime),
+      consoleView.nextRVR(ctime, nextRVR),
       '=> 05:00pm (06-24) (now) ===== Training <=== ==== ============== Empire Ascend  ["New Rotation / Major Events may end"]  <=',
       "   06:00pm (06-24) (in 0:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
       "   07:00pm (06-24) (in 1:10) - Unknown ---------- Luna Gifts---- Empire Ascend  [] -----------",
