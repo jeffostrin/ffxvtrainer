@@ -2,6 +2,7 @@
 
 var ctime = require('./ctime').create();
 var EventRotation = require('./event_rotation')
+var RVR = require('./rvr')
 
 module.exports = {
   generate_schedule: function () {
@@ -19,6 +20,8 @@ module.exports = {
         { name: "Research", duration: 4, },
       ]);
 
+    var rvr = new RVR();
+    var nextRVR = rvr.calculate_next(ctime.epochSeconds());
     //
     //   console.log("100: " + lunaRotation.lookup(100));
     //   console.log("101: " + lunaRotation.lookup(101));
@@ -39,10 +42,8 @@ module.exports = {
     // console.log("106: " + fourHourEventRotation.lookup(106));
     //
     var schedule = [
-      "Current time is " + ctime.gmt(),
-      "Current time is " + ctime.est(),
-      "Current time is " + ctime.pst(),
-      "Next RVR in in 5:23:10",
+      "Current time is --- " + ctime.pp().gmt() + " --- " + ctime.pp().est() + " --- " + ctime.pp().pst(),
+      "Next RVR " + ctime.pp().asRelativeTime(nextRVR),
       '=> 05:00pm (06-24) (now) ===== Training <=== ==== ============== Empire Ascend  ["New Rotation / Major Events may end"]  <=',
       "   06:00pm (06-24) (in 0:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
       "   07:00pm (06-24) (in 1:10) - Unknown ---------- Luna Gifts---- Empire Ascend  [] -----------",
