@@ -68,7 +68,7 @@ class MiniEvents
     { :utc=>1, :local=>"6pm", :event=>monster_hunt },
     { :utc=>2, :local=>"7pm", :event=>guild_rss_help },
     { :utc=>3, :local=>"8pm", :event=>guild_quests },
-    { :utc=>4, :local=>"9pm", :event=>unknown },
+    { :utc=>4, :local=>"9pm", :event=>guild_rss_help },
     { :utc=>5, :local=>"10pm", :event=>guild_defend },
     { :utc=>6, :local=>"11pm", :event=>spin },
   ].sort { |x,y| x[:utc] <=> y[:utc] }
