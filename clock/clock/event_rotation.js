@@ -56,30 +56,29 @@ module.exports = class EventRotation {
     var hourEpoch = firstHepoch;
     do {
 
-      var e = this._lookup(hourEpoch);
+      var e = this._lookupEventFor(hourEpoch);
       var eventStartEpoch = hourEpoch - ( (hourEpoch - this.startEpoch) % this.cycleTime) + e.cycleStartOffset;
       var eventEndEpoch = eventStartEpoch + e.duration - 1;
-      //console.log("event start time: " + eventStartTime);
-      var elapsed = hourEpoch - eventStartEpoch;
-      var outsideSchedule = 0;
+      var elapsedHours = hourEpoch - eventStartEpoch;
+      var hoursOutsideSchedule = 0;
       if (lastHepoch < eventEndEpoch) {
-        outsideSchedule = eventEndEpoch - lastHepoch;
+        hoursOutsideSchedule = eventEndEpoch - lastHepoch;
       }
-      //console.log("firstHepoch: " + firstHepoch + " lastHepoch:" + lastHepoch + " hourEpoch:" + hourEpoch + " eventStartEpoch:" + eventStartEpoch + " elapsed:" + elapsed + " outsideSchedule:"+outsideSchedule);
+      //console.log("firstHepoch: " + firstHepoch + " lastHepoch:" + lastHepoch + " hourEpoch:" + hourEpoch + " eventStartEpoch:" + eventStartEpoch + " elapsedHours:" + elapsedHours + " hoursOutsideSchedule:"+hoursOutsideSchedule);
       var evt = {
         startHourEpoch: hourEpoch,
-        endHourEpoch: hourEpoch + e.duration - elapsed - outsideSchedule - 1,
+        endHourEpoch: hourEpoch + e.duration - elapsedHours - hoursOutsideSchedule - 1,
         name: e.name
       };
       result.push(evt)
-      hourEpoch += e.duration - elapsed;
+      hourEpoch += e.duration - elapsedHours;
 
     } while (hourEpoch <= lastHepoch);
 
     return result;
   }
 
-  _lookup(hourEpoch) {
+  _lookupEventFor(hourEpoch) {
     var hourInCycle = (hourEpoch - this.startEpoch) % this.cycleTime;
     var hourFinder = hourInCycle;
 
