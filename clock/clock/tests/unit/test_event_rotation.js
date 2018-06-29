@@ -56,6 +56,12 @@ function assertEvent(actual, expected) {
   expect(expected.name).to.equal(actual.name);
 }
 
+function assertEvent2(actual, expected) {
+  expect(expected.startHourEpoch).to.equal(actual.startHourEpoch);
+  expect(expected.endHourEpoch).to.equal(actual.endHourEpoch);
+  expect(expected.name).to.equal(actual.name);
+}
+
 
 describe('Tests createSchedule', function () {
   it('verifies creates a schedule', async () => {
@@ -74,5 +80,43 @@ describe('Tests createSchedule', function () {
     assertEvent(schedule[3], { hourEpoch:13, name:""});
     assertEvent(schedule[4], { hourEpoch:14, name:"Luna Gifts"});
     assertEvent(schedule[5], { hourEpoch:15, name:""});
+  })
+});
+
+
+describe('Tests createSchedule2', function () {
+  it('verifies creates a schedule', async () => {
+    var lunaRotation = new EventRotation(
+      2,
+      [ { name: "Luna Gifts", duration: 1 },
+        { name: "", duration: 3 },
+      ]);
+
+    var schedule = lunaRotation.createSchedule2(10, 15);
+    expect(schedule.length).to.equal(4);
+    assertEvent2(schedule[0], { startHourEpoch:10, endHourEpoch: 10, name:"Luna Gifts" });
+    assertEvent2(schedule[1], { startHourEpoch:11, endHourEpoch: 13, name:"" });
+    assertEvent2(schedule[2], { startHourEpoch:14, endHourEpoch: 14, name:"Luna Gifts"});
+    assertEvent2(schedule[3], { startHourEpoch:15, endHourEpoch: 15, name:""});
+  }),
+  it('verifies creates a schedule when event starts and ends off schedule boundaries', async () => {
+    var fourHourEventRotation = new EventRotation(
+      0,
+      [ { name: "Empire Ascend", duration: 4 },
+        { name: "Research", duration: 4, },
+      ]);
+
+    var schedule = fourHourEventRotation.createSchedule2(9, 14);
+    expect(schedule.length).to.equal(2);
+    assertEvent2(schedule[0], { startHourEpoch:9, endHourEpoch: 11, name:"Empire Ascend" });
+    assertEvent2(schedule[1], { startHourEpoch:12, endHourEpoch: 14, name:"Research" });
+
+    // expect(fourHourEventRotation.lookup(6)).to.equal("Research")
+    // expect(fourHourEventRotation.lookup(7)).to.equal("Research")
+    // expect(fourHourEventRotation.lookup(8)).to.equal("Empire Ascend")
+    // expect(fourHourEventRotation.lookup(9)).to.equal("Empire Ascend")
+    // expect(fourHourEventRotation.lookup(10)).to.equal("Empire Ascend")
+    // expect(fourHourEventRotation.lookup(11)).to.equal("Empire Ascend")
+
   })
 });
