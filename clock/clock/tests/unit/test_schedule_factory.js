@@ -9,6 +9,7 @@ function assertHourlySchedule(actual, expected) {
   expect(actual.hepoch).to.equal(expected.hepoch);
   expect(actual.isCurrentHepoch).to.equal(expected.isCurrentHepoch);
   expect(actual.hepochReadable).to.equal(expected.hepochReadable);
+  expect(actual.secondsUntil).to.equal(expected.secondsUntil);
 }
 
 describe('Tests lookup', function () {
@@ -19,8 +20,8 @@ describe('Tests lookup', function () {
     var schedule = new ScheduleFactory().at(ctime).forHepochs(30, 35).forEventRotations(eventRotations).create();
 
     expect(schedule.length).to.equal(6)
-    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)" });
-    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)" });
+    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)", secondsUntil: 0 });
+    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)", secondsUntil: 60 * 60 });
 
     // var s = [
     //

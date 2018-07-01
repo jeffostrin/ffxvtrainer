@@ -17,7 +17,8 @@ module.exports = class ScheduleFactory {
                   var hourlySchedule = {
                     hepoch: hepoch,
                     hepochReadable: ctime.pp().dayTime(hepoch),
-                    isCurrentHepoch: (ctime.epochHour() == hepoch) 
+                    isCurrentHepoch: (ctime.epochHour() == hepoch),
+                    secondsUntil: ctime.secondsUntilHepoch(hepoch)
                   };
                   result.push(hourlySchedule);
                 }

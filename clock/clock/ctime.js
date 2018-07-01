@@ -22,6 +22,11 @@ module.exports = class CTime {
     return this.epochSeconds() / this.SECONDS_IN_HOUR;
   }
 
+  secondsUntilHepoch(hepoch) {
+    //console.log("hepoch:" + hepoch + " epochHour():" + this.epochHour());
+    return (hepoch - this.epochHour()) * this.SECONDS_IN_HOUR;
+  }
+
   setSepoch(sepoch) {
     // for (var m in this.now) {
     //   console.log(m);
