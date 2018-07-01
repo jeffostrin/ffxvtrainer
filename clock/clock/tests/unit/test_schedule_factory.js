@@ -10,18 +10,22 @@ function assertHourlySchedule(actual, expected) {
   expect(actual.isCurrentHepoch).to.equal(expected.isCurrentHepoch);
   expect(actual.hepochReadable).to.equal(expected.hepochReadable);
   expect(actual.secondsUntil).to.equal(expected.secondsUntil);
+  expect(actual.timeUntil).to.equal(expected.timeUntil);
 }
 
 describe('Tests lookup', function () {
+
+  var SECONDS_IN_HOUR = 60 * 60;
+
   it('create simple schedule', async () => {
     var ctime = new CTime();
-    ctime.setSepoch(30*60*60);
+    ctime.setSepoch(30 * SECONDS_IN_HOUR);
     var eventRotations = null;
     var schedule = new ScheduleFactory().at(ctime).forHepochs(30, 35).forEventRotations(eventRotations).create();
 
     expect(schedule.length).to.equal(6)
-    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)", secondsUntil: 0 });
-    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)", secondsUntil: 60 * 60 });
+    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)", secondsUntil: 0, timeUntil: "now" });
+    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)", secondsUntil: 1 * SECONDS_IN_HOUR, timeUntil: "in 1:00" });
 
     // var s = [
     //
