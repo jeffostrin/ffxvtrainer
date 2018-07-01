@@ -20,7 +20,8 @@ module.exports = class ScheduleFactory {
                     hepochReadable: ctime.pp().dayTime(hepoch),
                     isCurrentHepoch: (ctime.epochHour() == hepoch),
                     secondsUntil: secondsUntilHepoch,
-                    timeUntil: ctime.pp().asRelativeTime(secondsUntilHepoch)
+                    timeUntil: ctime.pp().asRelativeTime(secondsUntilHepoch),
+                    events: {}
                   };
                   result.push(hourlySchedule);
                 }

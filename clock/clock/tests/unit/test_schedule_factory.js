@@ -11,6 +11,10 @@ function assertHourlySchedule(actual, expected) {
   expect(actual.hepochReadable).to.equal(expected.hepochReadable);
   expect(actual.secondsUntil).to.equal(expected.secondsUntil);
   expect(actual.timeUntil).to.equal(expected.timeUntil);
+  expect(actual.events.mini).to.equal(expected.events.mini);
+  expect(actual.events.luna).to.equal(expected.events.luna);
+  expect(actual.events.fourHour).to.equal(expected.events.fourHour);
+  expect(actual.events.other).to.equal(expected.events.other);
 }
 
 describe('Tests lookup', function () {
@@ -24,8 +28,8 @@ describe('Tests lookup', function () {
     var schedule = new ScheduleFactory().at(ctime).forHepochs(30, 35).forEventRotations(eventRotations).create();
 
     expect(schedule.length).to.equal(6)
-    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)", secondsUntil: 0, timeUntil: "now" });
-    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)", secondsUntil: 1 * SECONDS_IN_HOUR, timeUntil: "in 1:00" });
+    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)", secondsUntil: 0, timeUntil: "now", events: {} });
+    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)", secondsUntil: 1 * SECONDS_IN_HOUR, timeUntil: "in 1:00", events: {} });
 
     // var s = [
     //
