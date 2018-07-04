@@ -1,6 +1,7 @@
 'use strict';
 
 const ScheduleFactory = require('../../schedule_factory');
+const EventRotation = require('../../event_rotation');
 const CTime = require('../../ctime');
 const chai = require('chai');
 const expect = chai.expect;
@@ -21,15 +22,32 @@ describe('Tests lookup', function () {
 
   var SECONDS_IN_HOUR = 60 * 60;
 
+  var lunaRotation = new EventRotation(
+    0,
+    [ { name: "", duration: 2 },
+      { name: "Luna Gifts", duration: 1 },
+      { name: "", duration: 1 },
+    ]);
+  var fourHourEventRotation = new EventRotation(
+    0,
+    [ { name: "Empire Ascend", duration: 4 },
+      { name: "Research", duration: 4, },
+    ]);
+
   it('create simple schedule', async () => {
     var ctime = new CTime();
     ctime.setSepoch(30 * SECONDS_IN_HOUR);
-    var eventRotations = null;
+    var eventRotations = {
+      luna: lunaRotation,
+      fourHour: fourHourEventRotation
+    };
     var schedule = new ScheduleFactory().at(ctime).forHepochs(30, 35).forEventRotations(eventRotations).create();
 
+console.log(schedule);
     expect(schedule.length).to.equal(6)
-    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)", secondsUntil: 0, timeUntil: "now", events: {} });
-    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)", secondsUntil: 1 * SECONDS_IN_HOUR, timeUntil: "in 1:00", events: {} });
+    assertHourlySchedule(schedule[0], { hepoch:30, isCurrentHepoch: true, hepochReadable: "10:00pm (01-01)", secondsUntil: 0, timeUntil: "now", events: { luna: "", fourHour: "Research (cont)"} });
+    assertHourlySchedule(schedule[1], { hepoch:31, isCurrentHepoch: false, hepochReadable: "11:00pm (01-01)", secondsUntil: 1 * SECONDS_IN_HOUR, timeUntil: "in 1:00", events: { luna: "Luna", fourHour: "Research (cont)" } });
+    assertHourlySchedule(schedule[2], { hepoch:32, isCurrentHepoch: false, hepochReadable: "12:00am (01-02)", secondsUntil: 2 * SECONDS_IN_HOUR, timeUntil: "in 2:00", events: { luna: "", fourHour: "Empire Ascend" } });
 
     // var s = [
     //
