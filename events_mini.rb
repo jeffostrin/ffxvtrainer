@@ -44,6 +44,64 @@ class MiniEvents
     { :utc=>6, :local=>"11pm", :event=>unknown },
   ].sort { |x,y| x[:utc] <=> y[:utc] }
 
+  HourlyEvents_JULY_5 = [
+    { :utc=>7, :local=>"12am", :event=>secret },
+    { :utc=>8, :local=>"1am", :event=>hero_quests },
+    { :utc=>9, :local=>"2am", :event=>unknown },
+    { :utc=>10, :local=>"3am", :event=>unknown },
+    { :utc=>11, :local=>"4am", :event=>unknown },
+    { :utc=>12, :local=>"5am", :event=>MiniEvents::Training },
+    { :utc=>13, :local=>"6am", :event=>monster_hunt },
+    { :utc=>14, :local=>"7am", :event=>guild_rss_help },
+    { :utc=>15, :local=>"8am", :event=>guild_quests },
+    { :utc=>16, :local=>"9am", :event=>guild_rss_help },
+    { :utc=>17, :local=>"10am", :event=>guild_defend },
+    { :utc=>18, :local=>"11am", :event=>spin },
+    { :utc=>19, :local=>"12pm", :event=>secret },
+    { :utc=>20, :local=>"1pm", :event=>hero_quests },
+    { :utc=>21, :local=>"2pm", :event=>MiniEvents::GatherRSS },
+    { :utc=>22, :local=>"3pm", :event=>guild_quests },
+    { :utc=>23, :local=>"4pm", :event=>guild_help },
+
+    { :utc=>0, :local=>"5pm", :event=>MiniEvents::Training },
+    { :utc=>1, :local=>"6pm", :event=>monster_hunt },
+    { :utc=>2, :local=>"7pm", :event=>guild_rss_help },
+    { :utc=>3, :local=>"8pm", :event=>guild_quests },
+    { :utc=>4, :local=>"9pm", :event=>guild_rss_help },
+    { :utc=>5, :local=>"10pm", :event=>guild_defend },
+    { :utc=>6, :local=>"11pm", :event=>spin },
+  ].sort { |x,y| x[:utc] <=> y[:utc] }
+
+  HourlyEvents = HourlyEvents_JULY_5
+
+
+  HourlyEvents_STARTED_JULY_3 = [
+    { :utc=>7, :local=>"12am", :event=>secret },
+    { :utc=>8, :local=>"1am", :event=>unknown },
+    { :utc=>9, :local=>"2am", :event=>MiniEvents::GatherRSS },
+    { :utc=>10, :local=>"3am", :event=>unknown },
+    { :utc=>11, :local=>"4am", :event=>unknown },
+    { :utc=>12, :local=>"5am", :event=>unknown },
+    { :utc=>13, :local=>"6am", :event=>monster_hunt },
+    { :utc=>14, :local=>"7am", :event=>guild_rss_help },
+    { :utc=>15, :local=>"8am", :event=>guild_quests },
+    { :utc=>16, :local=>"9am", :event=>guild_rss_help },
+    { :utc=>17, :local=>"10am", :event=>guild_defend },
+    { :utc=>18, :local=>"11am", :event=>spin },
+    { :utc=>19, :local=>"12pm", :event=>secret },
+    { :utc=>20, :local=>"1pm", :event=>hero_quests },
+    { :utc=>21, :local=>"2pm", :event=>MiniEvents::GatherRSS },
+    { :utc=>22, :local=>"3pm", :event=>guild_quests },
+    { :utc=>23, :local=>"4pm", :event=>guild_help },
+
+    { :utc=>0, :local=>"5pm", :event=>guild_help },
+    { :utc=>1, :local=>"6pm", :event=>monster_hunt },
+    { :utc=>2, :local=>"7pm", :event=>guild_rss_help },
+    { :utc=>3, :local=>"8pm", :event=>guild_quests },
+    { :utc=>4, :local=>"9pm", :event=>guild_rss_help },
+    { :utc=>5, :local=>"10pm", :event=>guild_defend },
+    { :utc=>6, :local=>"11pm", :event=>spin },
+  ].sort { |x,y| x[:utc] <=> y[:utc] }
 
   HourlyEvents_STARTED_JUNE_24_LOCAL_TIME = [
     { :utc=>7, :local=>"12am", :event=>secret },
@@ -159,9 +217,6 @@ class MiniEvents
   #   { :local=>"3pm", :event=>guild_quests },
   #   { :local=>"4pm", :event=>guild_help },
   # ]
-
-
-  HourlyEvents = HourlyEvents_STARTED_JUNE_24_LOCAL_TIME
 
   #
   # HourlyEvents_BUSTED = [
