@@ -4,11 +4,27 @@ const CTime = require('../../ctime');
 const chai = require('chai');
 const expect = chai.expect;
 
-describe('Tests pretty-printing', function () {
-  var SECONDS_IN_MINUTE = 60;
-  var SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60;
-  var SECONDS_IN_DAY = SECONDS_IN_HOUR * 24;
+var SECONDS_IN_MINUTE = 60;
+var SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60;
+var SECONDS_IN_DAY = SECONDS_IN_HOUR * 24;
 
+
+describe('Gets current time', function() {
+  it('rounds to nearest hepoch', function() {
+    var ctime = new CTime();
+
+    ctime.setSepoch(6 * SECONDS_IN_MINUTE)
+    expect(ctime.epochHour()).to.equal(0);
+
+    // expect(ctime.pp().asRelativeTime(1 * SECONDS_IN_HOUR)).to.equal("in 1:00");
+    // expect(ctime.pp().asRelativeTime(1 * SECONDS_IN_HOUR + 5 * SECONDS_IN_MINUTE)).to.equal("in 1:05");
+    // expect(ctime.pp().asRelativeTime(1 * SECONDS_IN_HOUR + 5 * SECONDS_IN_MINUTE + 33)).to.equal("in 1:05");
+    // expect(ctime.pp().asRelativeTime(1 * SECONDS_IN_HOUR + 5 * SECONDS_IN_MINUTE + 33.33)).to.equal("in 1:05");
+    // expect(ctime.pp().asRelativeTime(2 * SECONDS_IN_DAY + 1 * SECONDS_IN_HOUR + 5 * SECONDS_IN_MINUTE)).to.equal("in 2:1:05");
+  });
+});
+
+describe('Tests pretty-printing', function () {
   it('verifies asRelativeTime', async () => {
     var ctime = new CTime();
 

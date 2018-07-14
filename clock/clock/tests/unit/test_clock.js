@@ -10,6 +10,6 @@ describe('Tests index', function () {
     it('verifies successful response', async () => {
         const schedule = clock.generate_schedule();
         console.log(schedule);
-        expect(schedule.length).to.equal(16);
+        expect(schedule.length).to.equal(27);
     });
 });

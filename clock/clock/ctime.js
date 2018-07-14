@@ -19,7 +19,7 @@ module.exports = class CTime {
   }
 
   epochHour() {
-    return this.epochSeconds() / this.SECONDS_IN_HOUR;
+    return Math.trunc(this.epochSeconds() / this.SECONDS_IN_HOUR);
   }
 
   secondsUntilHepoch(hepoch) {
