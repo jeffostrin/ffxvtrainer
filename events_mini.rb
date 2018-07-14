@@ -47,7 +47,7 @@ class MiniEvents
   HourlyEvents_JULY_5 = [
     { :utc=>7, :local=>"12am", :event=>secret },
     { :utc=>8, :local=>"1am", :event=>hero_quests },
-    { :utc=>9, :local=>"2am", :event=>unknown },
+    { :utc=>9, :local=>"2am", :event=>MiniEvents::GatherRSS },
     { :utc=>10, :local=>"3am", :event=>unknown },
     { :utc=>11, :local=>"4am", :event=>unknown },
     { :utc=>12, :local=>"5am", :event=>MiniEvents::Training },
