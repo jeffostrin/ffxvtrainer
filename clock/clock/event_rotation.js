@@ -38,6 +38,17 @@ module.exports = class EventRotation {
     throw "Could not find " + hourEpoch + " in " + events;
   }
 
+  lookupEvent(hourEpoch) {
+    var e = this._lookupEventFor(hourEpoch);
+    var eventStartEpoch = hourEpoch - ( (hourEpoch - this.startEpoch) % this.cycleTime) + e.cycleStartOffset;
+    var evt = {
+      name: e.name,
+      duration: e.duration,
+      startHepoch: eventStartEpoch,
+    }
+    return evt;
+  }
+
   createSchedule(firstHepoch, lastHepoch) {
     var result = [];
     for (var hourEpoch = firstHepoch; hourEpoch <= lastHepoch; hourEpoch++) {
@@ -66,8 +77,8 @@ module.exports = class EventRotation {
       }
       //console.log("firstHepoch: " + firstHepoch + " lastHepoch:" + lastHepoch + " hourEpoch:" + hourEpoch + " eventStartEpoch:" + eventStartEpoch + " elapsedHours:" + elapsedHours + " hoursOutsideSchedule:"+hoursOutsideSchedule);
       var evt = {
-        startHourEpoch: hourEpoch,
-        endHourEpoch: hourEpoch + e.duration - elapsedHours - hoursOutsideSchedule - 1,
+        startHepoch: eventStartEpoch,
+        endHepoch: eventEndEpoch, // hourEpoch + e.duration - elapsedHours - hoursOutsideSchedule - 1,
         name: e.name
       };
       result.push(evt)

@@ -5,6 +5,25 @@ const chai = require('chai');
 const expect = chai.expect;
 
 
+
+function assertEvent(actual, expected) {
+  expect(expected.hourEpoch).to.equal(actual.hourEpoch);
+  expect(expected.name).to.equal(actual.name);
+}
+
+function assertEvent2(actual, expected) {
+  expect(expected.startHepoch).to.equal(actual.startHepoch);
+  expect(expected.endHepoch).to.equal(actual.endHepoch);
+  expect(expected.name).to.equal(actual.name);
+}
+
+
+function assertEvent3(actual, expected) {
+  expect(expected.startHepoch).to.equal(actual.startHepoch);
+  expect(expected.name).to.equal(actual.name);
+}
+
+
 describe('Tests lookup', function () {
   it('verifies luna schedule', async () => {
     var lunaRotation = new EventRotation(
@@ -51,16 +70,49 @@ describe('Tests lookup', function () {
 });
 
 
-function assertEvent(actual, expected) {
-  expect(expected.hourEpoch).to.equal(actual.hourEpoch);
-  expect(expected.name).to.equal(actual.name);
-}
 
-function assertEvent2(actual, expected) {
-  expect(expected.startHourEpoch).to.equal(actual.startHourEpoch);
-  expect(expected.endHourEpoch).to.equal(actual.endHourEpoch);
-  expect(expected.name).to.equal(actual.name);
-}
+describe('Tests lookup event', function () {
+  it('verifies luna schedule', async () => {
+    var lunaRotation = new EventRotation(
+      2,
+      [ { name: "Luna Gifts", duration: 1 },
+        { name: "", duration: 3 },
+      ]);
+
+    assertEvent3(lunaRotation.lookupEvent(2), { name: "Luna Gifts", startHepoch: 2 });
+    assertEvent3(lunaRotation.lookupEvent(3), { name: "", startHepoch: 3 });
+    assertEvent3(lunaRotation.lookupEvent(4), { name: "", startHepoch: 3 });
+    assertEvent3(lunaRotation.lookupEvent(5), { name: "", startHepoch: 3 });
+    assertEvent3(lunaRotation.lookupEvent(6), { name: "Luna Gifts", startHepoch: 6 });
+    assertEvent3(lunaRotation.lookupEvent(7), { name: "", startHepoch: 7 });
+    assertEvent3(lunaRotation.lookupEvent(8), { name: "", startHepoch: 7 });
+    assertEvent3(lunaRotation.lookupEvent(9), { name: "", startHepoch: 7 });
+    assertEvent3(lunaRotation.lookupEvent(10), { name: "Luna Gifts", startHepoch: 10 });
+    assertEvent3(lunaRotation.lookupEvent(11), { name: "", startHepoch: 11 });
+  });
+
+  it('verifies 4 hour rotation schedule', async () => {
+    var fourHourEventRotation = new EventRotation(
+      0,
+      [ { name: "Empire Ascend", duration: 4 },
+        { name: "Research", duration: 4, },
+      ]);
+
+    assertEvent3(fourHourEventRotation.lookupEvent(0), { name: "Empire Ascend", startHepoch: 0 });
+    assertEvent3(fourHourEventRotation.lookupEvent(1), { name: "Empire Ascend", startHepoch: 0 });
+    assertEvent3(fourHourEventRotation.lookupEvent(2), { name: "Empire Ascend", startHepoch: 0 });
+    assertEvent3(fourHourEventRotation.lookupEvent(3), { name: "Empire Ascend", startHepoch: 0 });
+    assertEvent3(fourHourEventRotation.lookupEvent(4), { name: "Research", startHepoch: 4 });
+    assertEvent3(fourHourEventRotation.lookupEvent(5), { name: "Research", startHepoch: 4 });
+    assertEvent3(fourHourEventRotation.lookupEvent(6), { name: "Research", startHepoch: 4 });
+    assertEvent3(fourHourEventRotation.lookupEvent(7), { name: "Research", startHepoch: 4 });
+    assertEvent3(fourHourEventRotation.lookupEvent(8), { name: "Empire Ascend", startHepoch: 8 });
+    assertEvent3(fourHourEventRotation.lookupEvent(9), { name: "Empire Ascend", startHepoch: 8 });
+    assertEvent3(fourHourEventRotation.lookupEvent(10), { name: "Empire Ascend", startHepoch: 8 });
+    assertEvent3(fourHourEventRotation.lookupEvent(11), { name: "Empire Ascend", startHepoch: 8 });
+  });
+});
+
 
 
 describe('Tests createSchedule', function () {
@@ -94,11 +146,12 @@ describe('Tests createSchedule2', function () {
 
     var schedule = lunaRotation.createSchedule2(10, 15);
     expect(schedule.length).to.equal(4);
-    assertEvent2(schedule[0], { startHourEpoch:10, endHourEpoch: 10, name:"Luna Gifts" });
-    assertEvent2(schedule[1], { startHourEpoch:11, endHourEpoch: 13, name:"" });
-    assertEvent2(schedule[2], { startHourEpoch:14, endHourEpoch: 14, name:"Luna Gifts"});
-    assertEvent2(schedule[3], { startHourEpoch:15, endHourEpoch: 15, name:""});
+    assertEvent2(schedule[0], { startHepoch:10, endHepoch: 10, name:"Luna Gifts" });
+    assertEvent2(schedule[1], { startHepoch:11, endHepoch: 13, name:"" });
+    assertEvent2(schedule[2], { startHepoch:14, endHepoch: 14, name:"Luna Gifts"});
+    assertEvent2(schedule[3], { startHepoch:15, endHepoch: 17, name:""});
   }),
+
   it('verifies creates a schedule when event starts and ends off schedule boundaries', async () => {
     var fourHourEventRotation = new EventRotation(
       0,
@@ -108,8 +161,8 @@ describe('Tests createSchedule2', function () {
 
     var schedule = fourHourEventRotation.createSchedule2(9, 14);
     expect(schedule.length).to.equal(2);
-    assertEvent2(schedule[0], { startHourEpoch:9, endHourEpoch: 11, name:"Empire Ascend" });
-    assertEvent2(schedule[1], { startHourEpoch:12, endHourEpoch: 14, name:"Research" });
+    assertEvent2(schedule[0], { startHepoch:8, endHepoch: 11, name:"Empire Ascend" });
+    assertEvent2(schedule[1], { startHepoch:12, endHepoch: 15, name:"Research" });
 
     // expect(fourHourEventRotation.lookup(6)).to.equal("Research")
     // expect(fourHourEventRotation.lookup(7)).to.equal("Research")
