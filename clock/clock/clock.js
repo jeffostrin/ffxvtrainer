@@ -37,7 +37,6 @@ module.exports = {
 
     var rvr = new RVR();
     var nextRVR = rvr.calculate_next(ctime.epochSeconds());
-    var sch = "abc";
 
     var schedule = [
       consoleView.currentTime(ctime),

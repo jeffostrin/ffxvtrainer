@@ -5,6 +5,16 @@ const EventRotation = require('../../event_rotation');
 const chai = require('chai');
 const expect = chai.expect;
 
+function events(actual) {
+  return {
+    contains(expected) {
+      expected.forEach((expectedEvent, index) => {
+        expect(actual).to.deep.include(expectedEvent);
+      });
+    }
+  }
+}
+
 describe('Tests add', function () {
 
   it('adds a single', async () => {
@@ -17,8 +27,8 @@ describe('Tests add', function () {
     var sch = new Schedule().fromHepoch(5).toHepoch(8);
     sch.addRotation(lunaRotation);
 
-    expect(sch.eventsForHepoch(5)).to.deep.include( { name: "", isEventStart: false });
-    expect(sch.eventsForHepoch(6)).to.deep.include( { name: "Luna Gifts", isEventStart: true });
+    events(sch.eventsForHepoch(5)).contains([{ name: "", isEventStart: false }]);
+    events(sch.eventsForHepoch(6)).contains([{ name: "Luna Gifts", isEventStart: true }]);
   });
 
 
@@ -38,16 +48,24 @@ describe('Tests add', function () {
     sch.addRotation(lunaRotation);
     sch.addRotation(fourHourEventRotation);
 
-    expect(sch.eventsForHepoch(5)).to.deep.include( { name: "", isEventStart: false });
-    expect(sch.eventsForHepoch(5)).to.deep.include( { name: "Research", isEventStart: false });
+    events(sch.eventsForHepoch(5)).contains([
+      { name: "", isEventStart: false },
+      { name: "Research", isEventStart: false }
+    ]);
 
-    expect(sch.eventsForHepoch(6)).to.deep.include( { name: "Luna Gifts", isEventStart: true });
-    expect(sch.eventsForHepoch(6)).to.deep.include( { name: "Research", isEventStart: false });
+    events(sch.eventsForHepoch(6)).contains([
+      { name: "Luna Gifts", isEventStart: true },
+      { name: "Research", isEventStart: false }
+    ]);
 
-    expect(sch.eventsForHepoch(7)).to.deep.include( { name: "", isEventStart: true });
-    expect(sch.eventsForHepoch(7)).to.deep.include( { name: "Research", isEventStart: false });
+    events(sch.eventsForHepoch(7)).contains([
+      { name: "", isEventStart: true },
+      { name: "Research", isEventStart: false }
+    ]);
 
-    expect(sch.eventsForHepoch(8)).to.deep.include( { name: "", isEventStart: false });
-    expect(sch.eventsForHepoch(8)).to.deep.include( { name: "Empire Ascend", isEventStart: true });
+    events(sch.eventsForHepoch(8)).contains([
+      { name: "", isEventStart: false },
+      { name: "Empire Ascend", isEventStart: true }
+    ]);
   });
 });
