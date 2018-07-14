@@ -22,7 +22,7 @@ module.exports = function Schedule() {
       return hourEvents;
     }
 
-    console.log(schedule);
+    //console.log(schedule);
     return schedule;
   }
 
@@ -34,22 +34,4 @@ module.exports = function Schedule() {
       }
     }
   }
-
-    this.add = function(evt) {
-      return {
-        fromHepoch(startHepoch) {
-          return {
-            toHepoch(endHepoch) {
-              events << [ evt, startHepoch, endHepoch]
-              console.log("add " + evt + " from " + startHepoch + " until " + endHepoch + stuff);
-            }
-          }
-        }
-      }
-    }
-
-    this.eventsForHepoch = function(hepoch) {
-      return { "Luna": { isEventStart: true } };
-    }
-
 };

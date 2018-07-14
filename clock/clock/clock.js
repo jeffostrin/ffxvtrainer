@@ -4,7 +4,7 @@ const CTime = require('./ctime');
 var EventRotation = require('./event_rotation')
 var RVR = require('./rvr')
 var consoleView = require('./console_output')
-var ScheduleFactory = require('./schedule_factory.js')
+const Schedule = require('./schedule');
 
 module.exports = {
   generate_schedule: function () {
@@ -29,7 +29,11 @@ module.exports = {
       fourHour: fourHourEventRotation
     };
 
-    var sch = new ScheduleFactory().at(ctime).forHepochs(5,10).forEventRotations(eventRotations).create();
+
+    var sch = new Schedule().fromHepoch(5).toHepoch(10);
+    sch.addRotation(lunaRotation);
+    sch.addRotation(fourHourEventRotation);
+    // var sch = new ScheduleFactory().at(ctime).forHepochs(5,10).forEventRotations(eventRotations).create();
 
     var rvr = new RVR();
     var nextRVR = rvr.calculate_next(ctime.epochSeconds());
