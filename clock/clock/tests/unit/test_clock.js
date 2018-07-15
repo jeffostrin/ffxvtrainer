@@ -8,7 +8,7 @@ var event, context;
 
 describe('Tests index', function () {
     it('verifies successful response', async () => {
-        const schedule = clock.generate_schedule();
+        const schedule = clock.generate_console();
         console.log(schedule);
         expect(schedule.length).to.equal(27);
     });

@@ -21,7 +21,7 @@ var unknown = "Unknown"
 
 
 module.exports = {
-  generate_schedule: function () {
+  generate_console: function () {
 
     var ctime = new CTime();
     var nowHepoch = ctime.epochHour();

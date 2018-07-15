@@ -11,7 +11,7 @@ exports.lambda_handler = async (event, context, callback) => {
         response = {
             'statusCode': 200,
             'body': JSON.stringify({
-                schedule: clock.generate_schedule(),
+                console: clock.generate_console(),
                 message: 'clock',
                 something: 'foo',
                 car: impl.car(),
