@@ -11,5 +11,6 @@ describe('Tests index', function () {
         const schedule = new clock().generate_console();
         console.log(schedule);
         expect(schedule.length).to.equal(27);
+        console.log(new clock().generate_json());
     });
 });
