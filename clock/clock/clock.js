@@ -20,91 +20,87 @@ var hero_quests = "Hero Quests"
 var unknown = "Unknown"
 
 
-module.exports = {
-  generate_console: function () {
+module.exports = function Clock() {
+  var clock = {}
 
-    var ctime = new CTime();
-    var nowHepoch = ctime.epochHour();
-    var nowSepoch = ctime.epochSeconds();
+  clock.ctime = new CTime();
+  clock.nowHepoch = clock.ctime.epochHour();
+  clock.nowSepoch = clock.ctime.epochSeconds();
 
-    var miniEventRotation = new EventRotation(
-      0,
-      [
-        { utc: 7, local: "12am", name: secret, duration: 1 },
-        { utc: 8, local: "1am", name: hero_quests, duration: 1 },
-        { utc: 9, local: "2am", name: GatherRSS, duration: 1 },
-        { utc: 10, local: "3am", name: unknown, duration: 1 },
-        { utc: 11, local: "4am", name: unknown, duration: 1 },
-        { utc: 12, local: "5am", name: Training, duration: 1 },
-        { utc: 13, local: "6am", name: monster_hunt, duration: 1 },
-        { utc: 14, local: "7am", name: guild_rss_help, duration: 1 },
-        { utc: 15, local: "8am", name: guild_quests, duration: 1 },
-        { utc: 16, local: "9am", name: guild_rss_help, duration: 1 },
-        { utc: 17, local: "10am", name: guild_defend, duration: 1 },
-        { utc: 18, local: "11am", name: spin, duration: 1 },
-        { utc: 19, local: "12pm", name: secret, duration: 1 },
-        { utc: 20, local: "1pm", name: hero_quests, duration: 1 },
-        { utc: 21, local: "2pm", name: GatherRSS, duration: 1 },
-        { utc: 22, local: "3pm", name: guild_quests, duration: 1 },
-        { utc: 23, local: "4pm", name: guild_help, duration: 1 },
+  var miniEventRotation = new EventRotation(
+    0,
+    [
+      { utc: 7, local: "12am", name: secret, duration: 1 },
+      { utc: 8, local: "1am", name: hero_quests, duration: 1 },
+      { utc: 9, local: "2am", name: GatherRSS, duration: 1 },
+      { utc: 10, local: "3am", name: unknown, duration: 1 },
+      { utc: 11, local: "4am", name: unknown, duration: 1 },
+      { utc: 12, local: "5am", name: Training, duration: 1 },
+      { utc: 13, local: "6am", name: monster_hunt, duration: 1 },
+      { utc: 14, local: "7am", name: guild_rss_help, duration: 1 },
+      { utc: 15, local: "8am", name: guild_quests, duration: 1 },
+      { utc: 16, local: "9am", name: guild_rss_help, duration: 1 },
+      { utc: 17, local: "10am", name: guild_defend, duration: 1 },
+      { utc: 18, local: "11am", name: spin, duration: 1 },
+      { utc: 19, local: "12pm", name: secret, duration: 1 },
+      { utc: 20, local: "1pm", name: hero_quests, duration: 1 },
+      { utc: 21, local: "2pm", name: GatherRSS, duration: 1 },
+      { utc: 22, local: "3pm", name: guild_quests, duration: 1 },
+      { utc: 23, local: "4pm", name: guild_help, duration: 1 },
 
-        { utc: 0, local: "5pm", name: Training, duration: 1 },
-        { utc: 1, local: "6pm", name: monster_hunt, duration: 1 },
-        { utc: 2, local: "7pm", name: guild_rss_help, duration: 1 },
-        { utc: 3, local: "8pm", name: guild_quests, duration: 1 },
-        { utc: 4, local: "9pm", name: guild_rss_help, duration: 1 },
-        { utc: 5, local: "10pm", name: guild_defend, duration: 1 },
-        { utc: 6, local: "11pm", name: spin, duration: 1 },
-      ].sort(function(x,y) { return x.utc - y.utc; })
-    )
+      { utc: 0, local: "5pm", name: Training, duration: 1 },
+      { utc: 1, local: "6pm", name: monster_hunt, duration: 1 },
+      { utc: 2, local: "7pm", name: guild_rss_help, duration: 1 },
+      { utc: 3, local: "8pm", name: guild_quests, duration: 1 },
+      { utc: 4, local: "9pm", name: guild_rss_help, duration: 1 },
+      { utc: 5, local: "10pm", name: guild_defend, duration: 1 },
+      { utc: 6, local: "11pm", name: spin, duration: 1 },
+    ].sort(function(x,y) { return x.utc - y.utc; })
+  )
 
-    var lunaRotation = new EventRotation(
-      0,
-      [ { name: "", duration: 2 },
-        { name: "Luna Gifts", duration: 1 },
-        { name: "", duration: 1 },
-      ]);
+  var lunaRotation = new EventRotation(
+    0,
+    [ { name: "", duration: 2 },
+      { name: "Luna Gifts", duration: 1 },
+      { name: "", duration: 1 },
+    ]);
 
-    var fourHourEventRotation = new EventRotation(
-      0,
-      [ { name: "Empire Ascend", duration: 4 },
-        { name: "Research", duration: 4, },
-      ]);
+  var fourHourEventRotation = new EventRotation(
+    0,
+    [ { name: "Empire Ascend", duration: 4 },
+      { name: "Research", duration: 4, },
+    ]);
 
-    var eventRotations = {
-      luna: lunaRotation,
-      fourHour: fourHourEventRotation
-    };
+  var eventRotations = {
+    luna: lunaRotation,
+    fourHour: fourHourEventRotation
+  };
 
+  clock.sch = new Schedule().fromHepoch(clock.nowHepoch).toHepoch(clock.nowHepoch + 24);
+  clock.sch.addRotation(miniEventRotation);
+  clock.sch.addRotation(lunaRotation);
+  clock.sch.addRotation(fourHourEventRotation);
 
-    var sch = new Schedule().fromHepoch(nowHepoch).toHepoch(nowHepoch + 24);
-    sch.addRotation(miniEventRotation);
-    sch.addRotation(lunaRotation);
-    sch.addRotation(fourHourEventRotation);
-    // var sch = new ScheduleFactory().at(ctime).forHepochs(5,10).forEventRotations(eventRotations).create();
+  var rvr = new RVR();
+  clock.nextRVR = rvr.calculate_next(clock.ctime.epochSeconds());
 
-    var rvr = new RVR();
-    var nextRVR = rvr.calculate_next(ctime.epochSeconds());
-
+  this.generate_console = function () {
     var schedule = [
-      consoleView.currentTime(ctime),
-      consoleView.nextRVR(ctime, nextRVR)
+      consoleView.currentTime(clock.ctime),
+      consoleView.nextRVR(clock.ctime, clock.nextRVR)
     ];
-    // schedule = schedule.concat(
-    //   consoleView.showSchedule(sch)
-    // );
 
-    for (var hepoch = nowHepoch; hepoch <= nowHepoch + 24; hepoch++) {
-      var hourEvents = sch.eventsForHepoch(hepoch);
+    for (var hepoch = clock.nowHepoch; hepoch <= clock.nowHepoch + 24; hepoch++) {
+      var hourEvents = clock.sch.eventsForHepoch(hepoch);
 
       var consoleHour = "   ";
       var padding = "-";
-      if (hepoch == nowHepoch) {
+      if (hepoch == clock.nowHepoch) {
         consoleHour = "=> ";
         padding = "=";
       }
 
-      var timestamp = ctime.pp().dayTime(hepoch) + " (" + ctime.pp().asRelativeTime(hepoch * 60 * 60 - nowSepoch) + ") "
+      var timestamp = clock.ctime.pp().dayTime(hepoch) + " (" + clock.ctime.pp().asRelativeTime(hepoch * 60 * 60 - clock.nowSepoch) + ") "
       consoleHour += timestamp.padEnd(28, padding) + " ";
 
       hourEvents.forEach((evt, index) => {
@@ -115,7 +111,7 @@ module.exports = {
         consoleHour += eventName.padEnd(20, padding) + " ";
       });
 
-      if (hepoch == nowHepoch) {
+      if (hepoch == clock.nowHepoch) {
         consoleHour += " <=";
       }
 
@@ -139,7 +135,7 @@ module.exports = {
     //   "   06:00am (06-25) (in 12:10)  Unknown ---------- -------------- Research ----- [] -----------",
     // ]);
     return schedule;
-  },
+  }
 };
 
 
