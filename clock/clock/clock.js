@@ -84,7 +84,7 @@ module.exports = function Clock() {
   var rvr = new RVR();
   clock.nextRVR = rvr.calculate_next(clock.ctime.epochSeconds());
 
-  this.generate_console = function () {
+  clock.generate_console = function () {
     var schedule = [
       consoleView.currentTime(clock.ctime),
       consoleView.nextRVR(clock.ctime, clock.nextRVR)
