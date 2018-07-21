@@ -84,7 +84,7 @@ module.exports = function Clock() {
   var rvr = new RVR();
   clock.nextRVR = rvr.calculate_next(clock.ctime.epochSeconds());
 
-  clock.generate_console = function () {
+  this.generate_console = function () {
     var schedule = [
       consoleView.currentTime(clock.ctime),
       consoleView.nextRVR(clock.ctime, clock.nextRVR)
@@ -142,6 +142,7 @@ module.exports = function Clock() {
     var schedule = {};
     schedule.currentTime = consoleView.currentTime(clock.ctime);
     schedule.nextRVR = consoleView.nextRVR(clock.ctime, clock.nextRVR);
+    schedule.events = {};
 
     for (var hepoch = clock.nowHepoch; hepoch <= clock.nowHepoch + 24; hepoch++) {
       var hourEvents = clock.sch.eventsForHepoch(hepoch);
@@ -161,7 +162,7 @@ module.exports = function Clock() {
         jsonHour.events.push(eventName);
       });
 
-      schedule[hepoch] = jsonHour;
+      schedule.events[hepoch] = jsonHour;
     }
 
     // schedule = schedule.concat( [
