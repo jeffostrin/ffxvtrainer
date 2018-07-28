@@ -76,7 +76,7 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
     //         alert('An error occured when requesting the clock:\n' + jqXHR.responseText);
     //     }
     // });
-    var response = getResponse2();
+    var response = getResponse1();
     updateClock(response);
   });
 
@@ -85,7 +85,7 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
     var test_response_1 = {
       "schedule": {
         "currentTime": "Current time is --- 01:58 (07-19) GMT --- 09:58pm (07-18) EST --- 06:58pm (07-18) PST",
-        "nextRVR": "Next RVR in 2:22:01",
+        "nextRVR": "Next Major RVR in 2:22:01",
         "events": {
           "425545": {
             "hepoch": 425545,
@@ -436,7 +436,7 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
     {
       "schedule": {
         "currentTime": "Current time is --- 06:37 (07-21) GMT --- 02:37am (07-21) EST --- 11:37pm (07-20) PST",
-        "nextRVR": "Next RVR in 17:22",
+        "nextRVR": "Next Major RVR in 17:22",
         "events": {
           "425598": {
             "hepoch": 425598,

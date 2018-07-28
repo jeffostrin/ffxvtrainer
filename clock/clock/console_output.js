@@ -4,7 +4,7 @@ module.exports = {
     return "Current time is --- " + ctime.pp().gmt() + " --- " + ctime.pp().est() + " --- " + ctime.pp().pst()
   },
   nextRVR: function(ctime, nextRVR) {
-    return "Next RVR " + ctime.pp().asRelativeTime(nextRVR);
+    return "Next Major RVR " + ctime.pp().asRelativeTime(nextRVR);
   },
   showSchedule: function(schedule) {
     return [

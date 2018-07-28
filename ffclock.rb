@@ -163,7 +163,7 @@ while true
   puts "Current time is #{now_local.strftime("%I:%M (%m-%d)")}"
 
   next_rvr = calculate_next_rvr(rvr)
-  puts "Next RVR in #{Fmt.time(next_rvr).as_relative_time}"
+  puts "Next Major RVR in #{Fmt.time(next_rvr).as_relative_time}"
 
   hour_range = (-historical_hours..(25-historical_hours - 1))
   model = build_time_model(events, hour_range)
