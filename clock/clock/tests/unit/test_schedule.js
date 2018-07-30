@@ -25,7 +25,7 @@ describe('Tests add', function () {
       ]);
 
     var sch = new Schedule().fromHepoch(5).toHepoch(8);
-    sch.addRotation(lunaRotation);
+    sch.addRotations([lunaRotation]);
 
     events(sch.eventsForHepoch(5)).contains([{ name: "", isEventStart: false }]);
     events(sch.eventsForHepoch(6)).contains([{ name: "Luna Gifts", isEventStart: true }]);
@@ -45,8 +45,7 @@ describe('Tests add', function () {
       ]);
 
     var sch = new Schedule().fromHepoch(5).toHepoch(8);
-    sch.addRotation(lunaRotation);
-    sch.addRotation(fourHourEventRotation);
+    sch.addRotations([lunaRotation, fourHourEventRotation]);
 
     events(sch.eventsForHepoch(5)).contains([
       { name: "", isEventStart: false },

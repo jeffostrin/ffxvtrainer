@@ -77,9 +77,7 @@ module.exports = function Clock() {
   };
 
   clock.sch = new Schedule().fromHepoch(clock.nowHepoch).toHepoch(clock.nowHepoch + 24);
-  clock.sch.addRotation(miniEventRotation);
-  clock.sch.addRotation(lunaRotation);
-  clock.sch.addRotation(fourHourEventRotation);
+  clock.sch.addRotations([ miniEventRotation, lunaRotation, fourHourEventRotation ])
 
   var rvr = new RVR();
   clock.nextRVR = rvr.calculate_next(clock.ctime.epochSeconds());

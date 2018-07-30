@@ -4,10 +4,13 @@ module.exports = function Schedule() {
     var schedule = {};
     schedule.startHepoch = startHepoch;
     schedule.endHepoch = endHepoch;
-    schedule.eventRotations = [];
+    schedule.eventRotations = null;
 
-    schedule.addRotation = function(eventRotation) {
-      schedule.eventRotations.push(eventRotation)
+    schedule.addRotations = function(eventRotations) {
+      if (schedule.eventRotations != null) {
+        throw "You can only addRotations() once";
+      }
+      schedule.eventRotations = eventRotations;
     }
 
     schedule.eventsForHepoch = function(hepoch) {
