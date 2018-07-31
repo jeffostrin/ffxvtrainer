@@ -75,6 +75,10 @@ events = {
   :hourly_notes => hourly_extras,
 }
 
+MiniEvents::HourlyEvents.each do |mini|
+  puts mini[:event]
+end
+
 def build_time_model(events, hour_range)
   result = []
   hour_range.each do |hour|
