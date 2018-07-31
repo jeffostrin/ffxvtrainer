@@ -30,13 +30,21 @@ module.exports = function TrainingHelper(trainingCapacity, powerPerSecond) {
     return hints;
   }
 
-  helper.calculateSecondsFor = function(params) {
-    if (params.type == "wmc") {
-      return Math.ceil(params.power / powerPerSecond.wmc);
-    } else if (params.type == "s") {
-      return Math.ceil(params.power / powerPerSecond.s);
+  helper.calculateSecondsFor = function(type, targetPower) {
+    if (type == "wmc") {
+      return Math.ceil(targetPower / powerPerSecond.wmc);
+    } else if (type == "s") {
+      return Math.ceil(targetPower/ powerPerSecond.s);
     }
-    throw "Unknown request type";
+    throw "Unknown request type " + type + ", it must be 'wmc' or 's'";
+  }
+
+
+  helper.calculateUnitsFor = function(seconds) {
+    return {
+      t1: Math.trunc(seconds * powerPerSecond.wmc / (2*1)),
+      t2: Math.trunc(seconds * powerPerSecond.wmc / (2*2)),
+    }
   }
 
   return helper;

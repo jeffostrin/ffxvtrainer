@@ -43,25 +43,50 @@ describe('Calculate Number of Seconds', function () {
   it('Calculate Seconds For Bronze / WMC', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
     var helper = new Helper(8205, powerPerSecond);
-    expect(helper.calculateSecondsFor({ type: "wmc", power: 5000 })).to.equal(6651);
+    expect(helper.calculateSecondsFor("wmc", 5000)).to.equal(6651);
   });
 
   it('Calculate Seconds For Bronze / S', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
     var helper = new Helper(8205, powerPerSecond);
-    expect(helper.calculateSecondsFor({ type: "s", power: 5000 })).to.equal(4434);
+    expect(helper.calculateSecondsFor("s", 5000)).to.equal(4434);
   });
 
 
   it('Calculate Seconds For Silver / WMC', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
     var helper = new Helper(8205, powerPerSecond);
-    expect(helper.calculateSecondsFor({ type: "wmc", power: 15000 })).to.equal(19953);
+    expect(helper.calculateSecondsFor("wmc", 15000)).to.equal(19953);
   });
 
   it('Calculate Seconds For Silver / S', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
     var helper = new Helper(8205, powerPerSecond);
-    expect(helper.calculateSecondsFor({ type: "s", power: 15000 })).to.equal(13302);
+    expect(helper.calculateSecondsFor("s", 15000)).to.equal(13302);
+  });
+});
+
+function assertUnits(actual, expected) {
+  expect(expected.t1).to.equal(actual.t1);
+  expect(expected.t2).to.equal(actual.t2);
+}
+
+
+describe('Calculate Number of Units', function () {
+  it('Calculates T1', async() => {
+    var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
+    var helper = new Helper(8205, powerPerSecond);
+    assertUnits(helper.calculateUnitsFor(1000), { t1: 375, t2: 187 });
+  });
+});
+
+describe('Calculate use cases', function () {
+  it('Calculates Umpire t2 for Silver', async() => {
+    var powerPerSecond = { wmc: 0.571985700357491, s: 0.857978550536237 };
+    var helper = new Helper(4400, powerPerSecond);
+
+    var wmcSeconds = helper.calculateSecondsFor("wmc", 15000);
+    var wmcUnits = helper.calculateUnitsFor(wmcSeconds);
+    expect(wmcUnits.t1 * 2).to.equal(15000);
   });
 });
