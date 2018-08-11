@@ -4,11 +4,14 @@ const Helper = require('../../training_helper');
 var EventRotation = require('../../event_rotation')
 const Schedule = require('../../schedule');
 const CapacityCalculator = require('../../training_capacity_calculator');
+const CTime = require('../../ctime');
 const chai = require('chai');
 const expect = chai.expect;
 
+var SECONDS_IN_MINUTE = 60;
+
 describe('Training Helper', function () {
-  it('Does its thing', async () => {
+  it('creates now hint', async () => {
 
     var miniEventRotation = new EventRotation(
       0,
@@ -32,8 +35,15 @@ describe('Training Helper', function () {
     var capacityCalculator = new CapacityCalculator();
     var powerPerSecond = { wmc: 5, s: 10 };
 
+    var ctime = new CTime();
+    ctime.setSepoch(30 * SECONDS_IN_MINUTE)
+
+
     var helper = new Helper(3000, powerPerSecond);
-    var hints = helper.createHints(sch);
+    var hints = helper.createHints(ctime, sch);
+    expect(hints.length).to.equal(1);
+    expect(hints[0]).to.equal("in next 5 minutes: train 54150 to 62250")
+    //9542-9601 T2 => Gold @ 05:00am")
   });
 });
 

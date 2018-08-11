@@ -1,25 +1,29 @@
 module.exports = function TrainingHelper(trainingCapacity, powerPerSecond) {
   var helper = {}
 
-  function createHintsFor(hepoch) {
-    // var wmcPPS = powerPerSecond.wmc;
-    // var sPPS = powerPerSecond.s;
-    //
-    // var seigeTime = trainingCapacity * sPPS
-    //
-    //
-    // console.log("a" + hepoch);
+  function createHintForNow(ctime, hepoch) {
+    var secondsUntilEvent = ctime.secondsUntilHepoch(hepoch);
 
-    return [];
+    var minSeconds = secondsUntilEvent + 60; // Extra minute to ensure we get into the hour
+    var maxSeconds = secondsUntilEvent + (60 * 55); // Remove 5 minutes so player can send troops
+
+    var maxUnits = helper.calculateUnitsFor(maxSeconds);
+    var minUnits = helper.calculateUnitsFor(minSeconds);
+
+    // console.log("now => " + ctime.epochSeconds());
+    // console.log("secondsUntilEvent => " + secondsUntilEvent)
+
+    return [ "in next 5 minutes: train " + minUnits.t1 + " to " + maxUnits.t1];
   }
 
-  helper.createHints = function(schedule) {
+  helper.createHints = function(ctime, schedule) {
     var hints = [];
     for (var hepoch = schedule.startHepoch; hepoch <= schedule.endHepoch; hepoch++) {
       var events = schedule.eventsForHepoch(hepoch);
       events.forEach((evt, index) => {
         if (evt.name == "Training") {
-          hints.concat(createHintsFor(hepoch));
+          hints = hints.concat(createHintForNow(ctime, hepoch));
+          //hints = hints.concat(createHintsFor(hepoch));
           //
           // console.log(powerPerSecond);
           //

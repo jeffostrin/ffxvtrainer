@@ -11,10 +11,12 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
 
   function lpad(str, length, fillCharacter) {
     var fill = "";
-    for (var i = 0; i < length; ++i) {
+    var l = Math.max(length, str.length);
+    for (var i = 0; i < l; ++i) {
       fill += fillCharacter;
     }
-    return _lpad(fill, str);
+    var r = _lpad(fill, str);
+    return r;
   }
 
 
@@ -39,13 +41,13 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
         }
 
         line += " " + val.dayTime;
-        line += lpad(" (" + val.relativeTime + ") ", 11, padding) + " ";
+        line += lpad(" (" + val.relativeTime + ") ", 12, padding) + " ";
         for (var i = 0; i < val.events.length; ++i) {
           var eventName = val.events[i];
           if (eventName != "") {
             eventName = eventName + " ";
           }
-          line += lpad(eventName, 20, padding) + " ";
+          line += lpad(eventName, 21, padding) + " ";
         }
 
         line += "</div>";
@@ -95,7 +97,8 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Monster Hunt",
               "",
-              "Empire Ascend (cont)"
+              "Empire Ascend (cont)",
+              "in next 5 minutes: Train 9542-9601 T2 => Gold @ 05:00am"
             ]
           },
           "425546": {
@@ -139,7 +142,8 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Guild Defend ",
               "",
-              "Research (cont)"
+              "Research (cont)",
+              "Harvest FSTM with 35-65 minute march"
             ]
           },
           "425550": {
@@ -150,7 +154,8 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Spin the Wheel ",
               "Luna Gifts ",
-              "Research (cont)"
+              "Research (cont)",
+              "11:23pm - 12:22am: Train 7500/5000 T2 => Gold @ 05:00am "
             ]
           },
           "425551": {
@@ -172,7 +177,8 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Hero Quests ",
               "",
-              "Empire Ascend "
+              "Empire Ascend ",
+              "01:23am - 02:22am: Train 3750/2500 T2 => Silver @ 05:00am "
             ]
           },
           "425553": {
@@ -183,7 +189,7 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Gather RSS",
               "",
-              "Empire Ascend (cont)"
+              "Empire Ascend (cont)",
             ]
           },
           "425554": {
@@ -194,7 +200,8 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Unknown ",
               "Luna Gifts ",
-              "Empire Ascend (cont)"
+              "Empire Ascend (cont)",
+              "03:23am - 04:22am: Train 1250/834 T2 => Bronze @ 05:00am "
             ]
           },
           "425555": {
@@ -205,7 +212,7 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Unknown ",
               "",
-              "Empire Ascend (cont)"
+              "Empire Ascend (cont)",
             ]
           },
           "425556": {
@@ -216,7 +223,7 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
             "events": [
               "Training",
               "",
-              "Research "
+              "Research ",
             ]
           },
           "425557": {
