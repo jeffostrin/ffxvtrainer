@@ -24,6 +24,12 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
     $('#updates').append($('<div>' + response.schedule['currentTime'] + '</div>'));
     $('#updates').append($('<div>' + response.schedule['nextRVR'] + '</div>'));
 
+    $('#updates').append($('<div id=nowHints>Now:</div>'))
+    response.schedule['now'].forEach((hint) => {
+      $('#nowHints').append($('<div>' + hint + '</div>'));
+    });
+
+    $('#updates').append($('<div id=schedule />'));
     Object.keys(response.schedule.events).sort().forEach(
       function(key) {
         if (key === "currentTime" || key === "nextRVR") {
@@ -51,7 +57,7 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
         }
 
         line += "</div>";
-        $('#updates').append(line);
+        $('#schedule').append(line);
         console.log(key);
       }
     );
@@ -88,6 +94,10 @@ FFXVTrainer.clock = FFXVTrainer.clock || {};
       "schedule": {
         "currentTime": "Current time is --- 01:58 (07-19) GMT --- 09:58pm (07-18) EST --- 06:58pm (07-18) PST",
         "nextRVR": "Next Major RVR in 2:22:01",
+        "now": [
+          "Gather 109060 with travel time 17-40 minutes",
+          "Gather 109060 with travel time 377-400 minutes"
+        ],
         "events": {
           "425545": {
             "hepoch": 425545,

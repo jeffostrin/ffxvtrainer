@@ -163,6 +163,7 @@ module.exports = function Clock() {
       schedule.events[hepoch] = jsonHour;
     }
 
+    schedule.nowHints = [];
     var gatherParams = { loadTime: 8903, loadCapacity: 109060 };
     var gatherHelper = new GatherHelper();
     var gatherEvents = gatherHelper.findEvents().in(clock.sch);
@@ -170,7 +171,7 @@ module.exports = function Clock() {
     var gatherHints = gatherEvents.forEach((evt, index) => {
       var hint = gatherHelper.createHint().for(gatherParams).in(clock.ctime.secondsUntilHepoch(evt.startHepoch)).seconds();
       console.log(hint);
-      schedule.events[clock.sch.startHepoch].events.push(hint);
+      schedule.nowHints.push(hint);
     });
 
     //var gatherHint = new GatherHelper().createHint().for(schedule).in(10).seconds();
