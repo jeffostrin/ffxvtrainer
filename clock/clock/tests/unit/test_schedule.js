@@ -15,9 +15,9 @@ function events(actual) {
   }
 }
 
-describe('Tests add', function () {
+describe('Schedule Creation', function () {
 
-  it('adds a single', async () => {
+  it('adds a single event rotation', async () => {
     var lunaRotation = new EventRotation(
       2,
       [ { name: "Luna Gifts", duration: 1 },
@@ -27,12 +27,12 @@ describe('Tests add', function () {
     var sch = new Schedule().fromHepoch(5).toHepoch(8);
     sch.addRotations([lunaRotation]);
 
-    events(sch.eventsForHepoch(5)).contains([{ name: "", isEventStart: false }]);
-    events(sch.eventsForHepoch(6)).contains([{ name: "Luna Gifts", isEventStart: true }]);
+    events(sch.eventsForHepoch(5)).contains([{ name: "", isEventStart: false, startHepoch: 3 }]);
+    events(sch.eventsForHepoch(6)).contains([{ name: "Luna Gifts", isEventStart: true, startHepoch: 6 }]);
   });
 
 
-  it('adds multiple', async () => {
+  it('adds multiple event rotations', async () => {
     var lunaRotation = new EventRotation(
       2,
       [ { name: "Luna Gifts", duration: 1 },
@@ -48,23 +48,23 @@ describe('Tests add', function () {
     sch.addRotations([lunaRotation, fourHourEventRotation]);
 
     events(sch.eventsForHepoch(5)).contains([
-      { name: "", isEventStart: false },
-      { name: "Research", isEventStart: false }
+      { name: "", isEventStart: false, startHepoch: 3 },
+      { name: "Research", isEventStart: false, startHepoch: 4 }
     ]);
 
     events(sch.eventsForHepoch(6)).contains([
-      { name: "Luna Gifts", isEventStart: true },
-      { name: "Research", isEventStart: false }
+      { name: "Luna Gifts", isEventStart: true, startHepoch: 6 },
+      { name: "Research", isEventStart: false, startHepoch: 4 }
     ]);
 
     events(sch.eventsForHepoch(7)).contains([
-      { name: "", isEventStart: true },
-      { name: "Research", isEventStart: false }
+      { name: "", isEventStart: true, startHepoch: 7 },
+      { name: "Research", isEventStart: false, startHepoch: 4 }
     ]);
 
     events(sch.eventsForHepoch(8)).contains([
-      { name: "", isEventStart: false },
-      { name: "Empire Ascend", isEventStart: true }
+      { name: "", isEventStart: false, startHepoch: 7 },
+      { name: "Empire Ascend", isEventStart: true, startHepoch: 8 }
     ]);
   });
 });

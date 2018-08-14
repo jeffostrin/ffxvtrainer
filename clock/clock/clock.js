@@ -5,8 +5,9 @@ var EventRotation = require('./event_rotation')
 var RVR = require('./rvr')
 var consoleView = require('./console_output')
 const Schedule = require('./schedule');
+const GatherHelper = require('./gather_helper')
 
-var GatherRSS = "Gather RSS <==="
+var GatherRSS = "Gather RSS"
 var Training = "Training <==="
 
 var monster_hunt = "Monster Hunt <==="
@@ -77,7 +78,7 @@ module.exports = function Clock() {
   };
 
   clock.sch = new Schedule().fromHepoch(clock.nowHepoch).toHepoch(clock.nowHepoch + 24);
-  clock.sch.addRotations([ miniEventRotation, lunaRotation, fourHourEventRotation ])
+  clock.sch.addRotations([ miniEventRotation, lunaRotation ]); //, fourHourEventRotation ])
 
   var rvr = new RVR();
   clock.nextRVR = rvr.calculate_next(clock.ctime.epochSeconds());
@@ -159,9 +160,20 @@ module.exports = function Clock() {
         }
         jsonHour.events.push(eventName);
       });
-
       schedule.events[hepoch] = jsonHour;
     }
+
+    var gatherParams = { loadTime: 8903, loadCapacity: 109060 };
+    var gatherHelper = new GatherHelper();
+    var gatherEvents = gatherHelper.findEvents().in(clock.sch);
+    console.log(gatherEvents.length);
+    var gatherHints = gatherEvents.forEach((evt, index) => {
+      var hint = gatherHelper.createHint().for(gatherParams).in(clock.ctime.secondsUntilHepoch(evt.startHepoch)).seconds();
+      console.log(hint);
+      schedule.events[clock.sch.startHepoch].events.push(hint);
+    });
+
+    //var gatherHint = new GatherHelper().createHint().for(schedule).in(10).seconds();
 
     // schedule = schedule.concat( [
     //   '=> 05:00pm (06-24) (now) ===== Training <=== ==== ============== Empire Ascend  ["New Rotation / Major Events may end"]  <=',

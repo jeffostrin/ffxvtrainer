@@ -20,6 +20,7 @@ module.exports = function Schedule() {
         hourEvents.push({
           name: evt.name,
           isEventStart: (evt.startHepoch == hepoch),
+          startHepoch: evt.startHepoch,
         });
       });
       return hourEvents;
