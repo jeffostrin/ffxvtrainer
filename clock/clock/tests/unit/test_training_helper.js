@@ -1,6 +1,7 @@
 'use strict';
 
 const Helper = require('../../training_helper');
+const TrainingHelper = require('../../training_helper');
 var EventRotation = require('../../event_rotation')
 const Schedule = require('../../schedule');
 const CapacityCalculator = require('../../training_capacity_calculator');
@@ -11,6 +12,34 @@ const expect = chai.expect;
 var SECONDS_IN_MINUTE = 60;
 
 describe('Training Helper', function () {
+
+  it('finds next training event', async () => {
+    var miniEventRotation = new EventRotation(
+      0,
+      [
+        { utc: 0, local: "5pm", name: "Monster Hunt", duration: 1 },
+        { utc: 1, local: "6pm", name: "Monster Hunt", duration: 1 },
+        { utc: 2, local: "7pm", name: "Training", duration: 1 },
+        { utc: 3, local: "8pm", name: "Monster Hunt", duration: 1 },
+        { utc: 4, local: "9pm", name: "Monster Hunt", duration: 1 },
+        { utc: 5, local: "10pm", name: "Training", duration: 1 },
+        { utc: 6, local: "11pm", name: "Training", duration: 1 },
+      ].sort(function(x,y) { return x.utc - y.utc; })
+    )
+
+    var sch = new Schedule().fromHepoch(0).toHepoch(6);
+    sch.addRotations([ miniEventRotation ])
+
+    var nextTraining = new TrainingHelper().findNextEvent().in(sch);
+    expect(nextTraining).to.not.be.null;
+    expect(nextTraining.startHepoch).to.equal(2);
+  });
+
+
+
+
+
+
   it('creates now hint', async () => {
 
     var miniEventRotation = new EventRotation(

@@ -6,6 +6,7 @@ var RVR = require('./rvr')
 var consoleView = require('./console_output')
 const Schedule = require('./schedule');
 const GatherHelper = require('./gather_helper')
+const TrainingHelper = require('./training_helper')
 
 var GatherRSS = "Gather RSS"
 var Training = "Training <==="
@@ -164,16 +165,29 @@ module.exports = function Clock() {
     }
 
     schedule.nowHints = [];
+
+
     var gatherParams = { loadTime: 8903, loadCapacity: 109060 };
     var gatherHelper = new GatherHelper();
     var gatherEvents = gatherHelper.findEvents().in(clock.sch);
     console.log(gatherEvents.length);
     var gatherHints = gatherEvents.forEach((evt, index) => {
-      var hint = gatherHelper.createHint().for(gatherParams).in(clock.ctime.secondsUntilHepoch(evt.startHepoch)).seconds();
+      var secondsUntilEvent = clock.ctime.secondsUntilHepoch(evt.startHepoch);
+      var hint = gatherHelper.createHint().for(gatherParams).in(secondsUntilEvent).seconds();
       console.log(hint);
       schedule.nowHints.push(hint);
     });
 
+    var trainingParams = { maxUnits: 4400, t1WarriorSeconds: 15385 };
+    var trainingHelper = new TrainingHelper();
+    var nextTraining = trainingHelper.findNextEvent().in(clock.sch);
+    console.log(nextTraining);
+    if (nextTraining != null) {
+      var secondsUntilEvent = clock.ctime.secondsUntilHepoch(nextTraining.startHepoch);
+      var hint = trainingHelper.createHint().for(trainingParams).in(secondsUntilEvent).seconds();
+      console.log(hint);
+      schedule.nowHints.push(hint);
+    }
     //var gatherHint = new GatherHelper().createHint().for(schedule).in(10).seconds();
 
     // schedule = schedule.concat( [

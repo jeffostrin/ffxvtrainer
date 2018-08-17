@@ -1,6 +1,21 @@
 module.exports = function TrainingHelper(trainingCapacity, powerPerSecond) {
   var helper = {}
 
+  helper.findNextEvent = function() {
+    return {
+      in(schedule) {
+        for (var hepoch = schedule.startHepoch; hepoch <= schedule.endHepoch; hepoch++) {
+          var events = schedule.eventsForHepoch(hepoch);
+          var evt = events.find((e) => e.name == "Training");
+          if (evt != null) {
+            return evt;
+          }
+        }
+        return null;
+      }
+    };
+  }
+
   function createHintForNow(ctime, hepoch) {
     var secondsUntilEvent = ctime.secondsUntilHepoch(hepoch);
 
