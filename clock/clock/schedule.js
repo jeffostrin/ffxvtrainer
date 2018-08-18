@@ -26,10 +26,22 @@ module.exports = function Schedule() {
       return hourEvents;
     }
 
+    schedule.findEvents = function(matchFunction) {
+      var result = [];
+      for (var hepoch = startHepoch; hepoch <= endHepoch; hepoch++) {
+        var events = schedule.eventsForHepoch(hepoch);
+        events.forEach((evt, index) => {
+          if (matchFunction(evt)) {
+            result.push(evt)
+          }
+        });
+      }
+      return result;
+    }
+
     //console.log(schedule);
     return schedule;
   }
-
 
   this.fromHepoch = function(startHepoch) {
     return {

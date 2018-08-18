@@ -33,16 +33,7 @@ module.exports = function GatherHelper() {
   helper.findEvents = function() {
     return {
       in(schedule) {
-        var result = [];
-        for (var hepoch = schedule.startHepoch; hepoch <= schedule.endHepoch; hepoch++) {
-          var events = schedule.eventsForHepoch(hepoch);
-          events.forEach((evt, index) => {
-            if (evt.name == "Gather RSS") {
-              result.push(evt)
-            }
-          });
-        }
-        return result;
+        return schedule.findEvents((evt) => evt.name == "Gather RSS");
       }
     };
   }

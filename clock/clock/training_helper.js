@@ -1,17 +1,19 @@
+'use strict'
+
+const fact = require('./fact');
+
 module.exports = function TrainingHelper(trainingCapacity, powerPerSecond) {
   var helper = {}
 
   helper.findNextEvent = function() {
     return {
       in(schedule) {
-        for (var hepoch = schedule.startHepoch; hepoch <= schedule.endHepoch; hepoch++) {
-          var events = schedule.eventsForHepoch(hepoch);
-          var evt = events.find((e) => e.name == "Training");
-          if (evt != null) {
-            return evt;
-          }
+        var trainingEvents = schedule.findEvents((evt) => evt.name == "Training");
+        new fact().value(trainingEvents).is().notNull();
+        if (trainingEvents.length == 0) {
+          return null;
         }
-        return null;
+        return trainingEvents[0];
       }
     };
   }
