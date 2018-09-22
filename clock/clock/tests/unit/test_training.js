@@ -26,4 +26,17 @@ describe('Test Calculator', function () {
     expect(troopCalculator.calculateSecondsFor("s", 15000)).to.equal(17362);
   });
 
+  it('Calculates Umpires Numbers - Sept 21 18', async () => {
+
+    var rateCalculator = new RateCalculator();
+    var trainingRate = rateCalculator.troopCapacity(12100).trainingTime(11, 21, 19).powerPerSecond();
+    console.log(trainingRate);
+    var troopCalculator = new TroopCalculator(12100, trainingRate);
+
+    expect(troopCalculator.calculateSecondsFor("wmc", 5000)).to.equal(8447);
+    expect(troopCalculator.calculateSecondsFor("s", 5000)).to.equal(5631);
+    expect(troopCalculator.calculateSecondsFor("wmc", 15000)).to.equal(25339);
+    expect(troopCalculator.calculateSecondsFor("s", 15000)).to.equal(16893);
+  });
+
 });
