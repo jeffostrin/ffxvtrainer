@@ -18,7 +18,7 @@ describe('Test Calculator', function () {
     var rateCalculator = new RateCalculator();
     var trainingRate = rateCalculator.troopCapacity(11530).trainingTime(11, 7, 15).powerPerSecond();
     //console.log(trainingRate);
-    var troopCalculator = new TroopCalculator(11530, trainingRate);
+    var troopCalculator = new TroopCalculator(trainingRate);
 
     expect(troopCalculator.calculateSecondsFor("wmc", 5000)).to.equal(8681);
     expect(troopCalculator.calculateSecondsFor("s", 5000)).to.equal(5788);
@@ -31,7 +31,7 @@ describe('Test Calculator', function () {
     var rateCalculator = new RateCalculator();
     var trainingRate = rateCalculator.troopCapacity(12100).trainingTime(11, 21, 19).powerPerSecond();
     //console.log(trainingRate);
-    var troopCalculator = new TroopCalculator(12100, trainingRate);
+    var troopCalculator = new TroopCalculator(trainingRate);
 
     expect(troopCalculator.calculateSecondsFor("wmc", 5000)).to.equal(8447);
     expect(troopCalculator.calculateSecondsFor("s", 5000)).to.equal(5631);
@@ -45,7 +45,7 @@ describe('Test Calculator', function () {
     var rateCalculator = new RateCalculator();
     var trainingRate = rateCalculator.troopCapacity(12100).trainingTime(11, 16, 45).powerPerSecond();
     //console.log(trainingRate);
-    var troopCalculator = new TroopCalculator(12100, trainingRate);
+    var troopCalculator = new TroopCalculator(trainingRate);
 
     expect(troopCalculator.calculateSecondsFor("wmc", 5000)).to.equal(8390);
     expect(troopCalculator.calculateSecondsFor("s", 5000)).to.equal(5593);
