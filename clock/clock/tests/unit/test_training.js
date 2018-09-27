@@ -73,11 +73,16 @@ describe('Test Calculator', function () {
         min: { count: 9500, warrior: "silver", seige: "silver" },
         max: { count: 10500, warrior: "silver", seige: "gold" },
       },
-      // t2: {
-      //   warrior: { min: { count: 5, award: "bronze" }, max: { count: 8, award: "bronze" } },
-      //   seige:   { min: { count: 5, award: "bronze" }, max: { count: 8, award: "bronze" } },
-      // },
+      t2: {
+        min: { count: 4750, warrior: "silver", seige: "silver" },
+        max: { count: 5250, warrior: "silver", seige: "gold" },
+      },
+      t3: {
+        min: { count: 3166, warrior: "silver", seige: "silver" },
+        max: { count: 3500, warrior: "silver", seige: "gold" },
+      },
     };
     expect(options).to.deep.match(expected);
+    expect(expected).to.deep.match(options);
   });
 });

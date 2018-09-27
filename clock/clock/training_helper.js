@@ -72,18 +72,26 @@ module.exports = function TrainingHelper(trainingOptions, powerPerSecond) {
   }
 
   helper.calculateOptionsFor = function(minSeconds, maxSeconds) {
-    var t1MinWarriorAward = calculateAward(minSeconds * powerPerSecond.wmc);
-    var t1MaxWarriorAward = calculateAward(maxSeconds * powerPerSecond.wmc);
-    var t1MinSeigeAward = calculateAward(minSeconds * powerPerSecond.s);
-    var t1MaxSeigeAward = calculateAward(maxSeconds * powerPerSecond.s);
+    var minWarriorAward = calculateAward(minSeconds * powerPerSecond.wmc);
+    var maxWarriorAward = calculateAward(maxSeconds * powerPerSecond.wmc);
+    var minSeigeAward = calculateAward(minSeconds * powerPerSecond.s);
+    var maxSeigeAward = calculateAward(maxSeconds * powerPerSecond.s);
 
     var minUnits = helper.calculateUnitsFor(minSeconds);
     var maxUnits = helper.calculateUnitsFor(maxSeconds);
 
     return {
       t1: {
-        min: { count: minUnits.t1, warrior: t1MinWarriorAward, seige: t1MinSeigeAward },
-        max: { count: maxUnits.t1, warrior: t1MaxWarriorAward, seige: t1MaxSeigeAward },
+        min: { count: minUnits.t1, warrior: minWarriorAward, seige: minSeigeAward },
+        max: { count: maxUnits.t1, warrior: maxWarriorAward, seige: maxSeigeAward },
+      },
+      t2: {
+        min: { count: minUnits.t2, warrior: minWarriorAward, seige: minSeigeAward },
+        max: { count: maxUnits.t2, warrior: maxWarriorAward, seige: maxSeigeAward },
+      },
+      t3: {
+        min: { count: minUnits.t3, warrior: minWarriorAward, seige: minSeigeAward },
+        max: { count: maxUnits.t3, warrior: maxWarriorAward, seige: maxSeigeAward },
       },
     };
   }
@@ -94,6 +102,7 @@ module.exports = function TrainingHelper(trainingOptions, powerPerSecond) {
     return {
       t1: Math.trunc(seconds * powerPerSecond.wmc / (2*1)),
       t2: Math.trunc(seconds * powerPerSecond.wmc / (2*2)),
+      t3: Math.trunc(seconds * powerPerSecond.wmc / (2*3)),
     }
   }
 
