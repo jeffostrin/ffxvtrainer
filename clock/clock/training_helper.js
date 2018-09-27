@@ -2,7 +2,7 @@
 
 const fact = require('./fact');
 
-module.exports = function TrainingHelper(trainingOptions, powerPerSecond) {
+module.exports = function TrainingHelper(powerPerSecond) {
   var helper = {}
 
   helper.findNextEvent = function() {

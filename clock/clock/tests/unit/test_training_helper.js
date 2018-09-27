@@ -68,7 +68,7 @@ describe('Training Helper', function () {
     ctime.setSepoch(30 * SECONDS_IN_MINUTE)
 
 
-    var helper = new Helper({}, powerPerSecond);
+    var helper = new Helper(powerPerSecond);
     var hints = helper.createHints(ctime, sch);
     expect(hints.length).to.equal(1);
     expect(hints[0]).to.equal("in next 5 minutes: train 54150 to 62250")
@@ -81,26 +81,26 @@ describe('Training Helper', function () {
 describe('Calculate Number of Seconds', function () {
   it('Calculate Seconds For Bronze / WMC', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
-    var helper = new Helper({}, powerPerSecond);
+    var helper = new Helper(powerPerSecond);
     expect(helper.calculateSecondsFor("wmc", 5000)).to.equal(6651);
   });
 
   it('Calculate Seconds For Bronze / S', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
-    var helper = new Helper({}, powerPerSecond);
+    var helper = new Helper(powerPerSecond);
     expect(helper.calculateSecondsFor("s", 5000)).to.equal(4434);
   });
 
 
   it('Calculate Seconds For Silver / WMC', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
-    var helper = new Helper({}, powerPerSecond);
+    var helper = new Helper(powerPerSecond);
     expect(helper.calculateSecondsFor("wmc", 15000)).to.equal(19953);
   });
 
   it('Calculate Seconds For Silver / S', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
-    var helper = new Helper({}, powerPerSecond);
+    var helper = new Helper(powerPerSecond);
     expect(helper.calculateSecondsFor("s", 15000)).to.equal(13302);
   });
 });
@@ -114,7 +114,7 @@ function assertUnits(actual, expected) {
 describe('Calculate Number of Units', function () {
   it('Calculates T1', async() => {
     var powerPerSecond = { wmc: 0.751786695986806, s: 1.12768004398021 };
-    var helper = new Helper({}, powerPerSecond);
+    var helper = new Helper(powerPerSecond);
     assertUnits(helper.calculateUnitsFor(1000), { t1: 375, t2: 187 });
   });
 });
@@ -122,7 +122,7 @@ describe('Calculate Number of Units', function () {
 describe('Calculate use cases', function () {
   it('Calculates Umpire t2 for Silver', async() => {
     var powerPerSecond = { wmc: 0.571985700357491, s: 0.857978550536237 };
-    var helper = new Helper({}, powerPerSecond);
+    var helper = new Helper(powerPerSecond);
 
     var wmcSeconds = helper.calculateSecondsFor("wmc", 15000);
     var wmcUnits = helper.calculateUnitsFor(wmcSeconds);
