@@ -97,6 +97,12 @@ module.exports = function TrainingHelper(trainingOptions, powerPerSecond) {
   }
 
 
+  helper.calculateOptionsFor = function(secondsUntilEvent) {
+    // cut 5 minutes off the end of an hour
+    var endTime = secondsUntilEvent + (60 * 60) - (60 * 5);
+    return helper.calculateOptionsForTimeframe(secondsUntilEvent, endTime);
+  }
+
   helper.calculateUnitsFor = function(seconds) {
     return {
       t1: Math.trunc(seconds * powerPerSecond.wmc / (2*1)),

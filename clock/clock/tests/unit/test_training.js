@@ -56,7 +56,7 @@ describe('Test Calculator', function () {
   });
 
 
-  it('Calculates Options', async () => {
+  it('Calculates Options for a timeframe', async () => {
 
     var rateCalculator = new RateCalculator();
     var trainingOptions = {
@@ -80,6 +80,32 @@ describe('Test Calculator', function () {
       t3: {
         min: { count: 3166, warrior: "silver", seige: "silver" },
         max: { count: 3500, warrior: "silver", seige: "gold" },
+      },
+    };
+    expect(options).to.deep.match(expected);
+    expect(expected).to.deep.match(options);
+  });
+
+  it('Calculates Options', async () => {
+
+    var rateCalculator = new RateCalculator();
+    var trainingRate = rateCalculator.troopCapacity(12000).trainingTime(12, 0, 0).powerPerSecond();
+    var troopCalculator = new TroopCalculator({}, trainingRate);
+
+    var nineAndHalfHoursInSeconds = (60 * 60 * 9) + (60 * 30);
+    var options = troopCalculator.calculateOptionsFor(nineAndHalfHoursInSeconds);
+    var expected = {
+      t1: {
+        min: { count: 9500, warrior: "silver", seige: "silver" },
+        max: { count: 10416, warrior: "silver", seige: "gold" },
+      },
+      t2: {
+        min: { count: 4750, warrior: "silver", seige: "silver" },
+        max: { count: 5208, warrior: "silver", seige: "gold" },
+      },
+      t3: {
+        min: { count: 3166, warrior: "silver", seige: "silver" },
+        max: { count: 3472, warrior: "silver", seige: "gold" },
       },
     };
     expect(options).to.deep.match(expected);
