@@ -2,7 +2,7 @@
 
 const fact = require('./fact');
 
-module.exports = function TrainingHelper(powerPerSecond) {
+module.exports = function TrainingHelper(trainingOptions, powerPerSecond) {
   var helper = {}
 
   helper.findNextEvent = function() {
@@ -59,6 +59,35 @@ module.exports = function TrainingHelper(powerPerSecond) {
     }
     throw "Unknown request type " + type + ", it must be 'wmc' or 's'";
   }
+
+  function calculateAward(power) {
+    if (power >= 30000) {
+      return "gold";
+    } else if (power >= 15000) {
+      return "silver";
+    } else if (power >= 5000) {
+      return "bronze";
+    }
+    return "none";
+  }
+
+  helper.calculateOptionsFor = function(minSeconds, maxSeconds) {
+    var t1MinWarriorAward = calculateAward(minSeconds * powerPerSecond.wmc);
+    var t1MaxWarriorAward = calculateAward(maxSeconds * powerPerSecond.wmc);
+    var t1MinSeigeAward = calculateAward(minSeconds * powerPerSecond.s);
+    var t1MaxSeigeAward = calculateAward(maxSeconds * powerPerSecond.s);
+
+    var minUnits = helper.calculateUnitsFor(minSeconds);
+    var maxUnits = helper.calculateUnitsFor(maxSeconds);
+
+    return {
+      t1: {
+        min: { count: minUnits.t1, warrior: t1MinWarriorAward, seige: t1MinSeigeAward },
+        max: { count: maxUnits.t1, warrior: t1MaxWarriorAward, seige: t1MaxSeigeAward },
+      },
+    };
+  }
+
 
 
   helper.calculateUnitsFor = function(seconds) {
