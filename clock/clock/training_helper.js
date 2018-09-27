@@ -71,7 +71,7 @@ module.exports = function TrainingHelper(trainingOptions, powerPerSecond) {
     return "none";
   }
 
-  helper.calculateOptionsFor = function(minSeconds, maxSeconds) {
+  helper.calculateOptionsForTimeframe = function(minSeconds, maxSeconds) {
     var minWarriorAward = calculateAward(minSeconds * powerPerSecond.wmc);
     var maxWarriorAward = calculateAward(maxSeconds * powerPerSecond.wmc);
     var minSeigeAward = calculateAward(minSeconds * powerPerSecond.s);
@@ -95,7 +95,6 @@ module.exports = function TrainingHelper(trainingOptions, powerPerSecond) {
       },
     };
   }
-
 
 
   helper.calculateUnitsFor = function(seconds) {

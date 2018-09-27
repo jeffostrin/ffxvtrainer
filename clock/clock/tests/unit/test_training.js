@@ -67,7 +67,7 @@ describe('Test Calculator', function () {
     var troopCalculator = new TroopCalculator(trainingOptions, trainingRate);
 
     var nineAndHalfHoursInSeconds = (60 * 60 * 9) + (60 * 30);
-    var options = troopCalculator.calculateOptionsFor(nineAndHalfHoursInSeconds, nineAndHalfHoursInSeconds + (60*60));
+    var options = troopCalculator.calculateOptionsForTimeframe(nineAndHalfHoursInSeconds, nineAndHalfHoursInSeconds + (60*60));
     var expected = {
       t1: {
         min: { count: 9500, warrior: "silver", seige: "silver" },
