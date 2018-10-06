@@ -107,4 +107,15 @@ describe('Test Calculator', function () {
     expect(options).to.deep.match(expected);
     expect(expected).to.deep.match(options);
   });
+
+  it ('Calculate "no option" when there is too much time', async () => {
+    var rateCalculator = new RateCalculator();
+    var trainingRate = rateCalculator.troopCapacity(1000).trainingTime(2, 0, 0).powerPerSecond();
+    // console.log(trainingRate);
+    var troopCalculator = new TroopCalculator(trainingRate);
+
+    var fourHoursInSeconds = (4 * 60 * 60);
+    var options = troopCalculator.calculateOptionsFor(fourHoursInSeconds);
+    expect(options).to.be.null;
+  });
 });
