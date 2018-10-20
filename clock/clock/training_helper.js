@@ -72,7 +72,9 @@ module.exports = function TrainingHelper(powerPerSecond) {
   }
 
   helper.calculateOptionsForTimeframe = function(minSeconds, maxSeconds) {
-    if (powerPerSecond.trainingTime < minSeconds) {
+    // console.log(powerPerSecond.getTrainingTimeInSeconds());
+    // console.log(minSeconds);
+    if (powerPerSecond.getTrainingTimeInSeconds() < minSeconds) {
       return null;
     }
 

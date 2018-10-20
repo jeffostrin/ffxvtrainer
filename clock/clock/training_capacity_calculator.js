@@ -12,7 +12,6 @@ module.exports = function TrainingCapacityCalculator() {
             var pps = {
               wmc: wmc, 
               s: s,
-              trainingTime: calculator._trainingTime
             };
             pps.getTrainingTimeInSeconds = function() {
               return calculator._trainingTime;
