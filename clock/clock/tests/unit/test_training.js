@@ -118,4 +118,16 @@ describe('Test Calculator', function () {
     var options = troopCalculator.calculateOptionsFor(fourHoursInSeconds);
     expect(options).to.be.null;
   });
+
+  it ('Calculate "no option" when there is not enough time', async () => {
+    var rateCalculator = new RateCalculator();
+    var trainingRate = rateCalculator.troopCapacity(10000).trainingTime(24, 0, 0).powerPerSecond();
+    // console.log(trainingRate);
+    var troopCalculator = new TroopCalculator(trainingRate);
+
+    var fiveMinuteInSeconds = (5 * 60);
+    var options = troopCalculator.calculateOptionsFor(fiveMinuteInSeconds);
+    //console.log(options);
+    expect(options).to.be.null;
+  });
 });

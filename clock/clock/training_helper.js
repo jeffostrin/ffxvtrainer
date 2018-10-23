@@ -83,6 +83,10 @@ module.exports = function TrainingHelper(powerPerSecond) {
     var minSeigeAward = calculateAward(minSeconds * powerPerSecond.s);
     var maxSeigeAward = calculateAward(maxSeconds * powerPerSecond.s);
 
+    if (minWarriorAward == "none" && maxWarriorAward == "none" && minSeigeAward == "none" && maxSeigeAward == "none") {
+      return null;
+    }
+
     var minUnits = helper.calculateUnitsFor(minSeconds);
     var maxUnits = helper.calculateUnitsFor(maxSeconds);
 
