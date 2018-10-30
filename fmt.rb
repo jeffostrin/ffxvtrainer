@@ -14,6 +14,7 @@ class TimeFmt
   end
 
   def as_local_hour_and_day
+    #puts ">> " + @time_in_seconds.to_s
     hour = @time_in_seconds.strftime("%I") + ":00" + @time_in_seconds.strftime("%P")
     month_day = @time_in_seconds.strftime("%m-%d")
     return hour + " (" + month_day +")"
