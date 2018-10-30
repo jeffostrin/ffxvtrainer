@@ -5,12 +5,19 @@ require_relative 'events_mini'
 
 file_name = "test_input.json"
 
-def read_file(fname)
+def read_json_file(fname)
   contents = ""
   File.open(fname).each do |line|
     contents = contents + line
   end
-  return contents
+  json = JSON.parse(contents)
+  return json
+end
+
+def write_json_file(fname, json)
+  File.open(fname, "w") do |file|
+    file.write(json.to_json)
+  end
 end
 
 
@@ -29,8 +36,7 @@ options[10] = MiniEvents::VipQuests
 options[11] = MiniEvents::CombineGems
 options[12] = MiniEvents::CombineMaterials
 
-input = read_file(file_name)
-json = JSON.parse(input)
+json = read_json_file(file_name)
 #json["3"] = {}
 
 utc_now = Time.now.utc
@@ -70,9 +76,8 @@ while true do
   	json[hepoch] << selection
 
 	puts json.to_json
-	File.open(file_name, "w") do |file|
-	  file.write(json.to_json)
-	end
+	write_json_file(file_name, json)
+
   	utc_hour = utc_hour + SECONDS_IN_HOUR
   	local_hour = local_hour + SECONDS_IN_HOUR
   end
