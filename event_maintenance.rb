@@ -20,6 +20,26 @@ def write_json_file(fname, json)
   end
 end
 
+class Navigation
+  attr_reader :utc_time
+  attr_reader :local_time
+
+  def initialize()
+  	utc_now = Time.now.utc
+    @utc_time = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour)
+    @local_time = utc_time.clone.localtime
+  end
+
+  def backwards
+  	@utc_time = @utc_time - SECONDS_IN_HOUR
+  	@local_time = @local_time - SECONDS_IN_HOUR
+  end
+
+  def forwards
+    @utc_time = @utc_time + SECONDS_IN_HOUR
+  	@local_time = @local_time + SECONDS_IN_HOUR
+  end
+end
 
 options = {}
 options[1] = MiniEvents::GatherRSS
@@ -39,9 +59,7 @@ options[12] = MiniEvents::CombineMaterials
 json = read_json_file(file_name)
 #json["3"] = {}
 
-utc_now = Time.now.utc
-utc_hour = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour)
-local_hour = utc_hour.clone.localtime
+state = Navigation.new
 
 # puts utc_hour
 # puts local_hour
@@ -54,22 +72,20 @@ while true do
   	puts "#{key} - #{options[key]}"
   end
 
-  prompt = Fmt.time(local_hour).as_local_hour_and_day + " >"
+  prompt = Fmt.time(state.local_time).as_local_hour_and_day + " >"
   puts prompt
 
   c = STDIN.readline
   c = c.strip
 
   if "j" == c
-  	utc_hour = utc_hour - SECONDS_IN_HOUR
-  	local_hour = local_hour - SECONDS_IN_HOUR
+  	state.backwards
   elsif "k" == c
-  	utc_hour = utc_hour + SECONDS_IN_HOUR
-  	local_hour = local_hour + SECONDS_IN_HOUR
+  	state.forwards
   elsif options.has_key? c.to_i
   	selection = options[c.to_i]
 
-  	hepoch = utc_hour.tv_sec / SECONDS_IN_HOUR
+  	hepoch = state.utc_time.tv_sec / SECONDS_IN_HOUR
   	if ! json.has_key? hepoch
   	  json[hepoch] = []
   	end
@@ -78,8 +94,7 @@ while true do
 	puts json.to_json
 	write_json_file(file_name, json)
 
-  	utc_hour = utc_hour + SECONDS_IN_HOUR
-  	local_hour = local_hour + SECONDS_IN_HOUR
+	state.forwards
   end
 
 end
