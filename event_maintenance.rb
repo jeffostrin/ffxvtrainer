@@ -1,6 +1,7 @@
 require 'json'
 require_relative 'time_constants'
 require_relative 'fmt'
+require_relative 'events_mini'
 
 file_name = "test_input.json"
 
@@ -11,6 +12,14 @@ def read_file(fname)
   end
   return contents
 end
+
+
+options = {}
+options[1] = MiniEvents::GatherRSS
+options[2] = MiniEvents::Training
+options[3] = MiniEvents::MonsterHunt
+options[4] = MiniEvents::SpinTheWheel
+options[5] = MiniEvents::SecretGift
 
 
 input = read_file(file_name)
@@ -28,8 +37,13 @@ local_hour = utc_hour.clone.localtime
 
 while true do
 
+  options.keys.sort.each do |key| 
+  	puts "#{key} - #{options[key]}"
+  end
+
   prompt = Fmt.time(local_hour).as_local_hour_and_day + " >"
   puts prompt
+
   c = STDIN.getc
 
   if 'j' == c
@@ -38,6 +52,9 @@ while true do
   elsif 'k' == c
   	utc_hour = utc_hour + SECONDS_IN_HOUR
   	local_hour = local_hour + SECONDS_IN_HOUR
+  elsif options.has_key? c.to_i
+  	selection = options[c.to_i]
+  	puts selection
   end
 
 end
