@@ -2,10 +2,6 @@
 class MiniEvents
   unknown = "Unknown"
 
-  GatherRSS = "Gather RSS"
-  Training = "Training"
-  Unknown = unknown
-
   monster_hunt = "Monster Hunt"
   spin = "Spin the Wheel"
   secret = "Secret Gift"
@@ -20,6 +16,21 @@ class MiniEvents
 
   unconfirmed = "{Unconfirmed (Crowd Source)}"
 
+
+  GatherRSS = "Gather RSS"
+  Training = "Training"
+  MonsterHunt = monster_hunt
+  SpinTheWheel = spin
+  SecretGift = secret
+  GuildDefend = guild_defend
+  GuildRssHelp = guild_rss_help
+  GuildHelp = guild_help
+  HeroQuests = hero_quests
+  VipQuests = vip_quests
+  CombineGems = combine_gems
+  CombineMaterials = combine_mats
+
+  Unknown = unknown
 
   HourlyEvents_TEMPLATE = [
     { :utc=>23, :local=>"4pm", :event=>unknown },
@@ -903,24 +914,24 @@ def summarize(scored_counts)
   return summary
 end
 
-MiniEvents::HourlyEvents_DATA_ENTRY.each do |hour_array| 
-  #hour_array = MiniEvents::HourlyEvents_DATA_ENTRY[20]
+# MiniEvents::HourlyEvents_DATA_ENTRY.each do |hour_array| 
+#   #hour_array = MiniEvents::HourlyEvents_DATA_ENTRY[20]
 
-  #p hour_array[:events]
-  event_counts = count_events(hour_array[:events])
-  #p event_counts
-  #sorted_counts = sort_counts(event_counts)
-  scored_counts = score_counts(event_counts)
-  #puts scored_counts
-  sorted_counts = sort_counts(scored_counts)
-  summary = summarize(sorted_counts)
-  #puts hour_array[:utc].to_s + " " + hour_array[:local].to_s + " " + scored_counts.to_s
+#   #p hour_array[:events]
+#   event_counts = count_events(hour_array[:events])
+#   #p event_counts
+#   #sorted_counts = sort_counts(event_counts)
+#   scored_counts = score_counts(event_counts)
+#   #puts scored_counts
+#   sorted_counts = sort_counts(scored_counts)
+#   summary = summarize(sorted_counts)
+#   #puts hour_array[:utc].to_s + " " + hour_array[:local].to_s + " " + scored_counts.to_s
 
-  puts hour_array[:utc].to_s + " " + hour_array[:local].to_s + " " + summary
+#   puts hour_array[:utc].to_s + " " + hour_array[:local].to_s + " " + summary
  
-  # sorted_counts = event_counts.to_a.sort { |x,y| y[1] <=> x[1] }
-  # puts hour_array[:utc].to_s + " " + hour_array[:local].to_s + " " + sorted_counts.to_s
-end
+#   # sorted_counts = event_counts.to_a.sort { |x,y| y[1] <=> x[1] }
+#   # puts hour_array[:utc].to_s + " " + hour_array[:local].to_s + " " + sorted_counts.to_s
+# end
 
 
 # MiniEvents::HourlyEvents.each do |e|

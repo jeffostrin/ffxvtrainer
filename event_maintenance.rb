@@ -20,7 +20,14 @@ options[2] = MiniEvents::Training
 options[3] = MiniEvents::MonsterHunt
 options[4] = MiniEvents::SpinTheWheel
 options[5] = MiniEvents::SecretGift
+options[6] = MiniEvents::GuildDefend
+options[7] = MiniEvents::GuildRssHelp
+options[8] = MiniEvents::GuildHelp
+options[9] = MiniEvents::HeroQuests
+options[10] = MiniEvents::VipQuests
 
+options[11] = MiniEvents::CombineGems
+options[12] = MiniEvents::CombineMaterials
 
 input = read_file(file_name)
 json = JSON.parse(input)
@@ -44,12 +51,13 @@ while true do
   prompt = Fmt.time(local_hour).as_local_hour_and_day + " >"
   puts prompt
 
-  c = STDIN.getc
+  c = STDIN.readline
+  c = c.strip
 
-  if 'j' == c
+  if "j" == c
   	utc_hour = utc_hour - SECONDS_IN_HOUR
   	local_hour = local_hour - SECONDS_IN_HOUR
-  elsif 'k' == c
+  elsif "k" == c
   	utc_hour = utc_hour + SECONDS_IN_HOUR
   	local_hour = local_hour + SECONDS_IN_HOUR
   elsif options.has_key? c.to_i
@@ -65,6 +73,8 @@ while true do
 	File.open(file_name, "w") do |file|
 	  file.write(json.to_json)
 	end
+  	utc_hour = utc_hour + SECONDS_IN_HOUR
+  	local_hour = local_hour + SECONDS_IN_HOUR
   end
 
 end
