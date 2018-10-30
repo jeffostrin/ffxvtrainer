@@ -54,12 +54,18 @@ while true do
   	local_hour = local_hour + SECONDS_IN_HOUR
   elsif options.has_key? c.to_i
   	selection = options[c.to_i]
-  	puts selection
+
+  	hepoch = utc_hour.tv_sec / SECONDS_IN_HOUR
+  	if ! json.has_key? hepoch
+  	  json[hepoch] = []
+  	end
+  	json[hepoch] << selection
+
+	puts json.to_json
+	File.open(file_name, "w") do |file|
+	  file.write(json.to_json)
+	end
   end
 
 end
 
-puts json.to_json
-File.open(file_name, "w") do |file|
-  file.write(json.to_json)
-end
