@@ -23,6 +23,7 @@ class MiniEvents
   SpinTheWheel = spin
   SecretGift = secret
   GuildDefend = guild_defend
+  GuildQuests = guild_quests
   GuildRssHelp = guild_rss_help
   GuildHelp = guild_help
   HeroQuests = hero_quests

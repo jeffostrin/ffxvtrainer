@@ -48,13 +48,13 @@ options[3] = MiniEvents::MonsterHunt
 options[4] = MiniEvents::SpinTheWheel
 options[5] = MiniEvents::SecretGift
 options[6] = MiniEvents::GuildDefend
-options[7] = MiniEvents::GuildRssHelp
+options[7] = MiniEvents::GuildQuests
+options[8] = MiniEvents::GuildRssHelp
 options[8] = MiniEvents::GuildHelp
-options[9] = MiniEvents::HeroQuests
-options[10] = MiniEvents::VipQuests
-
-options[11] = MiniEvents::CombineGems
-options[12] = MiniEvents::CombineMaterials
+options[10] = MiniEvents::HeroQuests
+options[11] = MiniEvents::VipQuests
+options[12] = MiniEvents::CombineGems
+options[13] = MiniEvents::CombineMaterials
 
 json = read_json_file(file_name)
 #json["3"] = {}
@@ -89,7 +89,7 @@ while true do
   elsif options.has_key? c.to_i
   	selection = options[c.to_i]
 
-  	hepoch = state.utc_time.tv_sec / SECONDS_IN_HOUR
+  	hepoch = (state.utc_time.tv_sec / SECONDS_IN_HOUR).to_s
   	if ! json.has_key? hepoch
   	  json[hepoch] = []
   	end
