@@ -78,7 +78,11 @@ while true do
   c = STDIN.readline
   c = c.strip
 
-  if "j" == c
+  if "u" == c
+  	(1..24).each do |counter| 
+  	  state.backwards
+  	end
+  elsif "j" == c
   	state.backwards
   elsif "k" == c
   	state.forwards
@@ -95,6 +99,8 @@ while true do
 	write_json_file(file_name, json)
 
 	state.forwards
+  else
+  	puts "unknown input (#{c})"
   end
 
 end
