@@ -3,7 +3,7 @@ require_relative 'time_constants'
 require_relative 'fmt'
 require_relative 'events_mini'
 
-file_name = "test_input.json"
+file_name = "mini_events.json"
 
 def read_json_file(fname)
   contents = ""
@@ -42,19 +42,9 @@ class Navigation
 end
 
 options = {}
-options[1] = MiniEvents::GatherRSS
-options[2] = MiniEvents::Training
-options[3] = MiniEvents::MonsterHunt
-options[4] = MiniEvents::SpinTheWheel
-options[5] = MiniEvents::SecretGift
-options[6] = MiniEvents::GuildDefend
-options[7] = MiniEvents::GuildQuests
-options[8] = MiniEvents::GuildRssHelp
-options[8] = MiniEvents::GuildHelp
-options[10] = MiniEvents::HeroQuests
-options[11] = MiniEvents::VipQuests
-options[12] = MiniEvents::CombineGems
-options[13] = MiniEvents::CombineMaterials
+MiniEvents::Options.each_with_index do |option, index|
+  options[index+1] = option
+end
 
 json = read_json_file(file_name)
 #json["3"] = {}
@@ -84,6 +74,10 @@ while true do
   	end
   elsif "j" == c
   	state.backwards
+  elsif "i" == c
+  	(1..24).each do |counter| 
+  	  state.forwards
+  	end
   elsif "k" == c
   	state.forwards
   elsif options.has_key? c.to_i

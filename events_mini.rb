@@ -31,6 +31,23 @@ class MiniEvents
   CombineGems = combine_gems
   CombineMaterials = combine_mats
 
+
+  Options = []
+  Options << GatherRSS
+  Options << Training
+  Options << MonsterHunt
+  Options << SpinTheWheel
+  Options << SecretGift
+  Options << GuildDefend
+  Options << GuildQuests
+  Options << GuildRssHelp
+  Options << GuildHelp
+  Options << HeroQuests
+  Options << VipQuests
+  Options << CombineGems
+  Options << CombineMaterials
+
+
   Unknown = unknown
 
   HourlyEvents_TEMPLATE = [
