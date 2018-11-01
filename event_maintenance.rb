@@ -45,13 +45,38 @@ class Navigation
   end
 end
 
-options = {}
-MiniEvents::Options.each_with_index do |option, index|
-  options[index+1] = option
+def get_default_options
+  return MiniEvents::Options
+end
+
+def get_historical_options(json, hepoch)
+  options = []
+  (1..10).each do |counter|
+  	probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
+  	#puts probe_hepoch
+    if json.has_key? probe_hepoch
+      json[probe_hepoch].each do |historical_option|
+      	options << historical_option
+      end
+    end
+  end
+  return options
+end
+
+def get_options(json, hepoch)
+  option_list = get_historical_options(json, hepoch)
+  get_default_options.each do |option|
+  	option_list << option
+  end
+
+  options = {}
+  option_list.each_with_index do |option, index|
+    options[index+1] = option
+  end
+  return options
 end
 
 json = read_json_file(file_name)
-#json["3"] = {}
 
 state = Navigation.new
 
@@ -62,6 +87,8 @@ state = Navigation.new
 
 while true do
 
+  hepoch = (state.utc_time.tv_sec / SECONDS_IN_HOUR).to_s
+  options = get_options(json, hepoch)
   options.keys.sort.each do |key| 
   	puts "#{key} - #{options[key]}"
   end
@@ -83,7 +110,6 @@ while true do
   elsif options.has_key? c.to_i
   	selection = options[c.to_i]
 
-  	hepoch = (state.utc_time.tv_sec / SECONDS_IN_HOUR).to_s
   	if ! json.has_key? hepoch
   	  json[hepoch] = []
   	end
