@@ -30,14 +30,18 @@ class Navigation
     @local_time = utc_time.clone.localtime
   end
 
-  def backwards
-  	@utc_time = @utc_time - SECONDS_IN_HOUR
-  	@local_time = @local_time - SECONDS_IN_HOUR
+  def backwards(count)
+    (1..count).each do |counter| 
+      @utc_time = @utc_time - SECONDS_IN_HOUR
+      @local_time = @local_time - SECONDS_IN_HOUR
+  	end
   end
 
-  def forwards
-    @utc_time = @utc_time + SECONDS_IN_HOUR
-  	@local_time = @local_time + SECONDS_IN_HOUR
+  def forwards(count)
+    (1..count).each do |counter| 
+      @utc_time = @utc_time + SECONDS_IN_HOUR
+  	  @local_time = @local_time + SECONDS_IN_HOUR
+  	end
   end
 end
 
@@ -69,17 +73,13 @@ while true do
   c = c.strip
 
   if "u" == c
-  	(1..24).each do |counter| 
-  	  state.backwards
-  	end
+  	state.backwards 24
   elsif "j" == c
-  	state.backwards
+  	state.backwards 1
   elsif "i" == c
-  	(1..24).each do |counter| 
-  	  state.forwards
-  	end
+  	state.forwards 24
   elsif "k" == c
-  	state.forwards
+  	state.forwards 1
   elsif options.has_key? c.to_i
   	selection = options[c.to_i]
 
