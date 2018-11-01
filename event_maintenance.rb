@@ -22,27 +22,33 @@ end
 
 class Navigation
   attr_reader :utc_time
-  attr_reader :local_time
 
   def initialize()
   	utc_now = Time.now.utc
     @utc_time = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour)
-    @local_time = utc_time.clone.localtime
   end
 
   def backwards(count)
     (1..count).each do |counter| 
       @utc_time = @utc_time - SECONDS_IN_HOUR
-      @local_time = @local_time - SECONDS_IN_HOUR
   	end
   end
 
   def forwards(count)
     (1..count).each do |counter| 
       @utc_time = @utc_time + SECONDS_IN_HOUR
-  	  @local_time = @local_time + SECONDS_IN_HOUR
   	end
   end
+
+  def get_hepoch
+  	hepoch = (@utc_time.tv_sec / SECONDS_IN_HOUR).to_s
+  	return hepoch
+  end
+
+  def get_local_time
+  	return @utc_time.clone.localtime
+  end
+
 end
 
 def get_default_options
@@ -87,13 +93,13 @@ state = Navigation.new
 
 while true do
 
-  hepoch = (state.utc_time.tv_sec / SECONDS_IN_HOUR).to_s
+  hepoch = state.get_hepoch
   options = get_options(json, hepoch)
   options.keys.sort.each do |key| 
   	puts "#{key} - #{options[key]}"
   end
 
-  prompt = Fmt.time(state.local_time).as_local_hour_and_day + " >"
+  prompt = Fmt.time(state.get_local_time).as_local_hour_and_day + " >"
   puts prompt
 
   c = STDIN.readline
