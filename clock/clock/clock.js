@@ -6,6 +6,7 @@ var RVR = require('./rvr')
 var consoleView = require('./console_output')
 const Schedule = require('./schedule');
 const GatherHelper = require('./gather_helper')
+const TrainingCapacityCalculator = require ('./training_capacity_calculator')
 const TrainingHelper = require('./training_helper')
 const EventLoader = require('./event_loader')
 
@@ -163,11 +164,14 @@ module.exports = function Clock() {
     });
 
     var trainingParams = { maxUnits: 4400, t1WarriorSeconds: 15385 };
-    var trainingHelper = new TrainingHelper();
+    var trainingPowerPerSecond = new TrainingCapacityCalculator().troopCapacity(17145).trainingTime(16, 40, 7.5).powerPerSecond();
+    var trainingHelper = new TrainingHelper(trainingPowerPerSecond);
     var nextTraining = trainingHelper.findNextEvent().in(clock.sch);
     console.log(nextTraining);
     if (nextTraining != null) {
       var secondsUntilEvent = clock.ctime.secondsUntilHepoch(nextTraining.startHepoch);
+      var options = trainingHelper.calculateOptionsFor(secondsUntilEvent);
+      console.log(options);
       // var hint = trainingHelper.createHint().for(trainingParams).in(secondsUntilEvent).seconds();
       // console.log(hint);
       // schedule.nowHints.push(hint);
