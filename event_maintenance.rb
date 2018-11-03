@@ -91,7 +91,9 @@ state = Navigation.new
 
 # utc_hour_epoch = utc_hour.tv_sec / SECONDS_IN_HOUR
 
-while true do
+c = "x"
+
+while c != "q" do
 
   hepoch = state.get_hepoch
   options = get_options(json, hepoch)
@@ -99,7 +101,7 @@ while true do
   	puts "#{key} - #{options[key]}"
   end
 
-  prompt = Fmt.time(state.get_local_time).as_local_hour_and_day + " >"
+  prompt = Fmt.time(state.get_local_time).as_local_hour_and_day +  " " + hepoch + " >"
   puts prompt
 
   c = STDIN.readline
@@ -113,6 +115,7 @@ while true do
   	state.forwards 24
   elsif "k" == c
   	state.forwards 1
+  elsif "q" == c
   elsif options.has_key? c.to_i
   	selection = options[c.to_i]
 
@@ -124,7 +127,7 @@ while true do
 	puts json.to_json
 	write_json_file(file_name, json)
 
-	state.forwards
+	state.forwards 1
   else
   	puts "unknown input (#{c})"
   end
