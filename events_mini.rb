@@ -134,6 +134,37 @@ class MiniEvents
     { :utc=>23, :local=>"4pm",  :events=>[ "",           guild_quests,   guild_quests, "|", combine_mats, "",             "",             combine_gems,   combine_gems,   combine_gems,   combine_gems,   combine_gems,   combine_gems,   "",             "",             combine_gems,   combine_gems,   "",             "",             "",             combine_gems,   "",             "",           combine_gems,   "",             "",             "",             "",             combine_gems,   "",             combine_gems,   "",             "",             "",             combine_gems,   "",             combine_gems,   combine_gems,   combine_gems,   spin,           combine_gems,   "",             "",             combine_gems,   combine_gems,   combine_gems,   combine_gems,   combine_gems,   combine_gems,   "",             "",             combine_gems,   "",             combine_gems,   combine_gems,   combine_gems,   combine_gems,   "",             "",             "",             "",             combine_gems,   "",             "",             "",             spin,           "",             combine_gems,   combine_gems,   combine_gems,   "",             "",             combine_gems,   combine_gems,   combine_gems,   combine_gems,   "",             combine_gems,   "",             "",             ], :l2=>"4pm" },
   ]
 
+  HourlyEvents_DATA_ENTRY_RECENT = [      # 427711
+    #                                      10/17           10/18           10/19           10/20           10/21           10/22           10/23           10/24           10/25
+    { :utc=>7, :local=>"12am",  :events=>[ GatherRSS,      "",             "",             GatherRSS,      GatherRSS,      "",             "",             "",             ], :l2=>"12am" },
+    { :utc=>8, :local=>"1am",   :events=>[ "",             "",             "",             "",             "",             "",             "",             "",             ], :l2=>"1am" },
+    { :utc=>9, :local=>"2am",   :events=>[ "",             "",             "",             "",             "",             "",             "",             "",             ], :l2=>"2am" },
+    { :utc=>10, :local=>"3am",  :events=>[ "",             "",             "",             "",             "",             "",             "",             "",             ], :l2=>"3am" },
+    { :utc=>11, :local=>"4am",  :events=>[ "",             "",             "",             "",             "",             "",             "",             "",             ], :l2=>"4am" },
+    { :utc=>12, :local=>"5am",  :events=>[ "",             "",             Training,       Training,       Training,       Training,       "",             "",             ], :l2=>"5am" },
+    #                                      tues m          wed m           thur m          fri m           sat m           sun m           mon m           tues m          wed m
+    { :utc=>13, :local=>"6am",  :events=>[ "",             vip_quests,     Training,       "",             "",             "",             vip_quests,     "",             ], :l2=>"6am" },
+    { :utc=>14, :local=>"7am",  :events=>[ monster_hunt,   monster_hunt,   monster_hunt,   monster_hunt,   "",             "",             vip_quests,     monster_hunt,   ], :l2=>"7am" },
+    { :utc=>15, :local=>"8am",  :events=>[ "",             "",             guild_rss_help, guild_rss_help, "",             guild_rss_help, guild_rss_help, guild_rss_help, ], :l2=>"8am" },
+    { :utc=>16, :local=>"9am",  :events=>[ guild_quests,   guild_quests,   guild_quests,   guild_quests,   "",             guild_quests,   guild_quests,   guild_rss_help, ], :l2=>"9am" },
+    { :utc=>17, :local=>"10am", :events=>[ guild_defend,   "",             guild_defend,   guild_defend,   guild_defend,   guild_defend,   guild_defend,   guild_defend,   ], :l2=>"10am" },
+    { :utc=>18, :local=>"11am", :events=>[ "",             guild_defend,   guild_defend,   "",             combine_mats,   "",             "",             combine_mats,   ], :l2=>"11am" },
+    { :utc=>19, :local=>"12pm", :events=>[ "",             hero_quests,    "",             hero_quests,    "",             "",             "",             "",             ], :l2=>"12pm" },
+    #                                      tues a          wed a           thru a          fri a           sat a           sun a           mon a           tues a          wed a
+    { :utc=>20, :local=>"1pm",  :events=>[ GatherRSS,      GatherRSS,      GatherRSS,      GatherRSS,      GatherRSS,      "",             GatherRSS,      GatherRSS,      ], :l2=>"1pm" },
+    { :utc=>21, :local=>"2pm",  :events=>[ guild_help,     guild_help,     guild_help,     "",             guild_help,     "",             guild_help,     "",             ], :l2=>"2pm" },
+    { :utc=>22, :local=>"3pm",  :events=>[ "",             "",             spin,           spin,           "",             "",             spin,           spin,           ], :l2=>"3pm" },
+    { :utc=>23, :local=>"4pm",  :events=>[ combine_gems,   combine_gems,   combine_gems,   combine_gems,   "",             combine_gems,   "",             "",             ], :l2=>"4pm" },
+    { :utc=>0, :local=>"5pm",   :events=>[ "",             combine_gems,   vip_quests,     vip_quests,     vip_quests,     "",             "",             vip_quests,     ], :l2=>"5pm" },
+    { :utc=>1, :local=>"6pm",   :events=>[ monster_hunt,   "",             monster_hunt,   monster_hunt,   monster_hunt,   monster_hunt,   "",             "",             ], :l2=>"6pm" },
+    { :utc=>2, :local=>"7pm",   :events=>[ "",             "",             guild_rss_help, monster_hunt,   "",             "",             "",             "",             ], :l2=>"7pm" },
+    #                                      tues n          wed n           thur n          fri n           sat n           sun n           mon n           tues n          wed n
+    { :utc=>3, :local=>"8pm",   :events=>[ guild_quests,   guild_quests,   guild_quests,   guild_quests,   "",             guild_quests,   guild_quests,   "",             ], :l2=>"8pm" },
+    { :utc=>4, :local=>"9pm",   :events=>[ guild_defend,   "",             guild_defend,   guild_defend,   "",             guild_defend,   guild_defend,   "",             ], :l2=>"9pm" },
+    { :utc=>5, :local=>"10pm",  :events=>[ combine_mats,   guild_defend,   combine_mats,   combine_mats,   "",             combine_mats,   combine_mats,   "",             ], :l2=>"10pm" },
+    { :utc=>6, :local=>"11pm",  :events=>[ combine_mats,   combine_mats,   "",             "",             "",             "",             "",             "",             ], :l2=>"11pm" },
+  ]
+
   HourlyEvents_LONG_FORM = [
     [ { :utc=>23, :local=>"4pm", :event=>unknown },
       { :utc=>22, :local=>"3pm", :event=>unknown },
@@ -931,6 +962,27 @@ def summarize(scored_counts)
 #  puts summary
   return summary
 end
+
+
+
+# This code could be used to load historical data into the file
+# "427777":["Monster Hunt"],
+# hepoch = 427711
+# (1..8).each do |day|
+#   (1..24).each do |hour|
+#     event = MiniEvents::HourlyEvents_DATA_ENTRY_RECENT[hour-1][:events][day-1]
+#     if event != ""
+#       output = "\"#{hepoch}\":[\"#{event}\"],"
+#       puts output
+#     end
+#     hepoch = hepoch + 1
+#   end
+# end
+
+
+
+
+#MiniEvents::HourlyEvents_DATA_ENTRY_RECENT.each do |hour_array| 
 
 # MiniEvents::HourlyEvents_DATA_ENTRY.each do |hour_array| 
 #   #hour_array = MiniEvents::HourlyEvents_DATA_ENTRY[20]
