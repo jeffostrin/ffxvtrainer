@@ -30,6 +30,8 @@ module.exports = function Clock() {
   clock.nowHepoch = clock.ctime.epochHour();
   clock.nowSepoch = clock.ctime.epochSeconds();
 
+  // Event loader returns events based on UTC 0 in the first slot
+  // This is important for clock alignment
   var eventLoader = new EventLoader();
   var events = eventLoader.load();
   var miniRotation = [];
@@ -40,7 +42,6 @@ module.exports = function Clock() {
   var miniEventRotation = new EventRotation(
     0,
     miniRotation
-//    ].sort(function(x,y) { return x.utc - y.utc; })
   );
 
   var lunaRotation = new EventRotation(
@@ -167,9 +168,9 @@ module.exports = function Clock() {
     console.log(nextTraining);
     if (nextTraining != null) {
       var secondsUntilEvent = clock.ctime.secondsUntilHepoch(nextTraining.startHepoch);
-      var hint = trainingHelper.createHint().for(trainingParams).in(secondsUntilEvent).seconds();
-      console.log(hint);
-      schedule.nowHints.push(hint);
+      // var hint = trainingHelper.createHint().for(trainingParams).in(secondsUntilEvent).seconds();
+      // console.log(hint);
+      // schedule.nowHints.push(hint);
     }
     //var gatherHint = new GatherHelper().createHint().for(schedule).in(10).seconds();
 
