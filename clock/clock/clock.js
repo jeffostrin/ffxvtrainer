@@ -70,17 +70,19 @@ module.exports = function Clock() {
   clock.nextRVR = rvr.calculate_next(clock.ctime.epochSeconds());
 
   this.generate_console = function () {
-    var schedule = [
-      consoleView.currentTime(clock.ctime),
-      consoleView.nextRVR(clock.ctime, clock.nextRVR)
-    ];
+    var json = this.generate_json();
+    var output = [];
 
-    for (var hepoch = clock.nowHepoch; hepoch <= clock.nowHepoch + 24; hepoch++) {
-      var hourEvents = clock.sch.eventsForHepoch(hepoch);
+    console.log(json);
+    output.push(json["currentTime"]);
+    output.push(json["nextRVR"]);
+
+    var keys = Object.keys(json["events"]).sort().forEach((hepoch, index) => {
+      var hourInfo = json["events"][hepoch];
 
       var consoleHour = "   ";
       var padding = "-";
-      if (hepoch == clock.nowHepoch) {
+      if (hourInfo.isCurrentHepoch) {
         consoleHour = "=> ";
         padding = "=";
       }
@@ -88,38 +90,21 @@ module.exports = function Clock() {
       var timestamp = clock.ctime.pp().dayTime(hepoch) + " (" + clock.ctime.pp().asRelativeTime(hepoch * 60 * 60 - clock.nowSepoch) + ") "
       consoleHour += timestamp.padEnd(28, padding) + " ";
 
+      var hourEvents = hourInfo["events"];
+      console.log(hourEvents);
       hourEvents.forEach((evt, index) => {
-        var eventName = (evt.name == "") ? "" : (evt.name + " ");
-        if (evt.name != "" && !evt.isEventStart) {
-          eventName += "(cont)";
-        }
-        consoleHour += eventName.padEnd(20, padding) + " ";
+        consoleHour += evt.padEnd(20, padding) + " ";
       });
 
-      if (hepoch == clock.nowHepoch) {
+      if (hourInfo.isCurrentHepoch) {
         consoleHour += " <=";
       }
 
-      schedule.push(consoleHour);
-    }
+      output.push(consoleHour);
 
-    // schedule = schedule.concat( [
-    //   '=> 05:00pm (06-24) (now) ===== Training <=== ==== ============== Empire Ascend  ["New Rotation / Major Events may end"]  <=',
-    //   "   06:00pm (06-24) (in 0:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
-    //   "   07:00pm (06-24) (in 1:10) - Unknown ---------- Luna Gifts---- Empire Ascend  [] -----------",
-    //   "   08:00pm (06-24) (in 2:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
-    //   "   09:00pm (06-24) (in 3:10) - Unknown ---------- -------------- Research ----- [] -----------",
-    //   "   10:00pm (06-24) (in 4:10) - Unknown ---------- -------------- Research ----- [] -----------",
-    //   "   11:00pm (06-24) (in 5:10) - Unknown ---------- Luna Gifts---- Research ----- [] -----------",
-    //   "   12:00am (06-25) (in 6:10) - Unknown ---------- -------------- Research ----- [] -----------",
-    //   "   01:00am (06-25) (in 7:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
-    //   "   02:00am (06-25) (in 8:10) - Unknown ---------- -------------- Empire Ascend  [] -----------",
-    //   "   03:00am (06-25) (in 9:10) - Unknown ---------- Luna Gifts---- Empire Ascend  [] -----------",
-    //   "   04:00am (06-25) (in 10:10)  Unknown ---------- -------------- Empire Ascend  [] -----------",
-    //   "   05:00am (06-25) (in 11:10)  Unknown ---------- -------------- Research ----- [] -----------",
-    //   "   06:00am (06-25) (in 12:10)  Unknown ---------- -------------- Research ----- [] -----------",
-    // ]);
-    return schedule;
+    });
+
+    return output;
   }
 
 
