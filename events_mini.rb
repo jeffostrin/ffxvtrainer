@@ -965,6 +965,43 @@ end
 
 
 
+# BLOCK AAA
+# This code reads the input file and looks for data trends 
+# - for example, does the "expected" mini event take precedence?
+# require 'json'
+# def read_json_file(fname)
+#   contents = ""
+#   File.open(fname).each do |line|
+#     contents = contents + line
+#   end
+#   json = JSON.parse(contents)
+#   return json
+# end
+
+# def get_historical_options(json, hepoch)
+#   options = []
+#   (1..10).each do |counter|
+#     probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
+#     #puts probe_hepoch
+#     if json.has_key? probe_hepoch
+#       json[probe_hepoch].each do |historical_option|
+#         options << historical_option
+#       end
+#     end
+#   end
+#   return options
+# end
+
+# json = read_json_file("mini_events.json")
+# hepoch = 428117
+# (1..24).each do |hour|
+#   puts get_historical_options(json, (hepoch-hour-1)).to_s
+# end
+# BLOCK AAA
+
+
+
+
 # This code could be used to load historical data into the file
 # "427777":["Monster Hunt"],
 # hepoch = 427711
