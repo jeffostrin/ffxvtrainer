@@ -7,6 +7,7 @@ var consoleView = require('./console_output')
 const Schedule = require('./schedule');
 const GatherHelper = require('./gather_helper')
 const TrainingHelper = require('./training_helper')
+const EventLoader = require('./event_loader')
 
 var GatherRSS = "Gather RSS"
 var Training = "Training <==="
@@ -29,36 +30,18 @@ module.exports = function Clock() {
   clock.nowHepoch = clock.ctime.epochHour();
   clock.nowSepoch = clock.ctime.epochSeconds();
 
+  var eventLoader = new EventLoader();
+  var events = eventLoader.load();
+  var miniRotation = [];
+  for (var i = 0; i < events.length; i++) {
+    miniRotation[i] = { name: events[i], duration: 1 };
+  }
+
   var miniEventRotation = new EventRotation(
     0,
-    [
-      { utc: 7, local: "12am", name: secret, duration: 1 },
-      { utc: 8, local: "1am", name: hero_quests, duration: 1 },
-      { utc: 9, local: "2am", name: GatherRSS, duration: 1 },
-      { utc: 10, local: "3am", name: unknown, duration: 1 },
-      { utc: 11, local: "4am", name: unknown, duration: 1 },
-      { utc: 12, local: "5am", name: Training, duration: 1 },
-      { utc: 13, local: "6am", name: monster_hunt, duration: 1 },
-      { utc: 14, local: "7am", name: guild_rss_help, duration: 1 },
-      { utc: 15, local: "8am", name: guild_quests, duration: 1 },
-      { utc: 16, local: "9am", name: guild_rss_help, duration: 1 },
-      { utc: 17, local: "10am", name: guild_defend, duration: 1 },
-      { utc: 18, local: "11am", name: spin, duration: 1 },
-      { utc: 19, local: "12pm", name: secret, duration: 1 },
-      { utc: 20, local: "1pm", name: hero_quests, duration: 1 },
-      { utc: 21, local: "2pm", name: GatherRSS, duration: 1 },
-      { utc: 22, local: "3pm", name: guild_quests, duration: 1 },
-      { utc: 23, local: "4pm", name: guild_help, duration: 1 },
-
-      { utc: 0, local: "5pm", name: Training, duration: 1 },
-      { utc: 1, local: "6pm", name: monster_hunt, duration: 1 },
-      { utc: 2, local: "7pm", name: guild_rss_help, duration: 1 },
-      { utc: 3, local: "8pm", name: guild_quests, duration: 1 },
-      { utc: 4, local: "9pm", name: guild_rss_help, duration: 1 },
-      { utc: 5, local: "10pm", name: guild_defend, duration: 1 },
-      { utc: 6, local: "11pm", name: spin, duration: 1 },
-    ].sort(function(x,y) { return x.utc - y.utc; })
-  )
+    miniRotation
+//    ].sort(function(x,y) { return x.utc - y.utc; })
+  );
 
   var lunaRotation = new EventRotation(
     0,
