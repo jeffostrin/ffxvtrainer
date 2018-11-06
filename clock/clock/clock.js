@@ -73,9 +73,10 @@ module.exports = function Clock() {
     var json = this.generate_json();
     var output = [];
 
-    console.log(json);
+    //console.log(json);
     output.push(json["currentTime"]);
     output.push(json["nextRVR"]);
+    output.push(json["nowHints"]);
 
     var keys = Object.keys(json["events"]).sort().forEach((hepoch, index) => {
       var hourInfo = json["events"][hepoch];
@@ -91,7 +92,7 @@ module.exports = function Clock() {
       consoleHour += timestamp.padEnd(28, padding) + " ";
 
       var hourEvents = hourInfo["events"];
-      console.log(hourEvents);
+      //console.log(hourEvents);
       hourEvents.forEach((evt, index) => {
         consoleHour += evt.padEnd(20, padding) + " ";
       });
@@ -140,27 +141,29 @@ module.exports = function Clock() {
     var gatherParams = { loadTime: 8903, loadCapacity: 109060 };
     var gatherHelper = new GatherHelper();
     var gatherEvents = gatherHelper.findEvents().in(clock.sch);
-    console.log(gatherEvents.length);
+    //console.log(gatherEvents.length);
     var gatherHints = gatherEvents.forEach((evt, index) => {
       var secondsUntilEvent = clock.ctime.secondsUntilHepoch(evt.startHepoch);
-      var hint = gatherHelper.createHint().for(gatherParams).in(secondsUntilEvent).seconds();
-      console.log(hint);
-      schedule.nowHints.push(hint);
+      var hint = gatherHelper.createHint().for(gatherParams).eventStartsIn(secondsUntilEvent).seconds();
+      //console.log(hint);
+      if (hint != null) {
+        schedule.nowHints.push(hint);
+      }
     });
 
-    var trainingParams = { maxUnits: 4400, t1WarriorSeconds: 15385 };
-    var trainingPowerPerSecond = new TrainingCapacityCalculator().troopCapacity(17145).trainingTime(16, 40, 7.5).powerPerSecond();
-    var trainingHelper = new TrainingHelper(trainingPowerPerSecond);
-    var nextTraining = trainingHelper.findNextEvent().in(clock.sch);
-    console.log(nextTraining);
-    if (nextTraining != null) {
-      var secondsUntilEvent = clock.ctime.secondsUntilHepoch(nextTraining.startHepoch);
-      var options = trainingHelper.calculateOptionsFor(secondsUntilEvent);
-      console.log(options);
-      // var hint = trainingHelper.createHint().for(trainingParams).in(secondsUntilEvent).seconds();
-      // console.log(hint);
-      // schedule.nowHints.push(hint);
-    }
+    // var trainingParams = { maxUnits: 4400, t1WarriorSeconds: 15385 };
+    // var trainingPowerPerSecond = new TrainingCapacityCalculator().troopCapacity(17145).trainingTime(16, 40, 7.5).powerPerSecond();
+    // var trainingHelper = new TrainingHelper(trainingPowerPerSecond);
+    // var nextTraining = trainingHelper.findNextEvent().in(clock.sch);
+    // console.log(nextTraining);
+    // if (nextTraining != null) {
+    //   var secondsUntilEvent = clock.ctime.secondsUntilHepoch(nextTraining.startHepoch);
+    //   var options = trainingHelper.calculateOptionsFor(secondsUntilEvent);
+    //   console.log(options);
+    //   // var hint = trainingHelper.createHint().for(trainingParams).in(secondsUntilEvent).seconds();
+    //   // console.log(hint);
+    //   // schedule.nowHints.push(hint);
+    // }
     //var gatherHint = new GatherHelper().createHint().for(schedule).in(10).seconds();
 
     // schedule = schedule.concat( [

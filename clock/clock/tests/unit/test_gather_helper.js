@@ -7,16 +7,34 @@ const chai = require('chai');
 const expect = chai.expect;
 
 describe('Gather Helper', function () {
-  it('creates hint for now: full load with travel time', async () => {
-    var fifteenMinutes = 15 * 60;
+  it('creates calculates the proper hint: full load with travel time', async () => {
     var twoHours = 2 * 60 * 60;
     var threeHours = 3 * 60 * 60;
 
-    var gatherHint = new GatherHelper().createHint()
-      .for({ loadTime: twoHours, loadCapacity: 80000 })
-      .in(threeHours).seconds();
+    var gatherHint = new GatherHelper()._calculateHint(twoHours, 80000, threeHours);
+
     expect(gatherHint).to.not.be.null;
-    expect(gatherHint).to.equal("Gather 80000 with travel time 31-55 minutes")
+    var expected = {
+      load: 80000,
+      loadTime: twoHours,
+      travelTime: { minSeconds: 1801, maxSeconds: 3595 }
+    }
+    expect(expected).to.deep.match(gatherHint);
+
+  });
+
+
+  it('creates hint for now: full load with travel time', async () => {
+    var twoHours = 2 * 60 * 60;
+    var threeHours = 3 * 60 * 60;
+
+    var gatherHint = new GatherHelper()
+      .createHint()
+      .for({ loadTime: twoHours, loadCapacity: 80000 })
+      .eventStartsIn(threeHours).seconds();
+
+    expect(gatherHint).to.not.be.null;
+    expect(gatherHint).to.equal("Travel between 1801 and 3595 seconds and gather 80000");
   });
 
   it('finds the one next gather rss event', async () => {
@@ -88,5 +106,24 @@ describe('Gather Helper', function () {
     expect(gatherEvents[0].startHepoch).to.equal(2);
     expect(gatherEvents[1].startHepoch).to.equal(5);
     expect(gatherEvents[2].startHepoch).to.equal(6); 
+  });
+
+
+  it('limits travel time to 2.5 hours', async () => {
+    var params = { loadTime: 60*60, loadCapacity: 80000 };
+    var secondsUntilStart = 12 * 60 * 60; // 12 hours
+
+    var gatherHint = new GatherHelper().createHint().for(params).eventStartsIn(secondsUntilStart).seconds();
+
+    expect(gatherHint).to.be.null;
+  });
+
+  it('handles not enough time', async () => {
+    var params = { loadTime: 10*60*60, loadCapacity: 10000 };
+    var secondsUntilStart = 0; // 12 hours
+
+    var gatherHint = new GatherHelper().createHint().for(params).eventStartsIn(secondsUntilStart).seconds();
+
+    expect(gatherHint).to.be.null;
   });
 });
