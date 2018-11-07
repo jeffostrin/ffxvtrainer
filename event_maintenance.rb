@@ -57,7 +57,7 @@ end
 
 def get_historical_options(json, hepoch)
   options = []
-  (1..10).each do |counter|
+  (0..10).each do |counter|
   	probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
   	#puts probe_hepoch
     if json.has_key? probe_hepoch
