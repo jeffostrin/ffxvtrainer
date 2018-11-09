@@ -29,7 +29,7 @@ module.exports = function GatherHelper() {
     if (hint == null) {
       return null;
     }
-    var min = new CTime().pp().asFutureTime(hint.travelTime.minSeconds); // need seconds
+    var min = new CTime().pp().asFutureTime(hint.travelTime.minSeconds);
     var max = new CTime().pp().asFutureTime(hint.travelTime.maxSeconds);
     return "Travel between " + min + " and " + max + 
            " seconds and gather " + hint.load;

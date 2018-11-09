@@ -89,7 +89,7 @@ module.exports = function Clock() {
       }
 
       var timestamp = clock.ctime.pp().dayTime(hepoch) + " (" + clock.ctime.pp().asRelativeTime(hepoch * 60 * 60 - clock.nowSepoch) + ") "
-      consoleHour += timestamp.padEnd(28, padding) + " ";
+      consoleHour += timestamp.padEnd(31, padding) + " ";
 
       var hourEvents = hourInfo["events"];
       //console.log(hourEvents);

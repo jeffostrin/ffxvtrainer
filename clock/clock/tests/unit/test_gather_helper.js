@@ -34,7 +34,7 @@ describe('Gather Helper', function () {
       .eventStartsIn(threeHours).seconds();
 
     expect(gatherHint).to.not.be.null;
-    expect(gatherHint).to.equal("Travel between 1801 and 3595 seconds and gather 80000");
+    expect(gatherHint).to.equal("Travel between 0:30:01 and 0:55:00 seconds and gather 80000");
   });
 
   it('finds the one next gather rss event', async () => {
