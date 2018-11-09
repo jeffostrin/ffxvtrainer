@@ -13,7 +13,7 @@ module.exports = function GatherHelper() {
       return null;
     }
 
-    var maxTravelSeconds = Math.floor((seconds - loadTime + bufferMinutes) / 2) - 5;
+    var maxTravelSeconds = Math.floor((seconds - loadTime + bufferMinutes) / 2) - (5 * 60);
     if (maxTravelSeconds < 0) {
       return null;
     }

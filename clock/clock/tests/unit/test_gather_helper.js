@@ -17,7 +17,7 @@ describe('Gather Helper', function () {
     var expected = {
       load: 80000,
       loadTime: twoHours,
-      travelTime: { minSeconds: 1801, maxSeconds: 3595 }
+      travelTime: { minSeconds: 1801, maxSeconds: 3300 }
     }
     expect(expected).to.deep.match(gatherHint);
 
