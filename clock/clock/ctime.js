@@ -62,7 +62,10 @@ module.exports = class CTime {
         if (relativeSeconds <= 0) {
           return "now";
         }
-
+        var futureTime = this.asFutureTime(relativeSeconds);
+        return "in " + futureTime
+      },
+      asFutureTime: function(relativeSeconds) {
         var days = this._humanifyDays(relativeSeconds);
         relativeSeconds = relativeSeconds % SECONDS_IN_DAY;
 
@@ -70,7 +73,7 @@ module.exports = class CTime {
         relativeSeconds = relativeSeconds % SECONDS_IN_HOUR;
 
         var minutes = this._humanifyMinutes(relativeSeconds)
-        return "in " + days + hours + minutes
+        return days + hours + minutes;
       },
 
       // https://stackoverflow.com/questions/2686855/is-there-a-javascript-function-that-can-pad-a-string-to-get-to-a-determined-leng

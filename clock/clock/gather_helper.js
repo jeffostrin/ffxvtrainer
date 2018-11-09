@@ -1,4 +1,5 @@
 const fact = require('./fact');
+const CTime = require('./ctime');
 
 module.exports = function GatherHelper() {
   var helper = {}
@@ -28,7 +29,9 @@ module.exports = function GatherHelper() {
     if (hint == null) {
       return null;
     }
-    return "Travel between " + hint.travelTime.minSeconds + " and " + hint.travelTime.maxSeconds + 
+    var min = new CTime().pp().asFutureTime(hint.travelTime.minSeconds); // need seconds
+    var max = new CTime().pp().asFutureTime(hint.travelTime.maxSeconds);
+    return "Travel between " + min + " and " + max + 
            " seconds and gather " + hint.load;
   }
 
