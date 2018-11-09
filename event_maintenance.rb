@@ -145,7 +145,7 @@ while c != "q" do
   	state.forwards 1
   elsif "q" == c
   elsif options.has_key? c.to_i
-  	selection = options[c.to_i]
+  	selection = options[c.to_i].name
 
   	if ! json.has_key? hepoch
   	  json[hepoch] = []
