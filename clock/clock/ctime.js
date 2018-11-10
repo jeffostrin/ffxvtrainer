@@ -103,7 +103,7 @@ module.exports = class CTime {
         }
 
         var days = Math.trunc(timeInSeconds / SECONDS_IN_DAY);
-        return days + ":";
+        return days + "d ";
       },
 
       _humanifyHours: function(timeInSeconds) {
