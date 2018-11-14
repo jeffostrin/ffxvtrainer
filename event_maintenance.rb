@@ -87,9 +87,16 @@ def get_default_options
   return options
 end
 
+def calculate_weighted_historical_value(days_ago)
+  if days_ago < 2
+    return 1
+  end
+  return 1 / Math::log(days_ago)
+end
+
 def get_historical_options(json, hepoch)
   option_hash = {}
-  (0..10).each do |counter|
+  (0..100).each do |counter|
   	probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
   	#puts probe_hepoch
     if json.has_key? probe_hepoch
@@ -97,7 +104,8 @@ def get_historical_options(json, hepoch)
         if option_hash[historical_option].nil?
           option_hash[historical_option] = 0
         end
-      	option_hash[historical_option] = option_hash[historical_option] + 1
+        weighted_value = calculate_weighted_historical_value(counter)
+      	option_hash[historical_option] = option_hash[historical_option] + weighted_value
       end
     end
   end
