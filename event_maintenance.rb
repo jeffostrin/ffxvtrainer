@@ -14,6 +14,8 @@ def print_usage
   puts "i - forwards in time 1 day"
   puts "k - forwards in time 1 hour"
 
+  puts "d - display the values for the current hour"
+
   puts "q - quit"
   puts "? - help"
 
@@ -135,6 +137,15 @@ def get_options(json, hepoch)
   return options
 end
 
+def display_hepoch(hepoch, json)
+  if ! json.has_key? hepoch
+    return
+  end
+
+  data = json[hepoch]
+  puts data
+end
+
 json = read_json_file(file_name)
 
 state = Navigation.new
@@ -172,6 +183,8 @@ while c != "q" do
   	state.forwards 24
   elsif "k" == c
   	state.forwards 1
+  elsif "d" == c
+    display_hepoch(hepoch, json)
   elsif "q" == c
   elsif "?" == c
     print_usage
