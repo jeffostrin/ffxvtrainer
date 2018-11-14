@@ -6,6 +6,21 @@ require_relative 'assert'
 
 file_name = "mini_events.json"
 
+def print_usage
+  puts "============================"
+  puts "u - backwards in time 1 day"
+  puts "j - backwards in time 1 hour"
+  
+  puts "i - forwards in time 1 day"
+  puts "k - forwards in time 1 hour"
+
+  puts "q - quit"
+  puts "? - help"
+
+  puts "## - enter an observation"
+  puts "============================"
+end
+
 def read_json_file(fname)
   contents = ""
   File.open(fname).each do |line|
@@ -144,6 +159,8 @@ while c != "q" do
   elsif "k" == c
   	state.forwards 1
   elsif "q" == c
+  elsif "?" == c
+    print_usage
   elsif options.has_key? c.to_i
   	selection = options[c.to_i].name
 
