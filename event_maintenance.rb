@@ -116,8 +116,14 @@ def get_historical_options(json, hepoch)
   return options
 end
 
+def sort_historical_options(options) 
+  options = options.sort { |x,y| y.extra <=> x.extra }
+  return options
+end
+
 def get_options(json, hepoch)
   option_list = get_historical_options(json, hepoch)
+  option_list = sort_historical_options(option_list)
   get_default_options.each do |option|
   	option_list << option
   end
