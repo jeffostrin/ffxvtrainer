@@ -119,7 +119,7 @@ def get_historical_options(json, hepoch)
 end
 
 def sort_historical_options(options) 
-  options = options.sort { |x,y| y.extra <=> x.extra }
+  options = options.sort { |x,y| y.extra.to_i <=> x.extra.to_i }
   return options
 end
 
@@ -146,6 +146,10 @@ def display_hepoch(hepoch, json)
   puts data
 end
 
+def edit_hepoch(hepoch, json)
+
+end
+
 json = read_json_file(file_name)
 
 state = Navigation.new
@@ -162,14 +166,14 @@ while c != "q" do
   hepoch = state.get_hepoch
   options = get_options(json, hepoch)
   options.keys.sort.each do |key| 
-  	option = "#{key} - #{options[key].name}"
+  	option = "  #{key} - #{options[key].name}"
     if options[key].extra != nil && options[key].extra.length > 0
       option += " (#{options[key].extra})"
     end
     puts option
   end
 
-  prompt = Fmt.time(state.get_local_time).as_local_hour_and_day +  " " + hepoch + " >"
+  prompt = "+@ " + Fmt.time(state.get_local_time).as_local_hour_and_day +  " " + hepoch + " >"
   puts prompt
 
   c = STDIN.readline
@@ -185,6 +189,8 @@ while c != "q" do
   	state.forwards 1
   elsif "d" == c
     display_hepoch(hepoch, json)
+  elsif "e" == c
+    edit_hepoch(hepoch, json)
   elsif "q" == c
   elsif "?" == c
     print_usage
@@ -196,10 +202,10 @@ while c != "q" do
   	end
   	json[hepoch] << selection
 
-	puts json.to_json
-	write_json_file(file_name, json)
+    puts json.to_json
+    write_json_file(file_name, json)
 
-	state.forwards 1
+    state.forwards 1
   else
   	puts "unknown input (#{c})"
   end
