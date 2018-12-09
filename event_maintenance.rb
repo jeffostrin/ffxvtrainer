@@ -10,7 +10,7 @@ def print_usage
   puts "============================"
   puts "u - backwards in time 1 day"
   puts "j - backwards in time 1 hour"
-  
+
   puts "i - forwards in time 1 day"
   puts "k - forwards in time 1 hour"
 
@@ -50,13 +50,13 @@ class Navigation
   end
 
   def backwards(count)
-    (1..count).each do |counter| 
+    (1..count).each do |counter|
       @utc_time = @utc_time - SECONDS_IN_HOUR
   	end
   end
 
   def forwards(count)
-    (1..count).each do |counter| 
+    (1..count).each do |counter|
       @utc_time = @utc_time + SECONDS_IN_HOUR
   	end
   end
@@ -72,7 +72,7 @@ class Navigation
 
 end
 
-class Mode 
+class Mode
 
 
 end
@@ -88,6 +88,22 @@ class Option
   end
 end
 
+class HistoricalOption
+
+  attr_reader :name
+  attr_reader :score
+  attr_reader :trend
+
+  def initialize(params)
+    @name = params[:name]
+    assert(@name != nil, "HistoricalOption.name is required")
+    @score = params[:score]
+    assert(@score != nil, "HistoricalOption.score is required")
+    @trend = params[:trend]
+    assert(@trend != nil, "HistoricalOption.trend is required")
+  end
+
+end
 
 def get_default_options
   options = []
@@ -105,6 +121,8 @@ def calculate_weighted_historical_value(days_ago)
 end
 
 def get_historical_options(json, hepoch)
+
+  # calculate scores
   option_hash = {}
   (0..100).each do |counter|
   	probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
@@ -119,21 +137,31 @@ def get_historical_options(json, hepoch)
       end
     end
   end
+
+  # calculate trends
+
+  # build objects
   options = []
   option_hash.keys.each do |option|
-    options << Option.new(:name => option, :extra => option_hash[option].to_s)
+    options << HistoricalOption.new(:name => option, :score => option_hash[option].to_s, :trend => "-")
   end
   return options
 end
 
-def sort_historical_options(options) 
-  options = options.sort { |x,y| y.extra.to_i <=> x.extra.to_i }
+def sort_historical_options(options)
+  options = options.sort { |x,y| y.score.to_i <=> x.score.to_i }
+  return options
+end
+
+def convert_historical_options(options)
+  options = options.map { |o| Option.new(:name => o.name, :extra => o.score) }
   return options
 end
 
 def get_options(json, hepoch)
   option_list = get_historical_options(json, hepoch)
   option_list = sort_historical_options(option_list)
+  option_list = convert_historical_options(option_list)
   get_default_options.each do |option|
   	option_list << option
   end
@@ -173,7 +201,7 @@ while c != "q" do
 
   hepoch = state.get_hepoch
   options = get_options(json, hepoch)
-  options.keys.sort.each do |key| 
+  options.keys.sort.each do |key|
   	option = "  #{key} - #{options[key].name}"
     if options[key].extra != nil && options[key].extra.length > 0
       option += " (#{options[key].extra})"
@@ -219,4 +247,3 @@ while c != "q" do
   end
 
 end
-
