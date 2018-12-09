@@ -256,9 +256,13 @@ end
 
 def print_schedule(hepoch, json)
   hepoch = hepoch.to_i
+  nav = Navigation.new
+
 
   (hepoch..(hepoch+24)).each do |hepoch_to_print|
-    puts hepoch_to_print
+    prompt = Fmt.time(nav.get_local_time).as_local_hour_and_day +  " " + hepoch_to_print.to_s + " >"
+
+    puts prompt
 
     option_list = get_historical_options(json, hepoch_to_print.to_s)
     option_list = sort_historical_options(option_list)
@@ -266,6 +270,7 @@ def print_schedule(hepoch, json)
       puts "  " + option.name + " " + option.score
     end
 
+    nav.forwards 1
   end
 end
 
@@ -317,6 +322,7 @@ while c != "q" do
   elsif "?" == c
     print_usage
   else
+    putc c
     c = c + STDIN.readline
     c = c.strip
 
