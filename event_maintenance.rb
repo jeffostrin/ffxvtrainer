@@ -16,6 +16,9 @@ def print_usage
 
   puts "d - display the values for the current hour"
 
+  puts "e - edit an hour (to remove observations)"
+  puts "a - add observation to an hour (default mode)"
+
   puts "q - quit"
   puts "? - help"
 
@@ -66,6 +69,11 @@ class Navigation
   def get_local_time
   	return @utc_time.clone.localtime
   end
+
+end
+
+class Mode 
+
 
 end
 
