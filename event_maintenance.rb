@@ -19,12 +19,80 @@ def print_usage
   puts "e - edit an hour (to remove observations)"
   puts "a - add observation to an hour (default mode)"
 
+  puts "p - print schedule"
+
   puts "q - quit"
   puts "? - help"
 
   puts "## - enter an observation"
   puts "============================"
 end
+
+#---------------------
+# Character inputs
+# https://gist.github.com/acook/4190379
+#---------------------
+require 'io/console'
+
+# Reads keypresses from the user including 2 and 3 escape character sequences.
+def read_char
+  STDIN.echo = false
+  STDIN.raw!
+
+  input = STDIN.getc.chr
+  if input == "\e" then
+    input << STDIN.read_nonblock(3) rescue nil
+    input << STDIN.read_nonblock(2) rescue nil
+  end
+ensure
+  STDIN.echo = true
+  STDIN.cooked!
+
+  return input
+end
+
+# oringal case statement from:
+# http://www.alecjacobson.com/weblog/?p=75
+def show_single_key
+  c = read_char
+
+  case c
+  when " "
+    puts "SPACE"
+  when "\t"
+    puts "TAB"
+  when "\r"
+    puts "RETURN"
+  when "\n"
+    puts "LINE FEED"
+  when "\e"
+    puts "ESCAPE"
+  when "\e[A"
+    puts "UP ARROW"
+  when "\e[B"
+    puts "DOWN ARROW"
+  when "\e[C"
+    puts "RIGHT ARROW"
+  when "\e[D"
+    puts "LEFT ARROW"
+  when "\177"
+    puts "BACKSPACE"
+  when "\004"
+    puts "DELETE"
+  when "\e[3~"
+    puts "ALTERNATE DELETE"
+  when "\u0003"
+    puts "CONTROL-C"
+    exit 0
+  when /^.$/
+    puts "SINGLE CHAR HIT: #{c.inspect}"
+  else
+    puts "SOMETHING ELSE: #{c.inspect}"
+  end
+end
+#---------------------
+#---------------------
+
 
 def read_json_file(fname)
   contents = ""
@@ -186,6 +254,21 @@ def edit_hepoch(hepoch, json)
 
 end
 
+def print_schedule(hepoch, json)
+  hepoch = hepoch.to_i
+
+  (hepoch..(hepoch+24)).each do |hepoch_to_print|
+    puts hepoch_to_print
+
+    option_list = get_historical_options(json, hepoch_to_print.to_s)
+    option_list = sort_historical_options(option_list)
+    option_list.each do |option|
+      puts "  " + option.name + " " + option.score
+    end
+
+  end
+end
+
 json = read_json_file(file_name)
 
 state = Navigation.new
@@ -212,38 +295,45 @@ while c != "q" do
   prompt = "+@ " + Fmt.time(state.get_local_time).as_local_hour_and_day +  " " + hepoch + " >"
   puts prompt
 
-  c = STDIN.readline
-  c = c.strip
+  c = read_char
+  # c = STDIN.readline
+  # c = c.strip
 
-  if "u" == c
+  if "u" == c || "\e[A"  == c
   	state.backwards 24
-  elsif "j" == c
+  elsif "j" == c || "\e[D" == c
   	state.backwards 1
-  elsif "i" == c
+  elsif "i" == c || "\e[B" == c
   	state.forwards 24
-  elsif "k" == c
+  elsif "k" == c || "\e[C" == c
   	state.forwards 1
   elsif "d" == c
     display_hepoch(hepoch, json)
   elsif "e" == c
     edit_hepoch(hepoch, json)
+  elsif "p" == c
+    print_schedule(hepoch, json)
   elsif "q" == c
   elsif "?" == c
     print_usage
-  elsif options.has_key? c.to_i
-  	selection = options[c.to_i].name
-
-  	if ! json.has_key? hepoch
-  	  json[hepoch] = []
-  	end
-  	json[hepoch] << selection
-
-    puts json.to_json
-    write_json_file(file_name, json)
-
-    state.forwards 1
   else
-  	puts "unknown input (#{c})"
-  end
+    c = c + STDIN.readline
+    c = c.strip
 
+    if options.has_key? c.to_i
+  	   selection = options[c.to_i].name
+
+    	if ! json.has_key? hepoch
+    	  json[hepoch] = []
+    	end
+    	json[hepoch] << selection
+
+      puts json.to_json
+      write_json_file(file_name, json)
+
+      state.forwards 1
+    else
+    	puts "unknown input (#{c})"
+    end
+  end
 end
