@@ -3,6 +3,7 @@ require_relative 'time_constants'
 require_relative 'fmt'
 require_relative 'events_mini'
 require_relative 'assert'
+require_relative 'event_maintenance_helper'
 
 file_name = "mini_events.json"
 
@@ -147,30 +148,13 @@ end
 
 class Option
   attr_reader :name
-  attr_reader :extra
+  attr_reader :score
 
   def initialize(params)
     @name = params[:name]
     assert(@name != nil, "Option.name is required")
-    @extra = params[:extra]
-  end
-end
-
-class HistoricalOption
-
-  attr_reader :name
-  attr_reader :score
-  attr_reader :trend
-
-  def initialize(params)
-    @name = params[:name]
-    assert(@name != nil, "HistoricalOption.name is required")
     @score = params[:score]
-    assert(@score != nil, "HistoricalOption.score is required")
-    @trend = params[:trend]
-    assert(@trend != nil, "HistoricalOption.trend is required")
   end
-
 end
 
 def get_default_options
@@ -181,14 +165,25 @@ def get_default_options
   return options
 end
 
-def calculate_weighted_historical_value(days_ago)
-  if days_ago < 2
-    return 1
+def calculate_historical_scores(json, hepoch, num_days_ago)
+  # assert hepoch is a number
+
+  option_hash = {}
+  probe_hepoch = (hepoch - (24 * num_days_ago)).to_s
+  #puts probe_hepoch
+  if json.has_key? probe_hepoch
+    json[probe_hepoch].each do |historical_option|
+      if option_hash[historical_option].nil?
+        option_hash[historical_option] = 0
+      end
+      weighted_value = score_weighted_historical_value(num_days_ago)
+      option_hash[historical_option] = option_hash[historical_option] + weighted_value
+    end
   end
-  return 1 / Math::log(days_ago)
 end
 
 def get_historical_options(json, hepoch)
+  # assert hepoch is a string
 
   # calculate scores
   option_hash = {}
@@ -200,7 +195,7 @@ def get_historical_options(json, hepoch)
         if option_hash[historical_option].nil?
           option_hash[historical_option] = 0
         end
-        weighted_value = calculate_weighted_historical_value(counter)
+        weighted_value = score_weighted_historical_value(counter)
       	option_hash[historical_option] = option_hash[historical_option] + weighted_value
       end
     end
@@ -211,7 +206,7 @@ def get_historical_options(json, hepoch)
   # build objects
   options = []
   option_hash.keys.each do |option|
-    options << HistoricalOption.new(:name => option, :score => option_hash[option].to_s, :trend => "-")
+    options << Option.new(:name => option, :score => option_hash[option].to_s)
   end
   return options
 end
@@ -221,15 +216,10 @@ def sort_historical_options(options)
   return options
 end
 
-def convert_historical_options(options)
-  options = options.map { |o| Option.new(:name => o.name, :extra => o.score) }
-  return options
-end
 
 def get_options(json, hepoch)
   option_list = get_historical_options(json, hepoch)
   option_list = sort_historical_options(option_list)
-  option_list = convert_historical_options(option_list)
   get_default_options.each do |option|
   	option_list << option
   end
@@ -291,8 +281,8 @@ while c != "q" do
   options = get_options(json, hepoch)
   options.keys.sort.each do |key|
   	option = "  #{key} - #{options[key].name}"
-    if options[key].extra != nil && options[key].extra.length > 0
-      option += " (#{options[key].extra})"
+    if options[key].score != nil && options[key].score.length > 0
+      option += " (#{options[key].score})"
     end
     puts option
   end
