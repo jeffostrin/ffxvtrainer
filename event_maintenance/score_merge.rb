@@ -8,7 +8,8 @@ end
 
 def merge_scores(set1, set2)
   merge = {}
-  set1.keys.each do |k|
+  keys = set1.keys + set2.keys
+  keys.each do |k|
     merge[k] = hash_lookup(set1, k, 0) + hash_lookup(set2, k, 0)
   end
   return merge

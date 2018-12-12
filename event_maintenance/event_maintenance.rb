@@ -4,6 +4,7 @@ require_relative '../fmt'
 require_relative '../events_mini'
 require_relative '../assert'
 require_relative 'scoring'
+require_relative 'score_merge'
 
 file_name = "mini_events.json"
 
@@ -175,7 +176,9 @@ def calculate_historical_scores(json, hepoch, num_days_ago)
     events = json[probe_hepoch]
     scores = score_hepoch(events, num_days_ago)
     option_hash = merge_scores(option_hash, scores)
+    # puts option_hash
   end
+  return option_hash
 end
 
 def get_historical_options(json, hepoch)
@@ -184,17 +187,8 @@ def get_historical_options(json, hepoch)
   # calculate scores
   option_hash = {}
   (0..100).each do |counter|
-  	probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
-  	#puts probe_hepoch
-    if json.has_key? probe_hepoch
-      json[probe_hepoch].each do |historical_option|
-        if option_hash[historical_option].nil?
-          option_hash[historical_option] = 0
-        end
-        weighted_value = score_weighted_historical_value(counter)
-      	option_hash[historical_option] = option_hash[historical_option] + weighted_value
-      end
-    end
+    scores = calculate_historical_scores(json, hepoch.to_i, counter)
+    option_hash = merge_scores(option_hash, scores)
   end
 
   # calculate trends

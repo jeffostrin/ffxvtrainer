@@ -26,4 +26,12 @@ class TestScoreMerge < Test::Unit::TestCase
     result = merge_scores(set1, set2)
     assert_equal(expected, result)
   end
+
+  def test_set2_has_new_keys
+    set1 = { "e1" => 1 }
+    set2 = { "e2" => 2 }
+    expected = { "e1" => 1, "e2" => 2 }
+    result = merge_scores(set1, set2)
+    assert_equal(expected, result)
+  end
 end
