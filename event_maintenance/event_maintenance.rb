@@ -1,9 +1,9 @@
 require 'json'
-require_relative 'time_constants'
-require_relative 'fmt'
-require_relative 'events_mini'
-require_relative 'assert'
-require_relative 'event_maintenance_helper'
+require_relative '../time_constants'
+require_relative '../fmt'
+require_relative '../events_mini'
+require_relative '../assert'
+require_relative 'scoring'
 
 file_name = "mini_events.json"
 

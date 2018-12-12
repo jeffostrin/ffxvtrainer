@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative 'event_maintenance_helper'
+require_relative 'scoring'
 
 class TestEventMaintenanceScoring < Test::Unit::TestCase
   def test_score_recent_hepoch
