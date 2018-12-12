@@ -172,13 +172,9 @@ def calculate_historical_scores(json, hepoch, num_days_ago)
   probe_hepoch = (hepoch - (24 * num_days_ago)).to_s
   #puts probe_hepoch
   if json.has_key? probe_hepoch
-    json[probe_hepoch].each do |historical_option|
-      if option_hash[historical_option].nil?
-        option_hash[historical_option] = 0
-      end
-      weighted_value = score_weighted_historical_value(num_days_ago)
-      option_hash[historical_option] = option_hash[historical_option] + weighted_value
-    end
+    events = json[probe_hepoch]
+    scores = score_hepoch(events, num_days_ago)
+    option_hash = merge_scores(option_hash, scores)
   end
 end
 
