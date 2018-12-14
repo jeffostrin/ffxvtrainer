@@ -150,11 +150,13 @@ end
 class Option
   attr_reader :name
   attr_reader :score
+  attr_reader :trend
 
   def initialize(params)
     @name = params[:name]
     assert(@name != nil, "Option.name is required")
     @score = params[:score]
+    @trend = params[:trend]
   end
 end
 
@@ -181,8 +183,22 @@ def calculate_historical_scores(json, hepoch, num_days_ago)
   return option_hash
 end
 
+def get_score(option_set, option)
+  if option_set.has_key? option
+    return option_set[option]
+  end
+  return 0
+end
+
 def get_historical_options(json, hepoch)
   # assert hepoch is a string
+
+  baseline = {}
+  (2..100).each do |counter|
+    scores = calculate_historical_scores(json, (hepoch.to_i - 48), counter)
+    baseline = merge_scores(baseline, scores)
+  end
+
 
   # calculate scores
   option_hash = {}
@@ -196,7 +212,10 @@ def get_historical_options(json, hepoch)
   # build objects
   options = []
   option_hash.keys.each do |option|
-    options << Option.new(:name => option, :score => option_hash[option].to_s)
+    trend = get_score(option_hash, option) - get_score(baseline, option)
+    option = Option.new(:name => option, :score => option_hash[option].to_s, :trend => trend)
+    options << option
+    # puts "#{option.name} #{option.score} #{option.trend}"
   end
   return options
 end
@@ -247,7 +266,7 @@ def print_schedule(hepoch, json)
     option_list = get_historical_options(json, hepoch_to_print.to_s)
     option_list = sort_historical_options(option_list)
     option_list.each do |option|
-      puts "  " + option.name + " " + option.score
+      puts "  " + option.name + " " + ('%.2f' % option.score)
     end
 
     nav.forwards 1
@@ -272,7 +291,7 @@ while c != "q" do
   options.keys.sort.each do |key|
   	option = "  #{key} - #{options[key].name}"
     if options[key].score != nil && options[key].score.length > 0
-      option += " (#{options[key].score})"
+      option += (" (%.2f)" % options[key].score) + (" (%.2f)" % options[key].trend)
     end
     puts option
   end
