@@ -1,6 +1,6 @@
 'use strict'
 
-const fact = require('./fact');
+const fact = require('../fact');
 
 module.exports = function TrainingSpeed(powerPerSecond) {
   var instance = {};

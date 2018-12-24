@@ -6,7 +6,7 @@ var EventRotation = require('../../event_rotation')
 const Schedule = require('../../schedule');
 const CapacityCalculator = require('../../training_capacity_calculator');
 const CTime = require('../../ctime');
-const TrainingSpeed = require('../../training_speed')
+const TrainingSpeed = require('../../training/speed')
 const chai = require('chai');
 const expect = chai.expect;
 
