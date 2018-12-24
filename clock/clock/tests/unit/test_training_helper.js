@@ -6,26 +6,53 @@ var EventRotation = require('../../event_rotation')
 const Schedule = require('../../schedule');
 const CapacityCalculator = require('../../training_capacity_calculator');
 const CTime = require('../../ctime');
+const TrainingSpeed = require('../../training_speed')
 const chai = require('chai');
 const expect = chai.expect;
 
 var SECONDS_IN_MINUTE = 60;
+
+function RotationBuilder() {
+  var builder = {}
+  builder.events = {};
+
+  builder.addEvent = function(hepoch, name) {
+    builder.events[hepoch] = name;
+    return this;
+  }
+
+  builder.build = function() {
+    var keys = Object.keys(builder.events);
+    keys = keys.sort(function(x,y) { return x < y; });
+
+    var list = [];
+    keys.forEach((hepoch, index) => {
+      var event = builder.events[hepoch];
+      var duration = 1;
+
+      list.push({ utc: hepoch, name: event, duration: duration });
+    });
+    list = list.sort(function(x,y) { return x.utc - y.utc; });
+    return list;
+  }
+
+  return builder;
+};
+
 
 describe('Training Helper', function () {
 
   it('finds next training event', async () => {
     var miniEventRotation = new EventRotation(
       0,
-      [
-        { utc: 0, local: "5pm", name: "Monster Hunt", duration: 1 },
-        { utc: 1, local: "6pm", name: "Monster Hunt", duration: 1 },
-        { utc: 2, local: "7pm", name: "Training", duration: 1 },
-        { utc: 3, local: "8pm", name: "Monster Hunt", duration: 1 },
-        { utc: 4, local: "9pm", name: "Monster Hunt", duration: 1 },
-        { utc: 5, local: "10pm", name: "Training", duration: 1 },
-        { utc: 6, local: "11pm", name: "Training", duration: 1 },
-      ].sort(function(x,y) { return x.utc - y.utc; })
-    )
+      RotationBuilder()
+        .addEvent(0, "Monster Hunt")
+        .addEvent(1, "Monster Hunt")
+        .addEvent(2, "Training")
+        .addEvent(3, "Monster Hunt")
+        .addEvent(4, "Training")
+        .build()
+      )
 
     var sch = new Schedule().fromHepoch(0).toHepoch(6);
     sch.addRotations([ miniEventRotation ])
@@ -129,3 +156,28 @@ describe('Calculate use cases', function () {
     expect(wmcUnits.t1 * 2).to.equal(15000);
   });
 });
+
+// describe('Create hint', function () {
+//   it('Create a hint for Umpire t2 for Silver', async() => {
+//     var trainingParams = {
+//       maxUnits: 4400, t1WarriorSeconds: 15385
+//     };
+//     var secondsUntilEventStart = 30 * SECONDS_IN_MINUTE;
+//     var hint = new Helper().createHint().withOptions(trainingParams).eventStartsIn(secondsUntilEventStart).seconds();
+//     expect(hint).is.not.null;
+//     console.log(hint);
+//   });
+// });
+//
+//
+//
+// describe('Calculate hint', function () {
+//   it('Calculates a hint for Umpire', async() => {
+//     var trainingTimeSeconds = 10000;
+//     var trainingSpeed = new TrainingSpeed().Create(4400, trainingTimeSeconds, trainingTimeSeconds, trainingTimeSeconds, trainingTimeSeconds);
+//     var secondsUntilEventStart = 30 * SECONDS_IN_MINUTE;
+//     var hint = new Helper().createHint().withOptions(trainingSpeed).eventStartsIn(secondsUntilEventStart).seconds();
+//     expect(hint).is.not.null;
+//     console.log(hint);
+//   });
+// });

@@ -121,5 +121,43 @@ module.exports = function TrainingHelper(powerPerSecond) {
     }
   }
 
+  helper._calculateHint = function(trainingSpeed, seconds) {
+    console.log(trainingSpeed);
+    console.log(seconds);
+    return {
+      t1Warrior: Math.trunc(seconds * trainingSpeed.t1WarriorSeconds / (2*1)),
+      t1Mage: Math.trunc(seconds * trainingSpeed.t1MageSeconds / (2*1)),
+      t1Calvary: Math.trunc(seconds * trainingSpeed.t1CalvarySeconds / (2*1)),
+      t1Seige: Math.trunc(seconds * trainingSpeed.t1SeigeSeconds / (2*1)),
+
+      t2Warrior: Math.trunc(seconds * trainingSpeed.t1WarriorSeconds / (2*2)),
+      t2Mage: Math.trunc(seconds * trainingSpeed.t1MageSeconds / (2*2)),
+      t2Calvary: Math.trunc(seconds * trainingSpeed.t1CalvarySeconds / (2*2)),
+      t2Seige: Math.trunc(seconds * trainingSpeed.t1SeigeSeconds / (2*2)),
+
+      t3Warrior: Math.trunc(seconds * trainingSpeed.t1WarriorSeconds / (2*3)),
+      t3Mage: Math.trunc(seconds * trainingSpeed.t1MageSeconds / (2*3)),
+      t3Calvary: Math.trunc(seconds * trainingSpeed.t1CalvarySeconds / (2*3)),
+      t3Seige: Math.trunc(seconds * trainingSpeed.t1SeigeSeconds / (2*3)),
+    }
+  }
+
+  helper.createHint = function() {
+    return {
+      withOptions(trainingSpeed) {
+        new fact().value(trainingSpeed).is().notNull();
+        return {
+          eventStartsIn(seconds) {
+            return {
+              seconds() {
+                return helper._calculateHint(trainingSpeed, seconds);
+              }
+            }
+          }
+        }
+      }
+    };
+  }
+
   return helper;
 };
