@@ -7,14 +7,22 @@ module.exports = function fact() {
     return {
       is() {
         return {
-          notNull() {
+
+          notNull: function() {
             // console.log(val);
             //console.log(val);
             if (val == null) {
               throw "value should not be null";
             }
-          }
-        }
+          },
+
+          anArray: function() {
+            if (!Array.isArray(val)) {
+              throw "value should be an array";
+            }
+          },
+
+        };
       }
     }
   }

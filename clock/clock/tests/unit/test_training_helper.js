@@ -7,65 +7,13 @@ const Schedule = require('../../schedule');
 const CapacityCalculator = require('../../training_capacity_calculator');
 const CTime = require('../../ctime');
 const TrainingSpeed = require('../../training/speed')
+const RotationBuilder = require('./rotation_builder')
 const chai = require('chai');
 const expect = chai.expect;
 
 var SECONDS_IN_MINUTE = 60;
 
-function RotationBuilder() {
-  var builder = {}
-  builder.events = {};
-
-  builder.addEvent = function(hepoch, name) {
-    builder.events[hepoch] = name;
-    return this;
-  }
-
-  builder.build = function() {
-    var keys = Object.keys(builder.events);
-    keys = keys.sort(function(x,y) { return x < y; });
-
-    var list = [];
-    keys.forEach((hepoch, index) => {
-      var event = builder.events[hepoch];
-      var duration = 1;
-
-      list.push({ utc: hepoch, name: event, duration: duration });
-    });
-    list = list.sort(function(x,y) { return x.utc - y.utc; });
-    return list;
-  }
-
-  return builder;
-};
-
-
 describe('Training Helper', function () {
-
-  it('finds next training event', async () => {
-    var miniEventRotation = new EventRotation(
-      0,
-      RotationBuilder()
-        .addEvent(0, "Monster Hunt")
-        .addEvent(1, "Monster Hunt")
-        .addEvent(2, "Training")
-        .addEvent(3, "Monster Hunt")
-        .addEvent(4, "Training")
-        .build()
-      )
-
-    var sch = new Schedule().fromHepoch(0).toHepoch(6);
-    sch.addRotations([ miniEventRotation ])
-
-    var nextTraining = new TrainingHelper().findNextEvent().in(sch);
-    expect(nextTraining).to.not.be.null;
-    expect(nextTraining.startHepoch).to.equal(2);
-  });
-
-
-
-
-
 
   it('creates now hint', async () => {
 

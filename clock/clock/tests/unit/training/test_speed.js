@@ -10,7 +10,7 @@ chai.use( chaiDeepMatch );
 
 var tc = new TimeConstants();
 
-describe('Test Calculator', function () {
+describe('Test Training Speed', function () {
 
   it('Parses Text', async () => {
     var trainingSpeed = new TrainingSpeed().Parse("20590", "1d 04:35:50", "3d 08:04:20", "11:26:20", "4d 09:28:54")

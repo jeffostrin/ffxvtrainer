@@ -9,6 +9,8 @@ const GatherHelper = require('./gather_helper')
 const TrainingCapacityCalculator = require ('./training_capacity_calculator')
 const TrainingHelper = require('./training_helper')
 const EventLoader = require('./event_loader')
+const TrainingSpeed = require('./training/speed')
+const TrainingPlanner = require('./training/planner')
 
 var GatherRSS = "Gather RSS"
 var Training = "Training <==="
@@ -150,6 +152,9 @@ module.exports = function Clock() {
         schedule.nowHints.push(hint);
       }
     });
+
+    var trainingSpeed = new TrainingSpeed().Parse("1000", "1d 00:00:00", "1d 00:00:00", "1d 00:00:00", "1d 00:00:00")
+    var nextTraining = new TrainingPlanner().findNextEvent().in(clock.sch);
 
     // var trainingParams = { maxUnits: 4400, t1WarriorSeconds: 15385 };
     // var trainingPowerPerSecond = new TrainingCapacityCalculator().troopCapacity(17145).trainingTime(16, 40, 7.5).powerPerSecond();
