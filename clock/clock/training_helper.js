@@ -5,19 +5,6 @@ const fact = require('./fact');
 module.exports = function TrainingHelper(powerPerSecond) {
   var helper = {}
 
-  helper.findNextEvent = function() {
-    return {
-      in(schedule) {
-        var trainingEvents = schedule.findEvents((evt) => evt.name == "Training");
-        new fact().value(trainingEvents).is().notNull();
-        if (trainingEvents.length == 0) {
-          return null;
-        }
-        return trainingEvents[0];
-      }
-    };
-  }
-
   function createHintForNow(ctime, hepoch) {
     var secondsUntilEvent = ctime.secondsUntilHepoch(hepoch);
 
