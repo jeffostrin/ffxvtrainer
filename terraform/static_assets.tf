@@ -1,18 +1,27 @@
 
-module "s3" "FFXV Trainer Assets" {
-  source  = "Aplyca/s3/aws"
-  version = "0.1.4"
+resource "aws_s3_bucket" "ffxv_s3_assets" {
+  bucket = "ffxv-trainer"
 
-  name = "FFXV Trainer Asset Bucket"
-  acl = "public-read"
-
-  cors_allowed_origins = ["*"]
-  cors_allowed_headers = ["*"]
-  cors_allowed_methods = ["GET"]
-  cors_expose_headers  = ["ETag"]
-  cors_max_age_seconds = "0"
+  website {
+    index_document = "index.html"
+    error_document = "error.html"
+  }
 
   tags {
     App = "FFXV Trainer"
   }
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws:s3:::ffxv-trainer/*"
+      }
+  ]
+}
+POLICY
 }
