@@ -1,4 +1,5 @@
 # https://github.com/hashicorp/terraform/issues/9271
+# https://learn.hashicorp.com/terraform/aws/lambda-api-gateway
 
 resource "aws_iam_role" "get_schedule_iam_role" {
   name = "get_schedule_iam_role"
@@ -38,8 +39,8 @@ resource "aws_lambda_function" "get_schedule_lambda_function" {
 
 resource "aws_lambda_permission" "get_schedule_lambda_function_permission" {
   depends_on = [
-    "aws_api_gateway_method.method",
-    "aws_api_gateway_method_response.OK"
+    "aws_api_gateway_method.method2",
+    "aws_api_gateway_method_response.OK2"
   ]
   statement_id = "AllowExecutionFromAPIGatewayMethod"
   action = "lambda:InvokeFunction"
@@ -47,60 +48,6 @@ resource "aws_lambda_permission" "get_schedule_lambda_function_permission" {
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_api_gateway_rest_api.get_schedule_api_gateway.execution_arn}/*/*/*"
 #  source_arn = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.get_schedule_api_gateway.id}/*/*/"
-}
-
-resource "aws_api_gateway_rest_api" "get_schedule_api_gateway" {
-  depends_on = [
-    "aws_lambda_function.get_schedule_lambda_function"
-  ]
-  name        = "FFXV Get Schedule API"
-  description = "This is the API to serve the GET schedule"
-  /*
-  endpoint_configuration {
-    types = ["EDGE"]
-  }
-  */
-}
-
-resource "aws_api_gateway_method" "method" {
-  rest_api_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
-  resource_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.root_resource_id}"
-  http_method   = "GET"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "integration" {
-  depends_on = [
-    "aws_lambda_permission.get_schedule_lambda_function_permission"
-  ]
-  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
-  resource_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.root_resource_id}"
-  http_method = "${aws_api_gateway_method.method.http_method}"
-  type                    = "AWS_PROXY"
-  integration_http_method = "POST"
-  uri = "${aws_lambda_function.get_schedule_lambda_function.invoke_arn}"
-#  uri =  "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.get_schedule_lambda_function.arn}/invocations"
-}
-
-resource "aws_api_gateway_integration_response" "integration-response" {
-  depends_on = [
-    "aws_api_gateway_integration.integration"
-  ]
-  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
-  resource_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.root_resource_id}"
-  http_method = "${aws_api_gateway_method.method.http_method}"
-  status_code = "${aws_api_gateway_method_response.OK.status_code}"
-}
-
-resource "aws_api_gateway_method_response" "OK" {
-  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
-  resource_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.root_resource_id}"
-  http_method = "${aws_api_gateway_method.method.http_method}"
-  status_code = "200"
-
-  response_models = {
-    "application/json" = "Empty"
-  }
 }
 
 
