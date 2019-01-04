@@ -45,7 +45,8 @@ resource "aws_lambda_permission" "get_schedule_lambda_function_permission" {
   action = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.get_schedule_lambda_function.function_name}"
   principal = "apigateway.amazonaws.com"
-  source_arn = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.get_schedule_api_gateway.id}/*/*/"
+  source_arn = "${aws_api_gateway_rest_api.get_schedule_api_gateway.execution_arn}/*/*/*"
+#  source_arn = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.get_schedule_api_gateway.id}/*/*/"
 }
 
 resource "aws_api_gateway_rest_api" "get_schedule_api_gateway" {
@@ -60,14 +61,6 @@ resource "aws_api_gateway_rest_api" "get_schedule_api_gateway" {
   }
   */
 }
-
-/*
-resource "aws_api_gateway_resource" "resource" {
-  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
-  parent_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.root_resource_id}"
-  path_part   = "my_resource"
-}
-*/
 
 resource "aws_api_gateway_method" "method" {
   rest_api_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
@@ -85,7 +78,8 @@ resource "aws_api_gateway_integration" "integration" {
   http_method = "${aws_api_gateway_method.method.http_method}"
   type                    = "AWS_PROXY"
   integration_http_method = "POST"
-  uri =  "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.get_schedule_lambda_function.arn}/invocations"
+  uri = "${aws_lambda_function.get_schedule_lambda_function.invoke_arn}"
+#  uri =  "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.get_schedule_lambda_function.arn}/invocations"
 }
 
 resource "aws_api_gateway_integration_response" "integration-response" {
@@ -107,4 +101,60 @@ resource "aws_api_gateway_method_response" "OK" {
   response_models = {
     "application/json" = "Empty"
   }
+}
+
+
+
+
+
+
+
+
+
+
+resource "aws_api_gateway_resource" "resource" {
+  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
+  parent_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.root_resource_id}"
+  path_part   = "schedule"
+}
+
+resource "aws_api_gateway_method" "method2" {
+  rest_api_id   = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
+  resource_id   = "${aws_api_gateway_resource.resource.id}"
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "integration2" {
+  depends_on = [
+    "aws_lambda_permission.get_schedule_lambda_function_permission"
+  ]
+  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
+  resource_id = "${aws_api_gateway_resource.resource.id}"
+  http_method = "${aws_api_gateway_method.method2.http_method}"
+  type                    = "AWS_PROXY"
+  integration_http_method = "POST"
+  uri = "${aws_lambda_function.get_schedule_lambda_function.invoke_arn}"
+  #uri =  "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.get_schedule_lambda_function.arn}/invocations"
+}
+
+resource "aws_api_gateway_method_response" "OK2" {
+  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
+  resource_id = "${aws_api_gateway_resource.resource.id}"
+  http_method = "${aws_api_gateway_method.method2.http_method}"
+  status_code = "200"
+
+  response_models = {
+    "application/json" = "Empty"
+  }
+}
+
+resource "aws_api_gateway_integration_response" "integration2-response" {
+  depends_on = [
+    "aws_api_gateway_integration.integration2"
+  ]
+  rest_api_id = "${aws_api_gateway_rest_api.get_schedule_api_gateway.id}"
+  resource_id = "${aws_api_gateway_resource.resource.id}"
+  http_method = "${aws_api_gateway_method.method2.http_method}"
+  status_code = "${aws_api_gateway_method_response.OK2.status_code}"
 }
