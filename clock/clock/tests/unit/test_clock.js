@@ -20,4 +20,12 @@ describe('Tests /clock/', function () {
         //console.log(new clock().generate_json());
         //expect("Gather RSS").to.equal("Gather RSS <===")
     });
+    it('verifies successful response', async () => {
+        const schedule = new clock().generate_v2_json();
+        console.log(schedule);
+        //console.log(schedule);
+        //expect(schedule.length).to.equal(27);
+        //console.log(new clock().generate_json());
+        //expect("Gather RSS").to.equal("Gather RSS <===")
+    });
 });

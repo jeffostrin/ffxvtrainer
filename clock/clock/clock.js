@@ -192,6 +192,34 @@ module.exports = function Clock() {
     // ]);
     return schedule;
   }
+
+  this.generate_v2_json = function () {
+    var schedule = {};
+
+    schedule.events = {};
+    for (var hepoch = clock.nowHepoch; hepoch <= clock.nowHepoch + 24; hepoch++) {
+      var hepochEvents = eventLoader.loadv2();
+
+      var jsonHour = {};
+      jsonHour.hepoch = hepoch;
+      jsonHour.isCurrentHepoch = (hepoch == clock.nowHepoch);
+      jsonHour.dayTime = clock.ctime.pp().dayTime(hepoch);
+      jsonHour.relativeTime = clock.ctime.pp().asRelativeTime(hepoch * 60 * 60 - clock.nowSepoch);
+
+      jsonHour.events = [];
+      hepochEvents.forEach((evt, index) => {
+        var eventName = evt.name;
+        //var eventName = (evt.name == "") ? "" : (evt.name + " ");
+        // if (evt.name != "" && !evt.isEventStart) {
+        //   eventName += "(cont)";
+        // }
+        jsonHour.events.push(eventName);
+      });
+      schedule.events[hepoch] = jsonHour;
+    }
+
+    return schedule;
+  }
 };
 
 

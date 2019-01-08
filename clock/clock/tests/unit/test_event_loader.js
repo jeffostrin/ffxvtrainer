@@ -57,3 +57,26 @@ describe('Event Loader', function () {
   	expect(result[2]).to.equal("Guild Quests");
   });
 });
+
+describe('Event Loader v2', function () {
+
+  it('finds all', async () => {
+  	var json = {
+      "50":["Monster Hunt"],
+  	  "51":["Guild Quests"],
+
+  	  "74":["Monster Hunt"],
+  	  "75":["Guild Quests"],
+
+      "98":["Guild Quests"],
+      "99":["Guild Quests"],
+
+  	}
+  	var loader = new EventLoader();
+  	var result = loader._loadv2(json);
+  	expect(result.length).to.equal(24);
+  	expect(result[2]).to.deep.match([ "Monster Hunt", "Guild Quests" ]);
+  	expect(result[3]).to.deep.match([ "Guild Quests" ]);
+  });
+
+});
