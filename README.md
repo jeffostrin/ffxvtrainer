@@ -6,6 +6,7 @@ ffxv trainer
 # Running javascript Tests
 
 clock/clock$ npm test
+clock/clock$ ./node_modules/mocha/bin/mocha --recursive tests/
 
 # Running event maintenance
 
