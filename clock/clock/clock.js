@@ -155,7 +155,10 @@ module.exports = function Clock() {
 
     var trainingSpeed = new TrainingSpeed().Parse("1000", "1d 00:00:00", "1d 00:00:00", "1d 00:00:00", "1d 00:00:00")
     var nextTraining = new TrainingPlanner().findNextEvent().in(clock.sch);
-
+    if (nextTraining != null) {
+      var secondsUntilEvent = clock.ctime.secondsUntilHepoch(nextTraining.startHepoch);
+      var hints = new TrainingPlanner().createHint().for(trainingSpeed).in(secondsUntilEvent);
+    }
     // var trainingParams = { maxUnits: 4400, t1WarriorSeconds: 15385 };
     // var trainingPowerPerSecond = new TrainingCapacityCalculator().troopCapacity(17145).trainingTime(16, 40, 7.5).powerPerSecond();
     // var trainingHelper = new TrainingHelper(trainingPowerPerSecond);

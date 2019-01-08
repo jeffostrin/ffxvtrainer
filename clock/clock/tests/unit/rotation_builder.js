@@ -21,6 +21,7 @@ module.exports = function RotationBuilder() {
       list.push({ utc: hepoch, name: event, duration: duration });
     });
     list = list.sort(function(x,y) { return x.utc - y.utc; });
+    console.log()
     return list;
   }
 

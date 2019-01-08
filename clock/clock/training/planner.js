@@ -19,5 +19,18 @@ module.exports = function TrainingPlanner() {
     };
   }
 
+  instance.createHint = function() {
+    return {
+      for(trainingSpeed) {
+        return {
+          in(secondsUntilEvent) {
+            //throw "add tests for this";
+            return {};
+          }
+        };
+      }
+    };
+  }
+
   return instance;
 };
