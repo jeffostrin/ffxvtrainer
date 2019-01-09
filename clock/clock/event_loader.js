@@ -27,26 +27,31 @@ module.exports = function EventLoader() {
 
   // https://coderwall.com/p/nilaba/simple-pure-javascript-array-unique-method-with-5-lines-of-code
   // does not work with objects and mixed value arrays
-  Array.prototype.unique = function() {
-    return this.filter(function (value, index, self) {
-      return self.indexOf(value) === index;
-    });
-  }
+  // Array.prototype.unique = function() {
+  //   return this.filter(function (value, index, self) {
+  //     return self.indexOf(value) === index;
+  //   });
+  // }
 
   function read_all_hours(json) {
-  	var result = [24];
-  	for (var i = 0; i <24; i++) {
-  		result[i] = [];
-  	}
+    var mostRecentHepoch = 0;
+    Object.keys(json).forEach(function(key) {
+  	  var hepoch = parseInt(key, 10);
+      if (mostRecentHepoch < hepoch) {
+        mostRecentHepoch = hepoch;
+      }
+    });
+
+    var maxResultSize = 24 * 100; // 100 days of data
+    var result = {};
   	Object.keys(json).forEach(function(key) {
   	  //console.log(key);
   	  var hepoch = parseInt(key, 10);
-  	  var hour = (parseInt(key, 10) % 24);
-   	  var eventsForHour = result[hour];
-  	  json[key].forEach(function(val) {
-  	  	eventsForHour.push(val);
-        result[hour] = eventsForHour.unique();
-   	  })
+  	  var hourIndex = maxResultSize - (mostRecentHepoch - hepoch) - 1;
+
+      if (hourIndex >= 0) {
+        result[hepoch] = json[key];
+      }
   	});
 
   	return result;
@@ -104,11 +109,36 @@ module.exports = function EventLoader() {
   	return loader._load(json);
   }
 
+  loader._createEvaluator = function(hourlyEvents) {
+    return {
+      getProjectionFor(hepoch) {
+        var result = {};
+        for (var day = 0; day < 100; day++) {
+          var targetHepoch = hepoch - (day * 24);
+          if (hourlyEvents[targetHepoch] != null) {
+            // console.log("for " + hepoch + " inspecting " + targetHepoch);
+            // console.log(result);
+            var events = hourlyEvents[targetHepoch];
+            events.forEach(function(evt) {
+              if (result[evt] == null) {
+                result[evt] = 0;
+              }
+              result[evt] = result[evt] + 1;
+            });
+          }
+        }
+
+        return result;
+      }
+    };
+  }
+
   loader.loadv2 = function() {
     var filePath = path.join(__dirname, "..", "..", "mini_events.json")
   	//console.log(filePath);
   	var json = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  	return loader._loadv2(json);
+    var hourlyEvents = loader._loadv2(json);
+    return loader._createEvaluator(hourlyEvents);
   }
 
   return loader;

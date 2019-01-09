@@ -198,7 +198,7 @@ module.exports = function Clock() {
 
     schedule.events = {};
     for (var hepoch = clock.nowHepoch; hepoch <= clock.nowHepoch + 24; hepoch++) {
-      var hepochEvents = eventLoader.loadv2();
+      var hepochEvents = eventLoader.loadv2().getProjectionFor(hepoch);
 
       var jsonHour = {};
       jsonHour.hepoch = hepoch;
@@ -206,16 +206,16 @@ module.exports = function Clock() {
       jsonHour.dayTime = clock.ctime.pp().dayTime(hepoch);
       jsonHour.relativeTime = clock.ctime.pp().asRelativeTime(hepoch * 60 * 60 - clock.nowSepoch);
 
-      jsonHour.events = [];
-      hepochEvents.forEach((evt, index) => {
-        var eventName = evt.name;
-        //var eventName = (evt.name == "") ? "" : (evt.name + " ");
-        // if (evt.name != "" && !evt.isEventStart) {
-        //   eventName += "(cont)";
-        // }
-        jsonHour.events.push(eventName);
-      });
-      schedule.events[hepoch] = jsonHour;
+      jsonHour.events = hepochEvents;
+      // hepochEvents.forEach((evt, index) => {
+      //   var eventName = evt.name;
+      //   //var eventName = (evt.name == "") ? "" : (evt.name + " ");
+      //   // if (evt.name != "" && !evt.isEventStart) {
+      //   //   eventName += "(cont)";
+      //   // }
+      //   jsonHour.events.push(eventName);
+      // });
+      // schedule.events[hepoch] = jsonHour;
     }
 
     return schedule;
