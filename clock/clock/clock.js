@@ -215,7 +215,7 @@ module.exports = function Clock() {
       //   // }
       //   jsonHour.events.push(eventName);
       // });
-      // schedule.events[hepoch] = jsonHour;
+      schedule.events[hepoch] = jsonHour;
     }
 
     return schedule;
