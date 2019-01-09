@@ -26,6 +26,7 @@ module.exports = function EventLoader() {
   }
 
   // https://coderwall.com/p/nilaba/simple-pure-javascript-array-unique-method-with-5-lines-of-code
+  // does not work with objects and mixed value arrays
   Array.prototype.unique = function() {
     return this.filter(function (value, index, self) {
       return self.indexOf(value) === index;
