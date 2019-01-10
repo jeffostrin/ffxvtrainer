@@ -30,7 +30,7 @@ module.exports = function EventLoader() {
   	return result;
   }
 
-  loader._loadv2 = function(json) {
+  loader._load = function(json) {
   	//console.log(json);
   	var byHour = read_all_hours(json);
   	//console.log(byHour);
@@ -82,11 +82,11 @@ module.exports = function EventLoader() {
     return localPath;
   }
 
-  loader.loadv2 = function() {
+  loader.load = function() {
     var filePath = getPath("mini_events.json")
   	//console.log(filePath);
   	var json = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-    var hourlyEvents = loader._loadv2(json);
+    var hourlyEvents = loader._load(json);
     return loader._createEvaluator(hourlyEvents);
   }
 

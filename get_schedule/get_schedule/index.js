@@ -8,7 +8,7 @@ exports.lambda_handler_v2 = async (event, context, callback) => {
         response = {
             'statusCode': 200,
             'body': JSON.stringify({
-                schedule: clock.generate_v2_json(),
+                schedule: clock.generate_json(),
             })
         }
     }

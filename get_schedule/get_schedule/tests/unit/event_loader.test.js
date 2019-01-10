@@ -4,7 +4,7 @@ const EventLoader = require('../../event_loader')
 
 const assert = require('chai').assert;
 
-describe('Event Loader v2', function () {
+describe('Event Loader', function () {
 
   it('finds all', async () => {
   	var json = {
@@ -19,7 +19,7 @@ describe('Event Loader v2', function () {
 
   	}
   	var loader = new EventLoader();
-  	var result = loader._loadv2(json);
+  	var result = loader._load(json);
 
     var expected = {
       50: [ "Monster Hunt" ],

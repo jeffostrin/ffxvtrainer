@@ -6,9 +6,9 @@ const EventLoader = require('./event_loader')
 module.exports = function Clock() {
 
   var eventLoader = new EventLoader();
-  var eventProjector = eventLoader.loadv2();
+  var eventProjector = eventLoader.load();
 
-  this.generate_v2_json = function () {
+  this.generate_json = function () {
     var ctime = new CTime();
     var nowHepoch = ctime.epochHour();
     var nowSepoch = ctime.epochSeconds();

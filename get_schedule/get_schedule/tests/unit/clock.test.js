@@ -8,7 +8,7 @@ var event, context;
 
 describe('Tests /clock/', function () {
     it('verifies successful response', async () => {
-        const schedule = new clock().generate_v2_json();
+        const schedule = new clock().generate_json();
         //console.log(schedule);
     });
 });
