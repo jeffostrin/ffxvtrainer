@@ -1,0 +1,4 @@
+get_schedule/terraform/terraform.tfstate
+get_schedule/terraform/terraform.tfstate.backup
+get_schedule/terraform/variables.secret.tf
+get_schedule/terraform/.terraform/

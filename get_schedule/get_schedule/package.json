@@ -1,0 +1,16 @@
+{
+  "name": "get_schedule",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/unit/"
+  },
+  "author": "",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "moment": "^2.23.0",
+    "moment-timezone": "^0.5.23"
+  }
+}
