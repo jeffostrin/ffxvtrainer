@@ -11,3 +11,7 @@ clock/clock$ ./node_modules/mocha/bin/mocha --recursive tests/
 # Running event maintenance
 
 $ ruby event_maintenance/event_maintenance.rb
+
+# Terraform re-apply
+
+terraform$ terraform destroy -auto-approve; terraform apply -auto-approve
