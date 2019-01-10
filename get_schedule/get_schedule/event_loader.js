@@ -1,3 +1,4 @@
+const Forecaster = require('./forecaster')
 const fs = require('fs');
 const path = require('path');
 
@@ -37,31 +38,6 @@ module.exports = function EventLoader() {
   	return byHour;
   }
 
-  loader._createEvaluator = function(hourlyEvents) {
-    return {
-      getProjectionFor(hepoch) {
-        var result = {};
-        for (var day = 0; day < 100; day++) {
-          var targetHepoch = hepoch - (day * 24);
-          if (hourlyEvents[targetHepoch] == null) {
-            continue;
-          }
-          // console.log("for " + hepoch + " inspecting " + targetHepoch);
-          // console.log(result);
-          var events = hourlyEvents[targetHepoch];
-          events.forEach(function(evt) {
-            if (result[evt] == null) {
-              result[evt] = 0;
-            }
-            result[evt] = result[evt] + 1;
-          });
-        }
-
-        return result;
-      }
-    };
-  }
-
   // https://stackoverflow.com/questions/17699599/node-js-check-exist-file
   function checkFileExistsSync(filepath){
     let flag = true;
@@ -87,7 +63,7 @@ module.exports = function EventLoader() {
   	//console.log(filePath);
   	var json = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     var hourlyEvents = loader._load(json);
-    return loader._createEvaluator(hourlyEvents);
+    return new Forecaster().create(hourlyEvents);
   }
 
   return loader;

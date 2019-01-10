@@ -6,7 +6,7 @@ const EventLoader = require('./event_loader')
 module.exports = function Clock() {
 
   var eventLoader = new EventLoader();
-  var eventProjector = eventLoader.load();
+  var forecaster = eventLoader.load();
 
   this.generate_json = function () {
     var ctime = new CTime();
@@ -21,7 +21,7 @@ module.exports = function Clock() {
       jsonHour.isCurrentHepoch = (hepoch == nowHepoch);
       jsonHour.dayTime = ctime.pp().dayTime(hepoch);
       jsonHour.relativeTime = ctime.pp().asRelativeTime(hepoch * 60 * 60 - nowSepoch);
-      jsonHour.events = eventProjector.getProjectionFor(hepoch);;
+      jsonHour.events = forecaster.forecastFor(hepoch);;
       schedule.events[hepoch] = jsonHour;
     }
 
