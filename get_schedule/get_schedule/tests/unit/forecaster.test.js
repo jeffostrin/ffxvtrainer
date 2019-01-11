@@ -39,7 +39,7 @@ function scores(dayArray) {
   var score = 0;
   for (var i = 0; i < dayArray.length; i++) {
     if (dayArray[i] == 1) {
-      score = score + (50 / Math.pow(2, i))
+      score = score + (50 / Math.pow(2, i/10))
     }
   }
   return score;
@@ -95,6 +95,12 @@ describe('Forecast an hepoch', function () {
   //   console.log(1 / Math.pow(2, 2));
   //   console.log(1 / Math.pow(2, 3));
   //   console.log(1 / Math.pow(2, 4));
+  //
+  //   console.log(1 / Math.pow(2, 0));
+  //   console.log(1 / Math.pow(2, 1/10));
+  //   console.log(1 / Math.pow(2, 2/10));
+  //   console.log(1 / Math.pow(2, 3/10));
+  //   console.log(1 / Math.pow(2, 4/10));
   // });
 
 });

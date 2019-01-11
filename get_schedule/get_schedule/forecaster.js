@@ -18,7 +18,7 @@ module.exports = function Forecaster() {
         if (result[evt] == null) {
           result[evt] = 0;
         }
-        result[evt] = result[evt] + (50 / Math.pow(2, day));
+        result[evt] = result[evt] + (50 / Math.pow(2, day/10));
         //console.log(result[evt]);
       });
     }
