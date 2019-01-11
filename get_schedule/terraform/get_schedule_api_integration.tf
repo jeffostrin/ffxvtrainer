@@ -51,3 +51,11 @@ resource "aws_lambda_permission" "get_schedule_lambda_function_permission" {
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_api_gateway_rest_api.ffxv_trainer_api_gateway.execution_arn}/*/*/*"
 }
+
+output "api_resource_id" {
+  value = "${aws_api_gateway_resource.schedule.id}"
+}
+
+output "api_method_id" {
+  value = "${aws_api_gateway_method.get_method.id}"
+}

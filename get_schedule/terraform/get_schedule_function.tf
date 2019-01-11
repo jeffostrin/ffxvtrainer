@@ -36,3 +36,7 @@ resource "aws_lambda_function" "get_schedule_lambda_function" {
   }
   */
 }
+
+output "lamda_function_arn" {
+  value = "${aws_lambda_function.get_schedule_lambda_function.arn}"
+}
