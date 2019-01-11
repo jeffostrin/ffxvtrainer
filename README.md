@@ -15,3 +15,7 @@ $ ruby event_maintenance/event_maintenance.rb
 # Terraform re-apply
 
 terraform$ terraform destroy -auto-approve; terraform apply -auto-approve
+
+# Useful urls
+
+https://claudiajs.com/tutorials/designing-testable-lambdas.html
