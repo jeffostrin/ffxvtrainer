@@ -5,7 +5,7 @@ module.exports = function Forecaster() {
 
   forecaster._forecast = function(hourlyEvents, hepoch) {
     var result = {};
-    var dayIterations = 10;
+    var dayIterations = 100;
     for (var day = 0; day < dayIterations; day++) {
       var targetHepoch = hepoch - (day * 24);
       if (hourlyEvents[targetHepoch] == null) {
