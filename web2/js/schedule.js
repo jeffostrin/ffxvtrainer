@@ -38,7 +38,7 @@
       return hourlyEvents[0].name;
     }
 
-    return lpad(hourlyEvents[0].name + " or ", 25, " ") + lpad(hourlyEvents[1].name, 21, " ")
+    return lpad(hourlyEvents[0].name + " or ", 26, " ") + lpad(hourlyEvents[1].name, 21, " ")
   }
 
   $(function onDocReady() {
@@ -86,7 +86,7 @@
         }
 
         line += " " + val.dayTime;
-        line += lpad(" (" + val.relativeTime + ") ", 12, padding) + " ";
+        line += lpad(" (" + val.relativeTime + ") ", 16, padding) + " ";
 
         var hourlyEvents = score_hourly_events(val.hourly_events);
         var hourlyOutput = present_hourly_events(hourlyEvents);
