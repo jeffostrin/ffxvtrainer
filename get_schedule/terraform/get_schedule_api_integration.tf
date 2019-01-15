@@ -52,10 +52,23 @@ resource "aws_lambda_permission" "get_schedule_lambda_function_permission" {
   source_arn = "${aws_api_gateway_rest_api.ffxv_trainer_api_gateway.execution_arn}/*/*/*"
 }
 
+resource "aws_api_gateway_deployment" "api_gateway_deployment" {
+  depends_on = [
+    "aws_api_gateway_method.get_method"
+  ]
+  rest_api_id = "${aws_api_gateway_rest_api.ffxv_trainer_api_gateway.id}"
+  stage_name  = "prod"
+}
+
+
 output "api_resource_id" {
   value = "${aws_api_gateway_resource.schedule.id}"
 }
 
 output "api_method_id" {
   value = "${aws_api_gateway_method.get_method.id}"
+}
+
+output "api_url" {
+  value = "${aws_api_gateway_deployment.api_gateway_deployment.invoke_url}"
 }

@@ -20,6 +20,15 @@ resource "aws_iam_role" "get_schedule_iam_role" {
 EOF
 }
 
+/**
+ * Enable APIGateway logging to CloudWatch.
+ */
+/*
+resource "aws_api_gateway_account" "account_cloudwatch" {
+  cloudwatch_role_arn = "${aws_iam_role.get_schedule_iam_role.arn}"
+}
+*/
+
 resource "aws_lambda_function" "get_schedule_lambda_function" {
   filename         = "../generated/get_schedule.zip"
   function_name    = "get_schedule"
