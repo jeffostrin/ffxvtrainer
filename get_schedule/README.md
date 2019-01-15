@@ -10,6 +10,11 @@ terraform$ terraform destroy -auto-approve; terraform apply -auto-approve
 
 get_schedule$ ./create_lambda_distro.sh
 get_schedule$ ./deploy_lambda_distro.sh
+get_schedule$ rm -rf generated
+
+
+get_schedule$ ./create_lambda_distro.sh; ./deploy_lambda_distro.sh; rm -rf generated
+
 
 # Useful urls
 
