@@ -246,7 +246,7 @@ def display_hepoch(hepoch, json)
   end
 
   data = json[hepoch]
-  puts data
+  puts "current hepoch > " + data.to_s
 end
 
 def edit_hepoch(hepoch, json)
@@ -287,6 +287,9 @@ c = "x"
 while c != "q" do
 
   hepoch = state.get_hepoch
+
+  display_hepoch(hepoch, json)
+
   options = get_options(json, hepoch)
   options.keys.sort.each do |key|
   	option = "  #{key} - #{options[key].name}"
