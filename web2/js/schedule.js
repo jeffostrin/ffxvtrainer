@@ -66,8 +66,8 @@
 
   function updateClock(response) {
     $('#updates').append($('<div id=schedule />'));
-    console.log(response);
-    console.log(response.schedule);
+    // console.log(response);
+    // console.log(response.schedule);
     Object.keys(response.schedule.hepochs).sort().forEach(
       function(key) {
         var line = "<div>";
