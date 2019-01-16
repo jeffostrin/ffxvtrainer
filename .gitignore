@@ -1,6 +1,6 @@
 get_schedule/generated
 
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-terraform/variables.secret.tf
-terraform/.terraform/
+*/terraform/terraform.tfstate
+*/terraform/terraform.tfstate.backup
+*/terraform/variables.secret.tf
+*/terraform/.terraform/
