@@ -19,3 +19,4 @@ terraform$ terraform destroy -auto-approve; terraform apply -auto-approve
 # Useful urls
 
 https://claudiajs.com/tutorials/designing-testable-lambdas.html
+https://learn.hashicorp.com/terraform/aws/lambda-api-gateway
