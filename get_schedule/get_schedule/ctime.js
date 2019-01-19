@@ -5,6 +5,10 @@ var momentTZ = require('moment-timezone');
 
 module.exports = class CTime {
   constructor(utcOffset) {
+    if (utcOffset === null || utcOffset === undefined) {
+      throw "CTime.ctor requires utcOffset be set";
+    }
+
     this.SECONDS_IN_HOUR = 60 * 60;
 
     this.now = moment();
