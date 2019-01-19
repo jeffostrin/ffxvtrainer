@@ -45,14 +45,15 @@
     if (getUrlParameter("test") == "true") { // test / debug
       return updateClock(getTestResponse());
     } else {
-      var api_url = "https://1xg9eeepjf.execute-api.us-east-1.amazonaws.com/prod"
+      var api_url = "https://ng06xi3pog.execute-api.us-east-1.amazonaws.com/prod"
+      var utcOffset = -1 * (new Date()).getTimezoneOffset()/60;
       $.ajax({
         method: 'POST',
         url: api_url + "/schedule", // _config.api.invokeUrl + '/clock',
         headers: {
             // Authorization: authToken
         },
-        data: JSON.stringify({ "a": 123 }),
+        data: JSON.stringify({ "utcoffset": utcOffset }),
         contentType: 'application/json',
         success: updateClock,
         error: function ajaxError(jqXHR, textStatus, errorThrown) {
