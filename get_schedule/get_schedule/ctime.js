@@ -4,11 +4,14 @@ var moment = require('moment')
 var momentTZ = require('moment-timezone');
 
 module.exports = class CTime {
-  constructor() {
+  constructor(utcOffset) {
     this.SECONDS_IN_HOUR = 60 * 60;
 
     this.now = moment();
+    this.now.utcOffset(utcOffset);
     this.nowTZ = momentTZ();
+    this.nowTZ.utcOffset(utcOffset);
+    this.utcOffset = utcOffset;
   }
 
   epochSeconds() {
@@ -33,7 +36,9 @@ module.exports = class CTime {
     // }
     // this.now.valueOf(sepoch);
     this.now = moment(sepoch * 1000);
+    this.now.utcOffset(this.utcOffset);
     this.nowTZ = momentTZ(sepoch * 1000);
+    this.nowTZ.utcOffset(this.utcOffset);
   }
 
   pp() {
@@ -42,6 +47,7 @@ module.exports = class CTime {
     var SECONDS_IN_HOUR = 60 * 60;
     var SECONDS_IN_DAY = SECONDS_IN_HOUR * 24;
     var nowTZ = this.nowTZ;
+    var utcOffset = this.utcOffset;
 
     return {
       pst: function() {
@@ -54,7 +60,9 @@ module.exports = class CTime {
         return nowTZ.tz("GMT").format('HH:mm (MM-DD)') + " GMT";
       },
       dayTime: function(hepoch) {
-        return momentTZ(hepoch * SECONDS_IN_HOUR * 1000).tz("America/Los_Angeles").format('hh:mma (MM-DD)');
+        var m = moment(hepoch * SECONDS_IN_HOUR * 1000);
+        m.utcOffset(utcOffset);
+        return m.format('hh:mma (MM-DD)');
       },
       asRelativeTime: function(relativeSeconds) {
         if (relativeSeconds <= ONE_HOUR_AGO) {

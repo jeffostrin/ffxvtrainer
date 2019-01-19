@@ -3,13 +3,13 @@
 const CTime = require('./ctime');
 const EventLoader = require('./event_loader')
 
-module.exports = function Clock() {
+module.exports = function Clock(utcOffset) {
 
   var eventLoader = new EventLoader();
   var forecaster = eventLoader.load();
 
   this.generate_json = function () {
-    var ctime = new CTime();
+    var ctime = new CTime(utcOffset);
     var nowHepoch = ctime.epochHour();
     var nowSepoch = ctime.epochSeconds();
 

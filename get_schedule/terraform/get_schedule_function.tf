@@ -33,7 +33,7 @@ resource "aws_lambda_function" "get_schedule_lambda_function" {
   filename         = "../generated/get_schedule.zip"
   function_name    = "get_schedule"
   role             = "${aws_iam_role.get_schedule_iam_role.arn}"
-  handler          = "index.lambda_handler_v2"
+  handler          = "index.lambda_handler_v3"
   source_code_hash = "${base64sha256(file("../generated/get_schedule.zip"))}"
   runtime          = "nodejs8.10"
 
