@@ -41,7 +41,7 @@
     return lpad(hourlyEvents[0].name + " or ", 26, padding) + " " + lpad(hourlyEvents[1].name, 21, " ")
   }
 
-  $(function onDocReady() {
+  function loadSchedule() {
     if (getUrlParameter("test") == "true") { // test / debug
       return updateClock(getTestResponse());
     } else {
@@ -63,6 +63,18 @@
         }
       });
     }
+  }
+
+  function startTimer() {
+    setInterval(
+      loadSchedule,
+      1 * 60 * 1000 // 1 minute
+    )
+  }
+
+  $(function onDocReady() {
+    loadSchedule();
+    startTimer();
   });
 
   function updateClock(response) {
