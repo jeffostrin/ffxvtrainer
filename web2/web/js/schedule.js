@@ -68,7 +68,7 @@
   function startTimer() {
     setInterval(
       loadSchedule,
-      1 * 60 * 1000 // 1 minute
+        1 * 60 * 1000 // 1 minute
     )
   }
 
@@ -78,6 +78,7 @@
   });
 
   function updateClock(response) {
+    $('#updates').empty();
     $('#updates').append($('<div id=schedule />'));
     // console.log(response);
     // console.log(response.schedule);
