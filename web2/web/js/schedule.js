@@ -56,11 +56,7 @@
         data: JSON.stringify({ "utcoffset": utcOffset }),
         contentType: 'application/json',
         success: updateClock,
-        error: function ajaxError(jqXHR, textStatus, errorThrown) {
-            console.error('Error requesting schedule: ', textStatus, ', Details: ', errorThrown);
-            console.error('Response: ', jqXHR.responseText);
-            alert('An error occured when requesting the schedule:\n' + jqXHR.responseText);
-        }
+        error: handleError
       });
     }
   }
@@ -77,7 +73,19 @@
     startTimer();
   });
 
+  function handleError(jqXHR, textStatus, errorThrown) {
+    $('#comm_error').empty();
+    $('#comm_error').append("Error contacting server, data may be out of date");
+
+    // function ajaxError(jqXHR, textStatus, errorThrown) {
+        // console.error('Error requesting schedule: ', textStatus, ', Details: ', errorThrown);
+        // console.error('Response: ', jqXHR.responseText);
+    //     alert('An error occured when requesting the schedule:\n' + jqXHR.responseText);
+    // }
+  }
+
   function updateClock(response) {
+    $('#comm_error').empty();
     $('#updates').empty();
     $('#updates').append($('<div id=schedule />'));
     // console.log(response);
