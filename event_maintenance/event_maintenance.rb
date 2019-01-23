@@ -286,6 +286,8 @@ c = "x"
 
 while c != "q" do
 
+  puts
+
   hepoch = state.get_hepoch
 
   display_hepoch(hepoch, json)
@@ -299,7 +301,8 @@ while c != "q" do
     puts option
   end
 
-  prompt = "+@ " + Fmt.time(state.get_local_time).as_local_hour_and_day +  " " + hepoch + " >"
+# make %w the day-of week (monday, tuesday, wednesday...)
+  prompt = "+@ " + state.get_local_time.strftime("[%w]") + " " + Fmt.time(state.get_local_time).as_local_hour_and_day +  " " + hepoch + " >"
   puts prompt
 
   c = read_char
