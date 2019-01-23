@@ -59,12 +59,6 @@ function do_handler(event, context, callback, utc_offset) {
   callback(null, response)
 };
 
-exports.lambda_handler_v2 = async (event, context, callback) => {
-  let utc_offset = getParameter("utcoffset").from(event).or(-8);
-  do_handler(event, context, callback, utc_offset);
-};
-
-
 exports.lambda_handler_v3 = async (event, context, callback) => {
   let utc_offset = getParameter("utcoffset").from(event).or(-8);
   do_handler(event, context, callback, utc_offset);
