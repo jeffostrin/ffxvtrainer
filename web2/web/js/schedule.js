@@ -35,10 +35,10 @@
     hourlyEvents = hourlyEvents.sort((x,y) => x.score < y.score);
 
     if (hourlyEvents.length == 1) {
-      return hourlyEvents[0].name;
+      return "[ " + hourlyEvents[0].name + " ]";
     }
 
-    return lpad(hourlyEvents[0].name + " or ", 26, padding) + " " + lpad(hourlyEvents[1].name, 21, " ")
+    return "[ " + lpad(hourlyEvents[0].name + " or ", 26, padding) + " " + lpad(hourlyEvents[1].name, 21, padding) + " ]"
   }
 
   function loadSchedule() {
@@ -114,6 +114,13 @@
         var hourlyOutput = present_hourly_events(hourlyEvents, padding);
         line += hourlyOutput;
 
+        if (val.luna_events !== null && val.luna_events !== undefined) {
+          if (val.luna_events.length > 0) {
+            var lunaEvent = lpad(" " + val.luna_events + " ", 20, padding);
+            line += " " + padding + lunaEvent;
+          }
+        }
+
         line += "</div>";
         $('#schedule').append(line);
       }
@@ -148,7 +155,8 @@
             "hourly_events": {
               "Monster Hunt": 200,
               "Guild Quests": 50
-            }
+            },
+            "luna_events": []
           },
           "425546": {
             "hepoch": 425546,
@@ -159,7 +167,10 @@
               "Guild Quests": 250,
               "Guild RSS Help": 25,
               "Monster": 50
-            }
+            },
+            "luna_events": [
+              "Adventurer Contract"
+            ]
           },
           "425547": {
             "hepoch": 425545,
@@ -177,9 +188,9 @@
             "dayTime": "09:00pm (07-18)",
             "relativeTime": "in 2:01",
             "hourly_events": {
-              "Guild Quests": 250,
-              "Guild RSS Help": 25,
-              "Monster": 50
+              "Combine Gems": 250,
+              "Gather RSS": 25,
+              "Hero Quests": 50
             }
           },
           "425549": {
@@ -188,7 +199,7 @@
             "dayTime": "10:00pm (07-18)",
             "relativeTime": "in 3:01",
             "hourly_events": {
-              "Monster Hunt": 200,
+              "Monster": 200,
               "Guild Quests": 50
             }
           },
@@ -198,7 +209,7 @@
             "dayTime": "11:00pm (07-18)",
             "relativeTime": "in 4:01",
             "hourly_events": {
-              "Guild Quests": 250,
+              "Hero Quests": 250,
               "Guild RSS Help": 25,
               "Monster": 50
             }
