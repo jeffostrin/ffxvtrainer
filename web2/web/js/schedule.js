@@ -32,7 +32,7 @@
   }
 
   function present_hourly_events(hourlyEvents, padding) {
-    hourlyEvents = hourlyEvents.sort((x,y) => x.score < y.score);
+    hourlyEvents.sort((x,y) => { return y.score - x.score });
 
     if (hourlyEvents.length == 1) {
       return "[ " + hourlyEvents[0].name + " ]";
