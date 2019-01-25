@@ -87,6 +87,13 @@
   function updateClock(response) {
     $('#comm_error').empty();
     $('#updates').empty();
+
+    var currentTime = "<div>";
+    currentTime += "Last Refresh at " + (new Date()); //.format('hh:mma (MM-DD)'));
+    currentTime += "</div>";
+    $('#updates').append(currentTime);
+
+
     $('#updates').append($('<div id=schedule />'));
     // console.log(response);
     // console.log(response.schedule);
