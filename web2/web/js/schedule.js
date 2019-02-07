@@ -76,6 +76,8 @@
   function handleError(jqXHR, textStatus, errorThrown) {
     $('#comm_error').empty();
     $('#comm_error').append("Error contacting server, data may be out of date");
+    $('#updates').empty();
+    _updateClock(window.ffxv_schedule);
 
     // function ajaxError(jqXHR, textStatus, errorThrown) {
         // console.error('Error requesting schedule: ', textStatus, ', Details: ', errorThrown);
@@ -93,7 +95,11 @@
     currentTime += "</div>";
     $('#updates').append(currentTime);
 
+    window.ffxv_schedule = response;
+    _updateClock(window.ffxv_schedule);
+  }
 
+  function _updateClock(response) {
     $('#updates').append($('<div id=schedule />'));
     // console.log(response);
     // console.log(response.schedule);
