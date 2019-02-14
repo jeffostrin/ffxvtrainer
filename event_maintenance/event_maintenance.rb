@@ -302,7 +302,7 @@ while c != "q" do
   end
 
 # make %w the day-of week (monday, tuesday, wednesday...)
-  prompt = "+@ " + state.get_local_time.strftime("[%w]") + " " + Fmt.time(state.get_local_time).as_local_hour_and_day +  " " + hepoch + " >"
+  prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d %I:%M %H:%M (%A)") + " " + hepoch + ">"
   puts prompt
 
   c = read_char
