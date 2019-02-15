@@ -1,5 +1,96 @@
 
-(function trainer($) {
+var Padding = function() {
+  return {
+    // https://stackoverflow.com/questions/2686855/is-there-a-javascript-function-that-can-pad-a-string-to-get-to-a-determined-leng
+    _pad: function(pad, str, padLeft) {
+      if (typeof str === 'undefined')
+        return pad;
+      if (padLeft) {
+        return (pad + str).slice(-pad.length);
+      } else {
+        return (str + pad).substring(0, pad.length);
+      }
+    },
+    leftPad: function(paddingFormat, valueToPad) {
+      return (paddingFormat + valueToPad).slice(-paddingFormat.length);
+    },
+    rightPad: function(paddingFormat, valueToPad) {
+      return (valueToPad + paddingFormat).substring(0, paddingFormat.length);
+    },
+  }
+}
+
+var Ctime = function(padding) {
+  var ONE_HOUR_AGO = -1 * 60 * 60;
+  var SECONDS_IN_MINUTE = 60;
+  var SECONDS_IN_HOUR = 60 * 60;
+  var SECONDS_IN_DAY = SECONDS_IN_HOUR * 24;
+
+  return {
+    nowSepoch: function() {
+      // for (var m in now) {
+      //   console.log(m);
+      // }
+      return new Date().valueOf() / 1000;
+    },
+
+    asRelativeTime: function(relativeSeconds) {
+      if (relativeSeconds <= ONE_HOUR_AGO) {
+        return "past"
+      }
+      if (relativeSeconds <= 0) {
+        return "now";
+      }
+      var futureTime = this.asFutureTime(relativeSeconds);
+      return "in " + futureTime;
+    },
+    asFutureTime: function(relativeSeconds) {
+      var days = this._humanifyDays(relativeSeconds);
+      relativeSeconds = relativeSeconds % SECONDS_IN_DAY;
+
+      var hours = this._humanifyHours(relativeSeconds);
+      relativeSeconds = relativeSeconds % SECONDS_IN_HOUR;
+
+      var minutes = this._humanifyMinutes(relativeSeconds)
+      relativeSeconds = relativeSeconds % SECONDS_IN_MINUTE;
+
+      var seconds = this._humanifySeconds(relativeSeconds);
+      return days + hours + minutes + seconds;
+    },
+
+    _humanifyDays: function(timeInSeconds) {
+      if (timeInSeconds < SECONDS_IN_DAY) {
+        return "";
+      }
+
+      var days = Math.trunc(timeInSeconds / SECONDS_IN_DAY);
+      return days + "d ";
+    },
+
+    _humanifyHours: function(timeInSeconds) {
+      if (timeInSeconds < SECONDS_IN_HOUR) {
+        return "0:";
+      }
+
+      var hours = Math.trunc(timeInSeconds / SECONDS_IN_HOUR);
+      return hours + ":";
+    },
+
+    _humanifyMinutes: function(timeInSeconds) {
+      var minutes = Math.trunc(timeInSeconds / 60);
+      return padding.leftPad("00", minutes.toString()) + ":";
+    },
+
+    _humanifySeconds: function(timeInSeconds) {
+      var minutes = Math.trunc(timeInSeconds);
+      return padding.leftPad("00", minutes.toString())
+    }
+  }
+};
+
+
+
+(function trainer($, ct) {
 
   function _lpad(pad, str) {
     return (str + pad).substring(0, pad.length);
@@ -103,6 +194,7 @@
     $('#updates').append($('<div id=schedule />'));
     // console.log(response);
     // console.log(response.schedule);
+    var nowSepoch = ct.nowSepoch();
     Object.keys(response.schedule.hepochs).sort().forEach(
       function(key) {
         var line = "<div>";
@@ -121,7 +213,8 @@
         }
 
         line += " " + val.dayTime;
-        line += lpad(" (" + val.relativeTime + ") ", 16, padding) + " ";
+        var hepoch = val.hepoch;
+        line += lpad(" (" + ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch) + ") ", 16, padding) + " ";
 
         var hourlyEvents = score_hourly_events(val.hourly_events);
         var hourlyOutput = present_hourly_events(hourlyEvents, padding);
@@ -157,11 +250,12 @@
   };
 
   function getTestResponse() {
+    var nowHepoch = (new Date().valueOf() / 1000) / 60 / 60;
     var test_response = {
       "schedule": {
         "hepochs": {
           "425545": {
-            "hepoch": 425545,
+            "hepoch": (nowHepoch-1),
             "isCurrentHepoch": true,
             "dayTime": "06:00pm (07-18)",
             "relativeTime": "now",
@@ -172,7 +266,7 @@
             "luna_events": []
           },
           "425546": {
-            "hepoch": 425546,
+            "hepoch": (nowHepoch),
             "isCurrentHepoch": false,
             "dayTime": "07:00pm (07-18)",
             "relativeTime": "in 0:01",
@@ -186,7 +280,7 @@
             ]
           },
           "425547": {
-            "hepoch": 425545,
+            "hepoch": (nowHepoch+1),
             "isCurrentHepoch": false,
             "dayTime": "08:00pm (07-18)",
             "relativeTime": "in 1:01",
@@ -196,7 +290,7 @@
             }
           },
           "425548": {
-            "hepoch": 425546,
+            "hepoch": (nowHepoch+2),
             "isCurrentHepoch": false,
             "dayTime": "09:00pm (07-18)",
             "relativeTime": "in 2:01",
@@ -207,7 +301,7 @@
             }
           },
           "425549": {
-            "hepoch": 425545,
+            "hepoch": (nowHepoch+3),
             "isCurrentHepoch": false,
             "dayTime": "10:00pm (07-18)",
             "relativeTime": "in 3:01",
@@ -217,7 +311,7 @@
             }
           },
           "425550": {
-            "hepoch": 425546,
+            "hepoch": (nowHepoch+4),
             "isCurrentHepoch": false,
             "dayTime": "11:00pm (07-18)",
             "relativeTime": "in 4:01",
@@ -293,4 +387,4 @@
   }
 
 
-}(jQuery));
+}(jQuery, Ctime(Padding())));
