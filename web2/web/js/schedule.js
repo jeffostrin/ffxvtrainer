@@ -90,21 +90,7 @@ var Ctime = function(padding) {
 
 
 
-(function trainer($, ct) {
-
-  function _lpad(pad, str) {
-    return (str + pad).substring(0, pad.length);
-  }
-
-  function lpad(str, length, fillCharacter) {
-    var fill = "";
-    var l = Math.max(length, str.length);
-    for (var i = 0; i < l; ++i) {
-      fill += fillCharacter;
-    }
-    var r = _lpad(fill, str);
-    return r;
-  }
+(function trainer($, ct, padder) {
 
   function score_hourly_events(events) {
     var totalPoints = 0;
@@ -129,7 +115,7 @@ var Ctime = function(padding) {
       return "[ " + hourlyEvents[0].name + " ]";
     }
 
-    return "[ " + lpad(hourlyEvents[0].name + " or ", 26, padding) + " " + lpad(hourlyEvents[1].name, 21, padding) + " ]"
+    return "[ " + padder.leftPad(hourlyEvents[0].name + " or ", 26, padding) + " " + padder.leftPad(hourlyEvents[1].name, 21, padding) + " ]"
   }
 
   function loadSchedule() {
@@ -214,7 +200,7 @@ var Ctime = function(padding) {
 
         line += " " + val.dayTime;
         var hepoch = val.hepoch;
-        line += lpad(" (" + ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch) + ") ", 16, padding) + " ";
+        line += padder.leftPad(" (" + ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch) + ") ", 16, padding) + " ";
 
         var hourlyEvents = score_hourly_events(val.hourly_events);
         var hourlyOutput = present_hourly_events(hourlyEvents, padding);
@@ -222,7 +208,7 @@ var Ctime = function(padding) {
 
         if (val.luna_events !== null && val.luna_events !== undefined) {
           if (val.luna_events.length > 0) {
-            var lunaEvent = lpad(" " + val.luna_events + " ", 20, padding);
+            var lunaEvent = padder.leftPad(" " + val.luna_events + " ", 20, padding);
             line += " " + padding + lunaEvent;
           }
         }
@@ -387,4 +373,4 @@ var Ctime = function(padding) {
   }
 
 
-}(jQuery, Ctime(Padding())));
+}(jQuery, Ctime(Padding()), Padding()));
