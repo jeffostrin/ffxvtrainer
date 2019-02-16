@@ -17,6 +17,7 @@ def print_usage
   puts "k - forwards in time 1 hour"
 
   puts "d - display the values for the current hour"
+  puts "h - display the (h)istory for the current hour"
 
   puts "e - edit an hour (to remove observations)"
   puts "a - add observation to an hour (default mode)"
@@ -249,6 +250,15 @@ def display_hepoch(hepoch, json)
   puts "current hepoch > " + data.to_s
 end
 
+def display_hepoch_history(hepoch, json)
+  max_tries = json.keys.size
+
+  (0..max_tries).each do |counter|
+    probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
+    display_hepoch(probe_hepoch, json)
+  end
+end
+
 def edit_hepoch(hepoch, json)
 
 end
@@ -319,6 +329,8 @@ while c != "q" do
   	state.forwards 1
   elsif "d" == c
     display_hepoch(hepoch, json)
+  elsif "h" == c
+    display_hepoch_history(hepoch, json)
   elsif "e" == c
     edit_hepoch(hepoch, json)
   elsif "p" == c
