@@ -11,11 +11,34 @@ var Padding = function() {
         return (str + pad).substring(0, pad.length);
       }
     },
-    leftPad: function(paddingFormat, valueToPad) {
+
+    _createFormat(length, fillCharacter) {
+      var fill = "";
+      for (var i = 0; i < length; ++i) {
+        fill += fillCharacter;
+      }
+      return fill;
+    },
+
+    leftPadFormat: function(paddingFormat, valueToPad) {
       return (paddingFormat + valueToPad).slice(-paddingFormat.length);
     },
-    rightPad: function(paddingFormat, valueToPad) {
+
+    rightPadFormat: function(paddingFormat, valueToPad) {
       return (valueToPad + paddingFormat).substring(0, paddingFormat.length);
+    },
+
+    leftPad: function lpad(str, length, fillCharacter) {
+      var format = this._createFormat(Math.max(length, str.length), fillCharacter);
+      var r = this.leftPadFormat(format, str);
+      return r;
+    },
+
+
+    rightPad: function lpad(str, length, fillCharacter) {
+      var format = this._createFormat(Math.max(length, str.length), fillCharacter);
+      var r = this.rightPadFormat(format, str);
+      return r;
     },
   }
 }
@@ -78,12 +101,12 @@ var Ctime = function(padding) {
 
     _humanifyMinutes: function(timeInSeconds) {
       var minutes = Math.trunc(timeInSeconds / 60);
-      return padding.leftPad("00", minutes.toString()) + ":";
+      return padding.leftPadFormat("00", minutes.toString()) + ":";
     },
 
     _humanifySeconds: function(timeInSeconds) {
       var minutes = Math.trunc(timeInSeconds);
-      return padding.leftPad("00", minutes.toString())
+      return padding.leftPadFormat("00", minutes.toString())
     }
   }
 };
@@ -91,6 +114,20 @@ var Ctime = function(padding) {
 
 
 (function trainer($, ct, padder) {
+
+  function _lpad(pad, str) {
+    return (str + pad).substring(0, pad.length);
+  }
+
+  function lpad(str, length, fillCharacter) {
+    var fill = "";
+    var l = Math.max(length, str.length);
+    for (var i = 0; i < l; ++i) {
+      fill += fillCharacter;
+    }
+    var r = _lpad(fill, str);
+    return r;
+  }
 
   function score_hourly_events(events) {
     var totalPoints = 0;
@@ -115,7 +152,7 @@ var Ctime = function(padding) {
       return "[ " + hourlyEvents[0].name + " ]";
     }
 
-    return "[ " + padder.leftPad(hourlyEvents[0].name + " or ", 26, padding) + " " + padder.leftPad(hourlyEvents[1].name, 21, padding) + " ]"
+    return "[ " + padder.leftPad(hourlyEvents[0].name + " or ", 26, padding) + " " + padder.rightPad(hourlyEvents[1].name, 21, padding) + " ]"
   }
 
   function loadSchedule() {
@@ -200,7 +237,7 @@ var Ctime = function(padding) {
 
         line += " " + val.dayTime;
         var hepoch = val.hepoch;
-        line += padder.leftPad(" (" + ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch) + ") ", 16, padding) + " ";
+        line += lpad(" (" + ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch) + ") ", 16, padding) + " ";
 
         var hourlyEvents = score_hourly_events(val.hourly_events);
         var hourlyOutput = present_hourly_events(hourlyEvents, padding);
@@ -208,7 +245,7 @@ var Ctime = function(padding) {
 
         if (val.luna_events !== null && val.luna_events !== undefined) {
           if (val.luna_events.length > 0) {
-            var lunaEvent = padder.leftPad(" " + val.luna_events + " ", 20, padding);
+            var lunaEvent = lpad(" " + val.luna_events + " ", 20, padding);
             line += " " + padding + lunaEvent;
           }
         }
