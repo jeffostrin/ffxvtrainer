@@ -18,6 +18,7 @@ def print_usage
 
   puts "d - display the values for the current hour"
   puts "h - display the (h)istory for the current hour"
+  puts "g - generate a file that has the most recent 10 entries per hour"
 
   puts "e - edit an hour (to remove observations)"
   puts "a - add observation to an hour (default mode)"
@@ -259,6 +260,10 @@ def display_hepoch_history(hepoch, json)
   end
 end
 
+def generate_compact_file(json)
+  puts "generating file"
+end
+
 def edit_hepoch(hepoch, json)
 
 end
@@ -331,6 +336,8 @@ while c != "q" do
     display_hepoch(hepoch, json)
   elsif "h" == c
     display_hepoch_history(hepoch, json)
+  elsif "g" == c
+    generate_compact_file(json)
   elsif "e" == c
     edit_hepoch(hepoch, json)
   elsif "p" == c
