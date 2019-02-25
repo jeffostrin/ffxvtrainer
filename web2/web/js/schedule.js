@@ -1,4 +1,19 @@
 
+window.onload = function() {
+  var explainLink = document.getElementById("explain");
+  explainLink.onclick = function() {
+    var explanationText = document.getElementById("explanation");
+    if (explanationText.style.display === "none") {
+      explanationText.style.display = "block";
+    } else {
+      explanationText.style.display = "none";
+    }
+    return false;
+  }
+}
+
+
+
 var Padding = function() {
   return {
     // https://stackoverflow.com/questions/2686855/is-there-a-javascript-function-that-can-pad-a-string-to-get-to-a-determined-leng
