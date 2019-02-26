@@ -167,7 +167,7 @@ var Ctime = function(padding) {
       return "[ " + hourlyEvents[0].name + " ]";
     }
 
-    return "[ " + padder.leftPad(hourlyEvents[0].name + " or ", 26, padding) + " " + padder.rightPad(hourlyEvents[1].name, 21, padding) + " ]"
+    return "[ " + padder.leftPad(hourlyEvents[0].name, 26, padding) + " or " + padder.rightPad(hourlyEvents[1].name, 21, padding) + " ]"
   }
 
   function loadSchedule() {
