@@ -252,7 +252,8 @@ var Ctime = function(padding) {
 
         line += " " + val.dayTime;
         var hepoch = val.hepoch;
-        line += lpad(" (" + ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch) + ") ", 16, padding) + " ";
+        var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
+        line += lpad(" (" + relativeTime + ") ", 16, padding) + " ";
 
         var hourlyEvents = score_hourly_events(val.hourly_events);
         var hourlyOutput = present_hourly_events(hourlyEvents, padding);
@@ -296,7 +297,6 @@ var Ctime = function(padding) {
             "hepoch": (nowHepoch-1),
             "isCurrentHepoch": true,
             "dayTime": "06:00pm (07-18)",
-            "relativeTime": "now",
             "hourly_events": {
               "Monster Hunt": 200,
               "Guild Quests": 50
@@ -307,7 +307,6 @@ var Ctime = function(padding) {
             "hepoch": (nowHepoch),
             "isCurrentHepoch": false,
             "dayTime": "07:00pm (07-18)",
-            "relativeTime": "in 0:01",
             "hourly_events": {
               "Guild Quests": 250,
               "Guild RSS Help": 25,
@@ -321,7 +320,6 @@ var Ctime = function(padding) {
             "hepoch": (nowHepoch+1),
             "isCurrentHepoch": false,
             "dayTime": "08:00pm (07-18)",
-            "relativeTime": "in 1:01",
             "hourly_events": {
               "Monster Hunt": 200,
               "Guild Quests": 50
@@ -331,7 +329,6 @@ var Ctime = function(padding) {
             "hepoch": (nowHepoch+2),
             "isCurrentHepoch": false,
             "dayTime": "09:00pm (07-18)",
-            "relativeTime": "in 2:01",
             "hourly_events": {
               "Combine Gems": 250,
               "Gather RSS": 25,
@@ -342,7 +339,6 @@ var Ctime = function(padding) {
             "hepoch": (nowHepoch+3),
             "isCurrentHepoch": false,
             "dayTime": "10:00pm (07-18)",
-            "relativeTime": "in 3:01",
             "hourly_events": {
               "Monster": 200,
               "Guild Quests": 50
@@ -352,7 +348,6 @@ var Ctime = function(padding) {
             "hepoch": (nowHepoch+4),
             "isCurrentHepoch": false,
             "dayTime": "11:00pm (07-18)",
-            "relativeTime": "in 4:01",
             "hourly_events": {
               "Hero Quests": 250,
               "Guild RSS Help": 25,
