@@ -317,7 +317,7 @@ while c != "q" do
   end
 
 # make %w the day-of week (monday, tuesday, wednesday...)
-  prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d %I:%M(%P) %H:%M (%A)") + " " + hepoch + ">"
+  prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
   puts prompt
 
   c = read_char
