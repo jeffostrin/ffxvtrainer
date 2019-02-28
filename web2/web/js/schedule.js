@@ -1,8 +1,20 @@
 
 window.onload = function() {
-  var explainLink = document.getElementById("explain");
-  explainLink.onclick = function() {
-    var explanationText = document.getElementById("explanation");
+
+  var explainScheduleLink = document.getElementById("explain_schedule");
+  explainScheduleLink.onclick = function() {
+    var explanationText = document.getElementById("schedule_explanation");
+    if (explanationText.style.display === "none") {
+      explanationText.style.display = "block";
+    } else {
+      explanationText.style.display = "none";
+    }
+    return false;
+  }
+
+  var explainTrainingLink = document.getElementById("explain_training");
+  explainTrainingLink.onclick = function() {
+    var explanationText = document.getElementById("training_explanation");
     if (explanationText.style.display === "none") {
       explanationText.style.display = "block";
     } else {
