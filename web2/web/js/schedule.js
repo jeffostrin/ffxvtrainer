@@ -182,6 +182,16 @@ var Ctime = function(padding) {
     return "[ " + padder.leftPad(hourlyEvents[0].name, 26, padding) + " or " + padder.rightPad(hourlyEvents[1].name, 21, padding) + " ]"
   }
 
+  function present_hourly_events2(hourlyEvents, padding) {
+    hourlyEvents.sort((x,y) => { return y.score - x.score });
+
+    if (hourlyEvents.length == 1) {
+      return "[ " + hourlyEvents[0].name + " ]";
+    }
+
+    return hourlyEvents[0].name + " or " + hourlyEvents[1].name;
+  }
+
   function loadSchedule() {
     if (getUrlParameter("test") == "true") { // test / debug
       return updateClock(getTestResponse());
@@ -280,6 +290,45 @@ var Ctime = function(padding) {
 
         line += "</div>";
         $('#schedule').append(line);
+      }
+    );
+
+    $('#updates').append($('<div><table id=schedule2 /></div>'));
+    Object.keys(response.schedule.hepochs).sort().forEach(
+      function(key) {
+        var line = "<tr>";
+
+        var val = response.schedule.hepochs[key];
+
+        var padding = "";
+        var header = "";
+        if (val.isCurrentHepoch) {
+          header = "=>";
+          padding = "=";
+        } else if (key % 4 == 0) {
+          padding = "--";
+        }
+
+        line += "<td>" + header + "</td>";
+        line += "<td>" + val.dayTime + "</td>";
+
+        var hepoch = val.hepoch;
+        var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
+        line += "<td>(</td><td>" + relativeTime + "</td><td>)</td>";
+
+        var hourlyEvents = score_hourly_events(val.hourly_events);
+        var hourlyOutput = present_hourly_events2(hourlyEvents, padding);
+        line += "<td>[</td><td>" + hourlyOutput + "</td><td>]</td>";
+
+        if (val.luna_events !== null && val.luna_events !== undefined) {
+          if (val.luna_events.length > 0) {
+            var lunaEvent = lpad(" " + val.luna_events + " ", 20, " ");
+            line += "<td>" + lunaEvent + "</td>";
+          }
+        }
+
+        line += "</tr>";
+        //$('#schedule2').append(line);
       }
     );
   }
