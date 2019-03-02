@@ -186,7 +186,7 @@ var Ctime = function(padding) {
     hourlyEvents.sort((x,y) => { return y.score - x.score });
 
     if (hourlyEvents.length == 1) {
-      return "[ " + hourlyEvents[0].name + " ]";
+      return hourlyEvents[0].name;
     }
 
     return hourlyEvents[0].name + " or " + hourlyEvents[1].name;
@@ -251,49 +251,63 @@ var Ctime = function(padding) {
   }
 
   function _updateClock(response) {
-    $('#updates').append($('<div id=schedule />'));
     // console.log(response);
     // console.log(response.schedule);
     var nowSepoch = ct.nowSepoch();
-    Object.keys(response.schedule.hepochs).sort().forEach(
-      function(key) {
-        var line = "<div>";
-        var padding = " ";
 
-        var val = response.schedule.hepochs[key];
+    // $('#updates').append($('<div id=schedule />'));
+    // Object.keys(response.schedule.hepochs).sort().forEach(
+    //   function(key) {
+    //     var line = "<div>";
+    //     var padding = " ";
+    //
+    //     var val = response.schedule.hepochs[key];
+    //
+    //     if (val.isCurrentHepoch) {
+    //       line += "=>";
+    //       padding = "=";
+    //     } else if (key % 4 == 0) {
+    //       line += "--";
+    //       padding = "-";
+    //     } else {
+    //       line += "  ";
+    //     }
+    //
+    //     line += " " + val.dayTime;
+    //     var hepoch = val.hepoch;
+    //     var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
+    //     line += lpad(" (" + relativeTime + ") ", 16, padding) + " ";
+    //
+    //     var hourlyEvents = score_hourly_events(val.hourly_events);
+    //     var hourlyOutput = present_hourly_events(hourlyEvents, padding);
+    //     line += hourlyOutput;
+    //
+    //     if (val.luna_events !== null && val.luna_events !== undefined) {
+    //       if (val.luna_events.length > 0) {
+    //         var lunaEvent = lpad(" " + val.luna_events + " ", 20, padding);
+    //         line += " " + padding + lunaEvent;
+    //       }
+    //     }
+    //
+    //     line += "</div>";
+    //     $('#schedule').append(line);
+    //   }
+    // );
 
-        if (val.isCurrentHepoch) {
-          line += "=>";
-          padding = "=";
-        } else if (key % 4 == 0) {
-          line += "--";
-          padding = "-";
-        } else {
-          line += "  ";
-        }
-
-        line += " " + val.dayTime;
-        var hepoch = val.hepoch;
-        var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
-        line += lpad(" (" + relativeTime + ") ", 16, padding) + " ";
-
-        var hourlyEvents = score_hourly_events(val.hourly_events);
-        var hourlyOutput = present_hourly_events(hourlyEvents, padding);
-        line += hourlyOutput;
-
-        if (val.luna_events !== null && val.luna_events !== undefined) {
-          if (val.luna_events.length > 0) {
-            var lunaEvent = lpad(" " + val.luna_events + " ", 20, padding);
-            line += " " + padding + lunaEvent;
-          }
-        }
-
-        line += "</div>";
-        $('#schedule').append(line);
-      }
+    $('#updates').append($('<div><table id=schedule /></div>'));
+    $('#schedule').append(
+      "<td></td>" +
+      "<td align=center>Start Time</td>" +
+      "<td></td>" +
+      "<td align=center>From Now</td>" +
+      "<td></td>" +
+      "<td></td>" +
+      "<td  align=center colspan=2>Mini Events</td>" +
+      "<td></td>" +
+      "<td></td>" +
+      "<td align=center>Luna Gifts</td>" +
+      "<td></td>"
     );
-
-    $('#updates').append($('<div><table id=schedule2 /></div>'));
     Object.keys(response.schedule.hepochs).sort().forEach(
       function(key) {
         var line = "<tr>";
@@ -314,21 +328,27 @@ var Ctime = function(padding) {
 
         var hepoch = val.hepoch;
         var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
-        line += "<td>(</td><td>" + relativeTime + "</td><td>)</td>";
+        line += "<td>(</td><td align=center>" + relativeTime + "</td><td>)</td>";
 
         var hourlyEvents = score_hourly_events(val.hourly_events);
         var hourlyOutput = present_hourly_events2(hourlyEvents, padding);
-        line += "<td>[</td><td>" + hourlyOutput + "</td><td>]</td>";
+        line += "<td>[</td><td align=right>" + hourlyEvents[0].name + "</td>";
+        if (hourlyEvents.length > 1) {
+          line += "<td>or " + hourlyEvents[1].name + "</td>";
+        } else {
+          line += "<td></td>";
+        }
+        line += "<td>]</td>";
 
         if (val.luna_events !== null && val.luna_events !== undefined) {
           if (val.luna_events.length > 0) {
             var lunaEvent = lpad(" " + val.luna_events + " ", 20, " ");
-            line += "<td>" + lunaEvent + "</td>";
+            line += "<td>[</td><td>" + lunaEvent + "</td><td>]</td>";
           }
         }
 
         line += "</tr>";
-        //$('#schedule2').append(line);
+        $('#schedule').append(line);
       }
     );
   }
@@ -413,6 +433,14 @@ var Ctime = function(padding) {
               "Hero Quests": 250,
               "Guild RSS Help": 25,
               "Monster": 50
+            }
+          },
+          "425550": {
+            "hepoch": (nowHepoch+4),
+            "isCurrentHepoch": false,
+            "dayTime": "11:00pm (07-18)",
+            "hourly_events": {
+              "Training": 250
             }
           },
         }
