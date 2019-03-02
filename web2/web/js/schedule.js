@@ -296,17 +296,17 @@ var Ctime = function(padding) {
 
     $('#updates').append($('<div><table id=schedule /></div>'));
     $('#schedule').append(
-      "<td></td>" +
-      "<td align=center>Start Time</td>" +
-      "<td></td>" +
-      "<td align=center>From Now</td>" +
-      "<td></td>" +
-      "<td></td>" +
-      "<td  align=center colspan=2>Mini Events</td>" +
-      "<td></td>" +
-      "<td></td>" +
-      "<td align=center>Luna Gifts</td>" +
-      "<td></td>"
+      "<th></th>" +
+      "<th align=center>Start Time</th>" +
+      "<th></th>" +
+      "<th align=center>From Now</th>" +
+      "<th></th>" +
+      "<th></th>" +
+      "<th  align=center colspan=2>Mini Events</th>" +
+      "<th></th>" +
+      "<th></th>" +
+      "<th align=center>Luna Gifts</th>" +
+      "<th></th>"
     );
     Object.keys(response.schedule.hepochs).sort().forEach(
       function(key) {
