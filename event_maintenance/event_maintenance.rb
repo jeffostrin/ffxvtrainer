@@ -10,11 +10,15 @@ file_name = "mini_events.json"
 
 def print_usage
   puts "============================"
-  puts "u - backwards in time 1 day"
-  puts "j - backwards in time 1 hour"
 
-  puts "i - forwards in time 1 day"
-  puts "k - forwards in time 1 hour"
+  puts "u - backwards in time 1 day"
+  puts "i - backwards in time 1 hour"
+  puts "o - forwards in time 1 hour"
+  puts "p - forwards in time 1 day"
+
+  puts "j - mini-event-mode"
+  puts "k - luna-gift-mode"
+
 
   puts "d - display the values for the current hour"
   puts "h - display the (h)istory for the current hour"
@@ -288,6 +292,12 @@ def print_schedule(hepoch, json)
   end
 end
 
+def mini_event_mode
+end
+
+def luna_gift_mode
+end
+
 json = read_json_file(file_name)
 
 state = Navigation.new
@@ -326,12 +336,16 @@ while c != "q" do
 
   if "u" == c || "\e[A"  == c
   	state.backwards 24
-  elsif "j" == c || "\e[D" == c
+  elsif "i" == c || "\e[D" == c
   	state.backwards 1
-  elsif "i" == c || "\e[B" == c
-  	state.forwards 24
-  elsif "k" == c || "\e[C" == c
+  elsif "o" == c || "\e[C" == c
   	state.forwards 1
+  elsif "p" == c || "\e[B" == c
+  	state.forwards 24
+  elsif "j" == c
+    mini_event_mode
+  elsif "k" == c
+    luna_gift_mode
   elsif "d" == c
     display_hepoch(hepoch, json)
   elsif "h" == c
