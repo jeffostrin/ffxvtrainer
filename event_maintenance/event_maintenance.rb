@@ -1,7 +1,6 @@
 require 'json'
 require_relative '../time_constants'
 require_relative '../fmt'
-require_relative '../events_mini'
 require_relative '../assert'
 require_relative 'scoring'
 require_relative 'score_merge'
@@ -10,10 +9,13 @@ mini_events_file_name = "mini_events.json"
 
 class Mode
   attr_reader :file_name
+  attr_reader :default_options
 
   def initialize(params)
     @file_name = params[:file_name]
     assert(@file_name != nil, "Mode.file_name is required")
+    @default_options = params[:default_options]
+    assert(@default_options != nil, "Mode.default_options is required")
   end
 end
 
@@ -171,14 +173,6 @@ class Option
   end
 end
 
-def get_default_options
-  options = []
-  MiniEvents::Options.each do |option|
-    options << Option.new(:name => option)
-  end
-  return options
-end
-
 def calculate_historical_scores(json, hepoch, num_days_ago)
   # assert hepoch is a number
 
@@ -237,10 +231,10 @@ def sort_historical_options(options)
 end
 
 
-def get_options(json, hepoch)
+def get_options(mode, json, hepoch)
   option_list = get_historical_options(json, hepoch)
   option_list = sort_historical_options(option_list)
-  get_default_options.each do |option|
+  mode.default_options.each do |option|
   	option_list << option
   end
 
@@ -299,12 +293,35 @@ end
 
 def mini_event_mode
   puts "switch to mini-event-mode"
-  return Mode.new(:file_name => "mini_events.json")
+
+  default_options = []
+  default_options << Option.new(:name => "Gather RSS")
+  default_options << Option.new(:name => "Training")
+  default_options << Option.new(:name => "Monster Hunt")
+  default_options << Option.new(:name => "Spin the Wheel")
+  default_options << Option.new(:name => "Secret Gift")
+  default_options << Option.new(:name => "Guild Defend")
+  default_options << Option.new(:name => "Guild Quests")
+  default_options << Option.new(:name => "Guild RSS Help")
+  default_options << Option.new(:name => "Guild Help")
+  default_options << Option.new(:name => "Hero Quests")
+  default_options << Option.new(:name => "VIP Quests")
+  default_options << Option.new(:name => "Combine Gems")
+  default_options << Option.new(:name => "Combine Materials")
+
+  return Mode.new(:file_name => "mini_events.json", :default_options => default_options)
 end
 
 def luna_gift_mode
   puts "switch to luna-gift-mode"
-  return Mode.new(:file_name => "luna_gifts.json")
+  default_options = []
+  default_options << Option.new(:name => "25x Luna's Gift Fragment")
+  default_options << Option.new(:name => "25x Secret Gift Fragment")
+  default_options << Option.new(:name => "5x VIP Quest Shard")
+  default_options << Option.new(:name => "5x Expedition Shard")
+  default_options << Option.new(:name => "5x Expedition Fragment")
+  default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
+  return Mode.new(:file_name => "luna_gifts.json", :default_options => default_options)
 end
 
 mode = mini_event_mode
@@ -327,7 +344,7 @@ while c != "q" do
 
   display_hepoch(hepoch, json)
 
-  options = get_options(json, hepoch)
+  options = get_options(mode, json, hepoch)
   options.keys.sort.each do |key|
   	option = "  #{key} - #{options[key].name}"
     if options[key].score != nil && options[key].score.length > 0
