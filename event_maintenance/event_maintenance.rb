@@ -6,18 +6,18 @@ require_relative '../assert'
 require_relative 'scoring'
 require_relative 'score_merge'
 
-file_name = "mini_events.json"
+mini_events_file_name = "mini_events.json"
 
 def print_usage
   puts "============================"
 
-  puts "u - backwards in time 1 day"
-  puts "i - backwards in time 1 hour"
-  puts "o - forwards in time 1 hour"
-  puts "p - forwards in time 1 day"
+  puts "j - backwards in time 1 day"
+  puts "k - backwards in time 1 hour"
+  puts "l - forwards in time 1 hour"
+  puts "; - forwards in time 1 day"
 
-  puts "j - mini-event-mode"
-  puts "k - luna-gift-mode"
+  puts "u - mini-event-default-selection"
+  puts "i - luna-gift-default-selection"
 
 
   puts "d - display the values for the current hour"
@@ -298,7 +298,7 @@ end
 def luna_gift_mode
 end
 
-json = read_json_file(file_name)
+json = read_json_file(mini_events_file_name)
 
 state = Navigation.new
 
@@ -334,18 +334,14 @@ while c != "q" do
   # c = STDIN.readline
   # c = c.strip
 
-  if "u" == c || "\e[A"  == c
+  if "j" == c || "\e[A"  == c
   	state.backwards 24
-  elsif "i" == c || "\e[D" == c
+  elsif "k" == c || "\e[D" == c
   	state.backwards 1
-  elsif "o" == c || "\e[C" == c
+  elsif "l" == c || "\e[C" == c
   	state.forwards 1
-  elsif "p" == c || "\e[B" == c
+  elsif ";" == c || "\e[B" == c
   	state.forwards 24
-  elsif "j" == c
-    mini_event_mode
-  elsif "k" == c
-    luna_gift_mode
   elsif "d" == c
     display_hepoch(hepoch, json)
   elsif "h" == c
@@ -360,9 +356,13 @@ while c != "q" do
   elsif "?" == c
     print_usage
   else
-    putc c
-    c = c + STDIN.readline
-    c = c.strip
+    if "u" == c
+      c = "1"
+    else
+      putc c
+      c = c + STDIN.readline
+      c = c.strip
+    end
 
     if options.has_key? c.to_i
   	   selection = options[c.to_i].name
@@ -373,7 +373,7 @@ while c != "q" do
     	json[hepoch] << selection
 
       puts json.to_json
-      write_json_file(file_name, json)
+      write_json_file(mini_events_file_name, json)
 
       state.forwards 1
     else
