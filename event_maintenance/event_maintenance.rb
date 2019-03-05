@@ -8,6 +8,16 @@ require_relative 'score_merge'
 
 mini_events_file_name = "mini_events.json"
 
+class Mode
+  attr_reader :file_name
+
+  def initialize(params)
+    @file_name = params[:file_name]
+    assert(@file_name != nil, "Mode.file_name is required")
+  end
+end
+
+
 def print_usage
   puts "============================"
 
@@ -145,11 +155,6 @@ class Navigation
   def get_local_time
   	return @utc_time.clone.localtime
   end
-
-end
-
-class Mode
-
 
 end
 
@@ -293,12 +298,17 @@ def print_schedule(hepoch, json)
 end
 
 def mini_event_mode
+  puts "switch to mini-event-mode"
+  return Mode.new(:file_name => "mini_events.json")
 end
 
 def luna_gift_mode
+  puts "switch to luna-gift-mode"
+  return Mode.new(:file_name => "luna_gifts.json")
 end
 
-json = read_json_file(mini_events_file_name)
+mode = mini_event_mode
+json = read_json_file(mode.file_name)
 
 state = Navigation.new
 
@@ -342,6 +352,12 @@ while c != "q" do
   	state.forwards 1
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
+  elsif "m" == c
+    mode = mini_event_mode
+    json = read_json_file(mode.file_name)
+  elsif "," == c
+    mode = luna_gift_mode
+    json = read_json_file(mode.file_name)
   elsif "d" == c
     display_hepoch(hepoch, json)
   elsif "h" == c
@@ -373,7 +389,7 @@ while c != "q" do
     	json[hepoch] << selection
 
       puts json.to_json
-      write_json_file(mini_events_file_name, json)
+      write_json_file(mode.file_name, json)
 
       state.forwards 1
     else
