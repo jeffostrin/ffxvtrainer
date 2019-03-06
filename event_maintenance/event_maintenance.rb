@@ -10,15 +10,87 @@ mini_events_file_name = "mini_events.json"
 class Mode
   attr_reader :file_name
   attr_reader :default_options
+  attr_reader :json
 
   def initialize(params)
     @file_name = params[:file_name]
     assert(@file_name != nil, "Mode.file_name is required")
     @default_options = params[:default_options]
     assert(@default_options != nil, "Mode.default_options is required")
+    @json = params[:json]
+    assert(@json != nil, "Mode.json is required")
   end
 end
 
+
+def mini_event_mode
+  default_options = []
+  default_options << Option.new(:name => "Gather RSS")
+  default_options << Option.new(:name => "Training")
+  default_options << Option.new(:name => "Monster Hunt")
+  default_options << Option.new(:name => "Spin the Wheel")
+  default_options << Option.new(:name => "Secret Gift")
+  default_options << Option.new(:name => "Guild Defend")
+  default_options << Option.new(:name => "Guild Quests")
+  default_options << Option.new(:name => "Guild RSS Help")
+  default_options << Option.new(:name => "Guild Help")
+  default_options << Option.new(:name => "Hero Quests")
+  default_options << Option.new(:name => "VIP Quests")
+  default_options << Option.new(:name => "Combine Gems")
+  default_options << Option.new(:name => "Combine Materials")
+
+  file_name = "mini_events.json"
+  json = read_json_file(file_name)
+
+  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+end
+
+def luna_gift_mode
+  default_options = []
+  default_options << Option.new(:name => "25x Luna's Gift Fragment")
+  default_options << Option.new(:name => "25x Secret Gift Fragment")
+  default_options << Option.new(:name => "5x VIP Quest Shard")
+  default_options << Option.new(:name => "5x Expedition Shard")
+  default_options << Option.new(:name => "5x Expedition Fragment")
+  default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
+
+  file_name = "luna_gifts.json"
+  json = read_json_file(file_name)
+
+  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+end
+
+def hourly_event_mode
+  default_options = []
+  default_options << Option.new(:name => "Special Bonus Research Event")
+  default_options << Option.new(:name => "Special Bonus Building Event")
+#  default_options << Option.new(:name => "Conquer the Trial of Heros: Ravus")
+  default_options << Option.new(:name => "Conquer the Trial of Heros: Ignis")
+  default_options << Option.new(:name => "Race to VIP")
+
+  default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
+  default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
+  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
+  default_options << Option.new(:name => "Train Troops")
+  default_options << Option.new(:name => "Level Up Your Hero")
+
+  file_name = "hourly_events.json"
+  json = read_json_file(file_name)
+
+  return Mode.new(:file_name => "hourly_events.json", :default_options => default_options, :json => json)
+end
+
+class Modes
+  attr_reader :mini
+  attr_reader :hourly
+  attr_reader :luna
+
+  def initialize()
+    @mini = mini_event_mode
+    @hourly = hourly_event_mode
+    @luna = luna_gift_mode
+  end
+end
 
 def print_usage
   puts "============================"
@@ -254,6 +326,12 @@ def display_hepoch(hepoch, json)
   puts "current hepoch > " + data.to_s
 end
 
+def display_entire_hepoch(hepoch, modes)
+  display_hepoch(hepoch, modes.mini.json)
+  display_hepoch(hepoch, modes.hourly.json)
+  display_hepoch(hepoch, modes.luna.json)
+end
+
 def display_hepoch_history(hepoch, json)
   max_tries = json.keys.size
 
@@ -291,58 +369,9 @@ def print_schedule(hepoch, json)
   end
 end
 
-def mini_event_mode
-  puts "switch to mini-event-mode"
-
-  default_options = []
-  default_options << Option.new(:name => "Gather RSS")
-  default_options << Option.new(:name => "Training")
-  default_options << Option.new(:name => "Monster Hunt")
-  default_options << Option.new(:name => "Spin the Wheel")
-  default_options << Option.new(:name => "Secret Gift")
-  default_options << Option.new(:name => "Guild Defend")
-  default_options << Option.new(:name => "Guild Quests")
-  default_options << Option.new(:name => "Guild RSS Help")
-  default_options << Option.new(:name => "Guild Help")
-  default_options << Option.new(:name => "Hero Quests")
-  default_options << Option.new(:name => "VIP Quests")
-  default_options << Option.new(:name => "Combine Gems")
-  default_options << Option.new(:name => "Combine Materials")
-
-  return Mode.new(:file_name => "mini_events.json", :default_options => default_options)
-end
-
-def luna_gift_mode
-  puts "switch to luna-gift-mode"
-  default_options = []
-  default_options << Option.new(:name => "25x Luna's Gift Fragment")
-  default_options << Option.new(:name => "25x Secret Gift Fragment")
-  default_options << Option.new(:name => "5x VIP Quest Shard")
-  default_options << Option.new(:name => "5x Expedition Shard")
-  default_options << Option.new(:name => "5x Expedition Fragment")
-  default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
-  return Mode.new(:file_name => "luna_gifts.json", :default_options => default_options)
-end
-
-def hourly_event_mode
-  puts "switch to hourly-event-mode"
-  default_options = []
-  default_options << Option.new(:name => "Special Bonus Research Event")
-  default_options << Option.new(:name => "Special Bonus Building Event")
-#  default_options << Option.new(:name => "Conquer the Trial of Heros: Ravus")
-  default_options << Option.new(:name => "Conquer the Trial of Heros: Ignis")
-  default_options << Option.new(:name => "Race to VIP")
-
-  default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
-  default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
-  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
-  default_options << Option.new(:name => "Train Troops")
-  default_options << Option.new(:name => "Level Up Your Hero")
-  return Mode.new(:file_name => "hourly_events.json", :default_options => default_options)
-end
-
-mode = mini_event_mode
-json = read_json_file(mode.file_name)
+modes = Modes.new()
+mode = modes.mini
+json = mode.json
 
 state = Navigation.new
 
@@ -359,7 +388,7 @@ while c != "q" do
 
   hepoch = state.get_hepoch
 
-  display_hepoch(hepoch, json)
+  display_entire_hepoch(hepoch, modes)
 
   options = get_options(mode, json, hepoch)
   options.keys.sort.each do |key|
@@ -387,14 +416,14 @@ while c != "q" do
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
   elsif "m" == c
-    mode = mini_event_mode
-    json = read_json_file(mode.file_name)
+    mode = modes.mini
+    json = mode.json
   elsif "," == c
-    mode = hourly_event_mode
-    json = read_json_file(mode.file_name)
+    mode = modes.hourly
+    json = mode.json
   elsif "." == c
-    mode = luna_gift_mode
-    json = read_json_file(mode.file_name)
+    mode = modes.luna
+    json = mode.json
   elsif "d" == c
     display_hepoch(hepoch, json)
   elsif "h" == c
