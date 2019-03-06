@@ -324,6 +324,23 @@ def luna_gift_mode
   return Mode.new(:file_name => "luna_gifts.json", :default_options => default_options)
 end
 
+def hourly_event_mode
+  puts "switch to hourly-event-mode"
+  default_options = []
+  default_options << Option.new(:name => "Special Bonus Research Event")
+  default_options << Option.new(:name => "Special Bonus Building Event")
+#  default_options << Option.new(:name => "Conquer the Trial of Heros: Ravus")
+  default_options << Option.new(:name => "Conquer the Trial of Heros: Ignis")
+  default_options << Option.new(:name => "Race to VIP")
+
+  default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
+  default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
+  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
+  default_options << Option.new(:name => "Train Troops")
+  default_options << Option.new(:name => "Level Up Your Hero")
+  return Mode.new(:file_name => "hourly_events.json", :default_options => default_options)
+end
+
 mode = mini_event_mode
 json = read_json_file(mode.file_name)
 
@@ -373,6 +390,9 @@ while c != "q" do
     mode = mini_event_mode
     json = read_json_file(mode.file_name)
   elsif "," == c
+    mode = hourly_event_mode
+    json = read_json_file(mode.file_name)
+  elsif "." == c
     mode = luna_gift_mode
     json = read_json_file(mode.file_name)
   elsif "d" == c
@@ -391,6 +411,12 @@ while c != "q" do
   else
     if "u" == c
       c = "1"
+    elsif "i" == c
+      c = "2"
+    elsif "o" == c
+      c = "3"
+    elsif "p" == c
+      c = "4"
     else
       putc c
       c = c + STDIN.readline
@@ -408,7 +434,7 @@ while c != "q" do
       puts json.to_json
       write_json_file(mode.file_name, json)
 
-      state.forwards 1
+      #state.forwards 1
     else
     	puts "unknown input (#{c})"
     end
