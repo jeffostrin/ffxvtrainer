@@ -53,6 +53,7 @@ def luna_gift_mode
   default_options << Option.new(:name => "5x Expedition Shard")
   default_options << Option.new(:name => "5x Expedition Fragment")
   default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
+  default_options << Option.new(:name => "1x Adventurers Contract")
 
   file_name = "luna_gifts.json"
   json = read_json_file(file_name)
