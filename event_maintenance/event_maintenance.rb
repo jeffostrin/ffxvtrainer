@@ -328,9 +328,9 @@ def display_hepoch(hepoch, json)
 end
 
 def display_entire_hepoch(hepoch, modes)
-  display_hepoch(hepoch, modes.mini.json)
-  display_hepoch(hepoch, modes.hourly.json)
   display_hepoch(hepoch, modes.luna.json)
+  display_hepoch(hepoch, modes.hourly.json)
+  display_hepoch(hepoch, modes.mini.json)
 end
 
 def display_hepoch_history(hepoch, json)
@@ -371,7 +371,7 @@ def print_schedule(hepoch, json)
 end
 
 modes = Modes.new()
-mode = modes.mini
+mode = modes.luna
 json = mode.json
 
 state = Navigation.new
@@ -417,13 +417,13 @@ while c != "q" do
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
   elsif "m" == c
-    mode = modes.mini
+    mode = modes.luna
     json = mode.json
   elsif "," == c
     mode = modes.hourly
     json = mode.json
   elsif "." == c
-    mode = modes.luna
+    mode = modes.mini
     json = mode.json
   elsif "d" == c
     display_hepoch(hepoch, json)
