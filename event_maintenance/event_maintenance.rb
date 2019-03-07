@@ -61,6 +61,17 @@ def luna_gift_mode
   return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
 end
 
+
+def luna_special_gift_mode
+  default_options = []
+  default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
+
+  file_name = "luna_special_gifts.json"
+  json = read_json_file(file_name)
+
+  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+end
+
 def hourly_event_mode
   default_options = []
   default_options << Option.new(:name => "Special Bonus Research Event")
@@ -82,14 +93,16 @@ def hourly_event_mode
 end
 
 class Modes
-  attr_reader :mini
-  attr_reader :hourly
   attr_reader :luna
+  attr_reader :hourly
+  attr_reader :mini
+  attr_reader :luna_specials
 
   def initialize()
-    @mini = mini_event_mode
-    @hourly = hourly_event_mode
     @luna = luna_gift_mode
+    @hourly = hourly_event_mode
+    @mini = mini_event_mode
+    @luna_specials = luna_special_gift_mode
   end
 end
 
@@ -331,6 +344,7 @@ def display_entire_hepoch(hepoch, modes)
   display_hepoch(hepoch, modes.luna.json)
   display_hepoch(hepoch, modes.hourly.json)
   display_hepoch(hepoch, modes.mini.json)
+  display_hepoch(hepoch, modes.luna_specials.json)
 end
 
 def display_hepoch_history(hepoch, json)
@@ -424,6 +438,9 @@ while c != "q" do
     json = mode.json
   elsif "." == c
     mode = modes.mini
+    json = mode.json
+  elsif "/" == c
+    mode = modes.luna_specials
     json = mode.json
   elsif "d" == c
     display_hepoch(hepoch, json)
