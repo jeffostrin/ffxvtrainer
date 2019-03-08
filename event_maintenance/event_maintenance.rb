@@ -104,6 +104,19 @@ class Modes
     @mini = mini_event_mode
     @luna_specials = luna_special_gift_mode
   end
+
+  def next(current)
+    if current == @luna
+      return @hourly
+    elsif current == @hourly
+      return @mini
+    elsif current == @mini
+      return @luna
+    elsif current == @luna_specials
+      return @luna
+    end
+    raise "Unknown current mode #{current}"
+  end
 end
 
 def print_usage
@@ -480,6 +493,9 @@ while c != "q" do
 
       puts json.to_json
       write_json_file(mode.file_name, json)
+
+      mode = modes.next(mode)
+      json = mode.json
 
       #state.forwards 1
     else
