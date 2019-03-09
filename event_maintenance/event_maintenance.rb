@@ -65,6 +65,7 @@ end
 def luna_special_gift_mode
   default_options = []
   default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
+  default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
 
   file_name = "luna_special_gifts.json"
   json = read_json_file(file_name)
