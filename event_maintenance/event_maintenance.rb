@@ -128,13 +128,19 @@ def print_usage
   puts "l - forwards in time 1 hour"
   puts "; - forwards in time 1 day"
 
-  puts "u - mini-event-default-selection"
-  puts "i - luna-gift-default-selection"
+  puts "u - selection option 1"
+  puts "i - selection option 2"
+  puts "o - selection option 3"
+
+  puts "m - luna-gift mode"
+  puts ", - hourly-event mode"
+  puts ". - mini-event mode"
+  puts "/ - special-event mode"
 
 
   puts "d - display the values for the current hour"
   puts "h - display the (h)istory for the current hour"
-  puts "g - generate a file that has the most recent 10 entries per hour"
+  puts "g - generate files that has the most recent 10 entries per hour"
 
   puts "e - edit an hour (to remove observations)"
   puts "a - add observation to an hour (default mode)"
@@ -370,7 +376,7 @@ def display_hepoch_history(hepoch, json)
   end
 end
 
-def generate_compact_file(json)
+def generate_compact_files(modes)
   puts "generating file"
 end
 
@@ -461,7 +467,7 @@ while c != "q" do
   elsif "h" == c
     display_hepoch_history(hepoch, json)
   elsif "g" == c
-    generate_compact_file(json)
+    generate_compact_files(modes)
   elsif "e" == c
     edit_hepoch(hepoch, json)
   elsif "p" == c
