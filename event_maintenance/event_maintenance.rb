@@ -106,6 +106,10 @@ class Modes
     @luna_specials = luna_special_gift_mode
   end
 
+  def all_modes
+    return [ @luna, @hourly, @mini, @luna_specials ]
+  end
+
   def next(current)
     if current == @luna
       return @hourly
@@ -376,12 +380,41 @@ def display_hepoch_history(hepoch, json)
   end
 end
 
+def find_latest(json, count_to_find)
+  result = {}
+
+  utc_now = Time.now.utc
+  utc_time = Time.utc(utc_now.year, utc_now.month, utc_now.day, utc_now.hour)
+  hepoch = utc_time.tv_sec / SECONDS_IN_HOUR
+
+  (0..23).each do |hour|
+    hour_found_count = 0
+    (0..1000).each do |counter|
+      probe_hepoch = ((hepoch-hour) - (24 * counter)).to_s
+      if json.has_key? probe_hepoch
+        result[probe_hepoch] = json[probe_hepoch]
+        hour_found_count = hour_found_count + 1
+      end
+      break if hour_found_count >= count_to_find
+    end
+  end
+  return result
+end
+
+def generate_compact_file(mode)
+  last_ten = find_latest(mode.json, 10)
+  write_json_file("../" + mode.file_name + ".compact.json", last_ten)
+end
+
 def generate_compact_files(modes)
   puts "generating file"
+  modes.all_modes.each do |mode|
+    generate_compact_file(mode)
+  end
 end
 
 def edit_hepoch(hepoch, json)
-
+  puts "edit hepoch - implement this method"
 end
 
 def print_schedule(hepoch, json)
