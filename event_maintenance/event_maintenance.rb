@@ -25,19 +25,19 @@ end
 
 def mini_event_mode
   default_options = []
-  default_options << Option.new(:name => "Gather RSS")
-  default_options << Option.new(:name => "Training")
-  default_options << Option.new(:name => "Monster Hunt")
-  default_options << Option.new(:name => "Spin the Wheel")
-  default_options << Option.new(:name => "Secret Gift")
-  default_options << Option.new(:name => "Guild Defend")
-  default_options << Option.new(:name => "Guild Quests")
-  default_options << Option.new(:name => "Guild RSS Help")
-  default_options << Option.new(:name => "Guild Help")
-  default_options << Option.new(:name => "Hero Quests")
-  default_options << Option.new(:name => "VIP Quests")
   default_options << Option.new(:name => "Combine Gems")
   default_options << Option.new(:name => "Combine Materials")
+  default_options << Option.new(:name => "Gather RSS")
+  default_options << Option.new(:name => "Guild Defend")
+  default_options << Option.new(:name => "Guild Help")
+  default_options << Option.new(:name => "Guild RSS Help")
+  default_options << Option.new(:name => "Guild Quests")
+  default_options << Option.new(:name => "Hero Quests")
+  default_options << Option.new(:name => "Monster Hunt")
+  default_options << Option.new(:name => "Secret Gift")
+  default_options << Option.new(:name => "Spin the Wheel")
+  default_options << Option.new(:name => "Training")
+  default_options << Option.new(:name => "VIP Quests")
 
   file_name = "mini_events.json"
   json = read_json_file(file_name)
@@ -47,13 +47,13 @@ end
 
 def luna_gift_mode
   default_options = []
+  default_options << Option.new(:name => "1x Adventurers Contract")
+  default_options << Option.new(:name => "5x Expedition Fragment")
+  default_options << Option.new(:name => "5x Expedition Shard")
   default_options << Option.new(:name => "25x Luna's Gift Fragment")
+  default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
   default_options << Option.new(:name => "25x Secret Gift Fragment")
   default_options << Option.new(:name => "5x VIP Quest Shard")
-  default_options << Option.new(:name => "5x Expedition Shard")
-  default_options << Option.new(:name => "5x Expedition Fragment")
-  default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
-  default_options << Option.new(:name => "1x Adventurers Contract")
 
   file_name = "luna_gifts.json"
   json = read_json_file(file_name)
@@ -64,8 +64,8 @@ end
 
 def luna_special_gift_mode
   default_options = []
-  default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
   default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
+  default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
 
   file_name = "luna_special_gifts.json"
   json = read_json_file(file_name)
@@ -75,17 +75,16 @@ end
 
 def hourly_event_mode
   default_options = []
-  default_options << Option.new(:name => "Special Bonus Research Event")
-  default_options << Option.new(:name => "Special Bonus Building Event")
-#  default_options << Option.new(:name => "Conquer the Trial of Heros: Ravus")
-  default_options << Option.new(:name => "Conquer the Trial of Heros: Ignis")
+  default_options << Option.new(:name => "Kill Monsters") # diff
+  default_options << Option.new(:name => "Level Up Your Hero")
+  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
   default_options << Option.new(:name => "Race to VIP")
-
   default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
   default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
-  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
-  default_options << Option.new(:name => "Train Troops")
-  default_options << Option.new(:name => "Level Up Your Hero")
+  default_options << Option.new(:name => "Raid Boss: Alpha Karlabos")
+  default_options << Option.new(:name => "Special Bonus Research Event") # diff
+  default_options << Option.new(:name => "Special Bonus Building Event")  # diff
+  default_options << Option.new(:name => "Train Troops")  # diff
 
   file_name = "hourly_events.json"
   json = read_json_file(file_name)
