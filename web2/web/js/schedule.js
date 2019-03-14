@@ -165,8 +165,8 @@ var Ctime = function(padding) {
     var result = [];
     Object.keys(events).forEach(function (e) {
       var score = Math.floor(events[e] * 100 / totalPoints);
-      var name = e + " (" + score + ")"
-      result.push({ name: name, score: score })
+      var enriched_name = e + " (" + score + ")"
+      result.push({ name: e, score: score, enriched_name: enriched_name })
     });
 
     return result;
@@ -184,12 +184,18 @@ var Ctime = function(padding) {
 
   function present_hourly_events2(hourlyEvents, padding) {
     hourlyEvents.sort((x,y) => { return y.score - x.score });
+    return hourlyEvents[0].name;
 
-    if (hourlyEvents.length == 1) {
-      return hourlyEvents[0].name;
-    }
+    // if (hourlyEvents.length == 1) {
+    //   return hourlyEvents[0].name;
+    // }
+    //
+    // return hourlyEvents[0].name + " or " + hourlyEvents[1].name;
+  }
 
-    return hourlyEvents[0].name + " or " + hourlyEvents[1].name;
+  function present_hourly_events3(hourlyEvents) {
+    hourlyEvents.sort((x,y) => { return y.score - x.score });
+    return hourlyEvents[0].name;
   }
 
   function loadSchedule() {
@@ -302,7 +308,7 @@ var Ctime = function(padding) {
       "<th align=center>From Now</th>" +
       "<th></th>" +
       "<th></th>" +
-      "<th  align=center colspan=2>Mini Events</th>" +
+      "<th  align=center>Mini Events</th>" +
       "<th></th>" +
       "<th></th>" +
       "<th align=center>Luna Gifts</th>" +
@@ -330,21 +336,19 @@ var Ctime = function(padding) {
         var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
         line += "<td>(</td><td align=center>" + relativeTime + "</td><td>)</td>";
 
+        line += "<td>[</td><td align=right>";
         var hourlyEvents = score_hourly_events(val.hourly_events);
-        var hourlyOutput = present_hourly_events2(hourlyEvents, padding);
-        line += "<td>[</td><td align=right>" + hourlyEvents[0].name + "</td>";
-        if (hourlyEvents.length > 1) {
-          line += "<td>or " + hourlyEvents[1].name + "</td>";
-        } else {
-          line += "<td></td>";
-        }
+        hourlyEvents = present_hourly_events3(hourlyEvents);
+        line += hourlyEvents;
+        line += "</td>";
         line += "<td>]</td>";
 
         if (val.luna_events !== null && val.luna_events !== undefined) {
-          if (val.luna_events.length > 0) {
-            var lunaEvent = lpad(" " + val.luna_events + " ", 20, " ");
-            line += "<td>[</td><td>" + lunaEvent + "</td><td>]</td>";
-          }
+          line += "<td>[</td><td>";
+          val.luna_events.forEach((e) => {
+            line += "<div>" + e + "</div>";
+          });
+          line += "</td><td>]</td>";
         }
 
         line += "</tr>";
@@ -382,7 +386,7 @@ var Ctime = function(padding) {
               "Monster Hunt": 200,
               "Guild Quests": 50
             },
-            "luna_events": []
+            "luna_events": [ "25x Luna's Gift Fragment" ],
           },
           "425546": {
             "hepoch": (nowHepoch),
@@ -393,9 +397,7 @@ var Ctime = function(padding) {
               "Guild RSS Help": 25,
               "Monster": 50
             },
-            "luna_events": [
-              "Adventurer Contract"
-            ]
+            "luna_events": [ "1x Adventurers Contract","25x Luna's Gift Fragment" ]
           },
           "425547": {
             "hepoch": (nowHepoch+1),
@@ -404,7 +406,8 @@ var Ctime = function(padding) {
             "hourly_events": {
               "Monster Hunt": 200,
               "Guild Quests": 50
-            }
+            },
+            "luna_events": ["5x Expedition Shard"]
           },
           "425548": {
             "hepoch": (nowHepoch+2),
@@ -414,7 +417,8 @@ var Ctime = function(padding) {
               "Combine Gems": 250,
               "Gather RSS": 25,
               "Hero Quests": 50
-            }
+            },
+            "luna_events": ["30x 1 Minute Adventurer Speed Up"]
           },
           "425549": {
             "hepoch": (nowHepoch+3),
@@ -423,7 +427,8 @@ var Ctime = function(padding) {
             "hourly_events": {
               "Monster": 200,
               "Guild Quests": 50
-            }
+            },
+            "luna_events": ["5x Expedition Fragment"]
           },
           "425550": {
             "hepoch": (nowHepoch+4),
@@ -433,7 +438,8 @@ var Ctime = function(padding) {
               "Hero Quests": 250,
               "Guild RSS Help": 25,
               "Monster": 50
-            }
+            },
+            "luna_events": ["25x Secret Gift Fragment"]
           },
           "425550": {
             "hepoch": (nowHepoch+4),
@@ -441,7 +447,8 @@ var Ctime = function(padding) {
             "dayTime": "11:00pm (07-18)",
             "hourly_events": {
               "Training": 250
-            }
+            },
+            "luna_events": ["25x Luna's Gift Fragment","5x VIP Quest Shard"]
           },
         }
       },
