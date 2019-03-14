@@ -92,17 +92,39 @@ def hourly_event_mode
   return Mode.new(:file_name => "hourly_events.json", :default_options => default_options, :json => json)
 end
 
+
+def multi_hour_event_mode
+  default_options = []
+  # default_options << Option.new(:name => "Kill Monsters") # diff
+  # default_options << Option.new(:name => "Level Up Your Hero")
+  # default_options << Option.new(:name => "Proving Grounds Adventure Quest")
+  # default_options << Option.new(:name => "Race to VIP")
+  # default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
+  # default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
+  # default_options << Option.new(:name => "Raid Boss: Alpha Karlabos")
+  # default_options << Option.new(:name => "Special Bonus Research Event") # diff
+  # default_options << Option.new(:name => "Special Bonus Building Event")  # diff
+  # default_options << Option.new(:name => "Train Troops")  # diff
+
+  file_name = "multi_hour_events.json"
+  json = read_json_file(file_name)
+
+  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+end
+
 class Modes
   attr_reader :luna
   attr_reader :hourly
   attr_reader :mini
   attr_reader :luna_specials
+  attr_reader :multi_hour
 
   def initialize()
     @luna = luna_gift_mode
     @hourly = hourly_event_mode
     @mini = mini_event_mode
     @luna_specials = luna_special_gift_mode
+    @multi_hour = multi_hour_event_mode
   end
 
   def all_modes
@@ -117,6 +139,8 @@ class Modes
     elsif current == @mini
       return @luna
     elsif current == @luna_specials
+      return @luna
+    elsif current == @multi_hour
       return @luna
     end
     raise "Unknown current mode #{current}"
@@ -135,10 +159,11 @@ def print_usage
   puts "i - selection option 2"
   puts "o - selection option 3"
 
-  puts "m - luna-gift mode"
-  puts ", - hourly-event mode"
-  puts ". - mini-event mode"
-  puts "/ - special-event mode"
+  puts "n - luna-gift mode"
+  puts "m - hourly-event mode"
+  puts ", - mini-event mode"
+  puts ". - special-luna-gift mode"
+  puts "/ - multi-hour-event mode"
 
 
   puts "d - display the values for the current hour"
@@ -482,17 +507,20 @@ while c != "q" do
   	state.forwards 1
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
-  elsif "m" == c
+  elsif "n" == c
     mode = modes.luna
     json = mode.json
-  elsif "," == c
+  elsif "m" == c
     mode = modes.hourly
     json = mode.json
-  elsif "." == c
+  elsif "," == c
     mode = modes.mini
     json = mode.json
-  elsif "/" == c
+  elsif "." == c
     mode = modes.luna_specials
+    json = mode.json
+  elsif "/" == c
+    mode = modes.multi_hour
     json = mode.json
   elsif "d" == c
     display_hepoch(hepoch, json)
