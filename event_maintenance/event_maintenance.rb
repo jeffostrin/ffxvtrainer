@@ -426,12 +426,14 @@ def find_latest(json, count_to_find)
 end
 
 def generate_compact_file(mode)
+  target_file = "../" + mode.file_name + ".compact.json"
+  puts "generating file #{target_file}"
   last_ten = find_latest(mode.json, 10)
-  write_json_file("../" + mode.file_name + ".compact.json", last_ten)
+  write_json_file(target_file, last_ten)
 end
 
 def generate_compact_files(modes)
-  puts "generating file"
+  puts "generating files"
   modes.all_modes.each do |mode|
     generate_compact_file(mode)
   end
@@ -463,7 +465,6 @@ end
 
 modes = Modes.new()
 mode = modes.luna
-json = mode.json
 
 state = Navigation.new
 
@@ -482,7 +483,7 @@ while c != "q" do
 
   display_entire_hepoch(hepoch, modes)
 
-  options = get_options(mode, json, hepoch)
+  options = get_options(mode, mode.json, hepoch)
   options.keys.sort.each do |key|
   	option = "  #{key} - #{options[key].name}"
     if options[key].score != nil && options[key].score.length > 0
@@ -509,29 +510,24 @@ while c != "q" do
   	state.forwards 24
   elsif "n" == c
     mode = modes.luna
-    json = mode.json
   elsif "m" == c
     mode = modes.hourly
-    json = mode.json
   elsif "," == c
     mode = modes.mini
-    json = mode.json
   elsif "." == c
     mode = modes.luna_specials
-    json = mode.json
   elsif "/" == c
     mode = modes.multi_hour
-    json = mode.json
   elsif "d" == c
-    display_hepoch(hepoch, json)
+    display_hepoch(hepoch, mode.json)
   elsif "h" == c
-    display_hepoch_history(hepoch, json)
+    display_hepoch_history(hepoch, mode.json)
   elsif "g" == c
     generate_compact_files(modes)
   elsif "e" == c
-    edit_hepoch(hepoch, json)
+    edit_hepoch(hepoch, mode.json)
   elsif "p" == c
-    print_schedule(hepoch, json)
+    print_schedule(hepoch, mode.json)
   elsif "q" == c
   elsif "?" == c
     print_usage
@@ -553,16 +549,15 @@ while c != "q" do
     if options.has_key? c.to_i
   	   selection = options[c.to_i].name
 
-    	if ! json.has_key? hepoch
-    	  json[hepoch] = []
+    	if ! mode.json.has_key? hepoch
+    	  mode.json[hepoch] = []
     	end
-    	json[hepoch] << selection
+    	mode.json[hepoch] << selection
 
-      puts json.to_json
-      write_json_file(mode.file_name, json)
+      puts mode.json.to_json
+      write_json_file(mode.file_name, mode.json)
 
       mode = modes.next(mode)
-      json = mode.json
 
       #state.forwards 1
     else
