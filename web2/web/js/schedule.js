@@ -345,9 +345,16 @@ var Ctime = function(padding) {
 
         if (val.luna_events !== null && val.luna_events !== undefined) {
           line += "<td>[</td><td>";
-          val.luna_events.forEach((e) => {
-            line += "<div>" + e + "</div>";
-          });
+          if (val.luna_events.length == 1) {
+            line += val.luna_events[0];
+          } else if (val.luna_events.length == 2) {
+            line += val.luna_events[0] + " and " + val.luna_events[1];
+          } else {
+            line += "unknown: " + val.luna_events;
+          }
+          // val.luna_events.forEach((e) => {
+          //   line += "<div>" + e + "</div>";
+          // });
           line += "</td><td>]</td>";
         }
 
