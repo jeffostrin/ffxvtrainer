@@ -48,7 +48,6 @@ end
 
 def luna_gift_mode
   default_options = []
-  default_options << Option.new(:name => "1x Adventurers Contract")
   default_options << Option.new(:name => "5x Expedition Fragment")
   default_options << Option.new(:name => "5x Expedition Shard")
   default_options << Option.new(:name => "25x Luna's Gift Fragment")
@@ -63,6 +62,7 @@ end
 
 def luna_special_gift_mode
   default_options = []
+  default_options << Option.new(:name => "1x Adventurers Contract")
   default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
   default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
 
@@ -143,6 +143,11 @@ end
 def print_usage
   puts "============================"
 
+  puts "            option-1      option-2    option-3    option-3"
+  puts "            -24-hours     -1-hour     +1-hour     +24-hours"
+  puts "xtra-luna     luna        hourly        mini"
+
+
   puts "j - backwards in time 1 day"
   puts "k - backwards in time 1 hour"
   puts "l - forwards in time 1 hour"
@@ -152,10 +157,10 @@ def print_usage
   puts "i - selection option 2"
   puts "o - selection option 3"
 
-  puts "n - luna-gift mode"
-  puts "m - hourly-event mode"
-  puts ", - mini-event mode"
-  puts ". - special-luna-gift mode"
+  puts "n - special-luna-gift mode"
+  puts "m - luna-gift mode"
+  puts ", - hourly-event mode"
+  puts ". - mini-event mode"
   puts "/ - multi-hour-event mode"
 
 
@@ -367,10 +372,10 @@ def display_hepoch(hepoch, json)
 end
 
 def display_entire_hepoch(hepoch, modes)
+  display_hepoch(hepoch, modes.luna_specials.json)
   display_hepoch(hepoch, modes.luna.json)
   display_hepoch(hepoch, modes.hourly.json)
   display_hepoch(hepoch, modes.mini.json)
-  display_hepoch(hepoch, modes.luna_specials.json)
 end
 
 def display_hepoch_history(hepoch, json)
@@ -487,13 +492,13 @@ while c != "q" do
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
   elsif "n" == c
-    mode = modes.luna
-  elsif "m" == c
-    mode = modes.hourly
-  elsif "," == c
-    mode = modes.mini
-  elsif "." == c
     mode = modes.luna_specials
+  elsif "m" == c
+    mode = modes.luna
+  elsif "," == c
+    mode = modes.hourly
+  elsif "." == c
+    mode = modes.mini
   elsif "/" == c
     mode = modes.multi_hour
   elsif "d" == c
