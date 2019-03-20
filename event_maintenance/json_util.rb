@@ -1,6 +1,12 @@
 require 'json'
+require 'pathname'
 
 def read_json_file(fname)
+  if ! Pathname.new(fname).exist?()
+    puts "Unable to read file #{fname}, check the path"
+    exit 1
+  end
+
   contents = ""
   File.open(fname).each do |line|
     contents = contents + line
