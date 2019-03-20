@@ -1,24 +1,27 @@
 require 'json'
+require_relative 'json_util'
+require_relative 'hepoch_updater'
 require_relative '../time_constants'
 require_relative '../fmt'
 require_relative '../assert'
 require_relative 'scoring'
 require_relative 'score_merge'
 
-mini_events_file_name = "mini_events.json"
-
 class Mode
-  attr_reader :file_name
+  attr_reader :short_file_name
+  attr_reader :full_file_name
   attr_reader :default_options
   attr_reader :json
 
   def initialize(params)
-    @file_name = params[:file_name]
-    assert(@file_name != nil, "Mode.file_name is required")
+    file_name = params[:file_name]
+    assert(file_name != nil, "Mode.file_name is required")
+    @short_file_name = file_name
+    @full_file_name = file_name + ".json"
     @default_options = params[:default_options]
     assert(@default_options != nil, "Mode.default_options is required")
-    @json = params[:json]
-    assert(@json != nil, "Mode.json is required")
+    @json = read_json_file(@full_file_name)
+    assert(@json != nil, "Mode.json cannot be nil, file is likely missing")
   end
 end
 
@@ -39,10 +42,8 @@ def mini_event_mode
   default_options << Option.new(:name => "Training")
   default_options << Option.new(:name => "VIP Quests")
 
-  file_name = "mini_events.json"
-  json = read_json_file(file_name)
-
-  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+  file_name = "mini_events"
+  return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 def luna_gift_mode
@@ -55,10 +56,8 @@ def luna_gift_mode
   default_options << Option.new(:name => "25x Secret Gift Fragment")
   default_options << Option.new(:name => "5x VIP Quest Shard")
 
-  file_name = "luna_gifts.json"
-  json = read_json_file(file_name)
-
-  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+  file_name = "luna_gifts"
+  return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 
@@ -67,10 +66,8 @@ def luna_special_gift_mode
   default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
   default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
 
-  file_name = "luna_special_gifts.json"
-  json = read_json_file(file_name)
-
-  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+  file_name = "luna_special_gifts"
+  return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 def hourly_event_mode
@@ -86,10 +83,8 @@ def hourly_event_mode
   default_options << Option.new(:name => "Special Bonus Building Event")  # diff
   default_options << Option.new(:name => "Train Troops")  # diff
 
-  file_name = "hourly_events.json"
-  json = read_json_file(file_name)
-
-  return Mode.new(:file_name => "hourly_events.json", :default_options => default_options, :json => json)
+  file_name = "hourly_events"
+  return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 
@@ -106,10 +101,8 @@ def multi_hour_event_mode
   # default_options << Option.new(:name => "Special Bonus Building Event")  # diff
   # default_options << Option.new(:name => "Train Troops")  # diff
 
-  file_name = "multi_hour_events.json"
-  json = read_json_file(file_name)
-
-  return Mode.new(:file_name => file_name, :default_options => default_options, :json => json)
+  file_name = "multi_hour_events"
+  return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 class Modes
@@ -247,21 +240,6 @@ end
 #---------------------
 #---------------------
 
-
-def read_json_file(fname)
-  contents = ""
-  File.open(fname).each do |line|
-    contents = contents + line
-  end
-  json = JSON.parse(contents)
-  return json
-end
-
-def write_json_file(fname, json)
-  File.open(fname, "w") do |file|
-    file.write(json.to_json)
-  end
-end
 
 class Navigation
   attr_reader :utc_time
@@ -426,7 +404,7 @@ def find_latest(json, count_to_find)
 end
 
 def generate_compact_file(mode)
-  target_file = "../" + mode.file_name + ".compact.json"
+  target_file = "../" + mode.short_file_name + ".compact.json"
   puts "generating file #{target_file}"
   last_ten = find_latest(mode.json, 10)
   write_json_file(target_file, last_ten)
@@ -547,15 +525,12 @@ while c != "q" do
     end
 
     if options.has_key? c.to_i
-  	   selection = options[c.to_i].name
+  	  selection = options[c.to_i].name
 
-    	if ! mode.json.has_key? hepoch
-    	  mode.json[hepoch] = []
-    	end
-    	mode.json[hepoch] << selection
+      add_event(selection).to(mode.json).at(hepoch)
 
-      puts mode.json.to_json
-      write_json_file(mode.file_name, mode.json)
+      puts mode.json[hepoch].to_json
+      write_json_file(mode.full_file_name, mode.json)
 
       mode = modes.next(mode)
 
