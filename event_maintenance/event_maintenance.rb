@@ -121,7 +121,7 @@ class Modes
   end
 
   def all_modes
-    return [ @luna, @hourly, @mini, @luna_specials ]
+    return [ @luna_specials, @luna, @hourly, @mini ]
   end
 
   def next(current)
@@ -372,10 +372,9 @@ def display_hepoch(hepoch, json)
 end
 
 def display_entire_hepoch(hepoch, modes)
-  display_hepoch(hepoch, modes.luna_specials.json)
-  display_hepoch(hepoch, modes.luna.json)
-  display_hepoch(hepoch, modes.hourly.json)
-  display_hepoch(hepoch, modes.mini.json)
+  modes.all_modes.each do |mode|
+    display_hepoch(hepoch, mode.json)
+  end
 end
 
 def display_hepoch_history(hepoch, json)
