@@ -484,12 +484,16 @@ while c != "q" do
 
   if "j" == c || "\e[A"  == c
   	state.backwards 24
+    mode = modes.luna
   elsif "k" == c || "\e[D" == c
   	state.backwards 1
+    mode = modes.luna
   elsif "l" == c || "\e[C" == c
   	state.forwards 1
+    mode = modes.luna
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
+    mode = modes.luna
   elsif "n" == c
     mode = modes.luna_specials
   elsif "m" == c
