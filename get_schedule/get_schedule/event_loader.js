@@ -58,8 +58,8 @@ module.exports = function EventLoader() {
     return localPath;
   }
 
-  loader.load = function() {
-    var filePath = getPath("mini_events.json")
+  loader.load = function(fileName) {
+    var filePath = getPath(fileName)
   	//console.log(filePath);
   	var json = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     var hourlyEvents = loader._load(json);
