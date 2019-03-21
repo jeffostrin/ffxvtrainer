@@ -345,9 +345,11 @@ var Ctime = function(padding) {
 
         if (val.luna_events !== null && val.luna_events !== undefined) {
           line += "<td>[</td><td>";
-          var lunaHourlyEvents = score_hourly_events(val.luna_events);
-          lunaHourlyEvents = present_hourly_events3(lunaHourlyEvents);
-          line += lunaHourlyEvents;
+          if (Object.keys(val.luna_events).length >= 1) {
+            var lunaHourlyEvents = score_hourly_events(val.luna_events);
+            lunaHourlyEvents = present_hourly_events3(lunaHourlyEvents);
+            line += lunaHourlyEvents;
+          }
           line += "</td>";
           line += "<td>]</td>";
         }
