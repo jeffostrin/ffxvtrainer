@@ -336,7 +336,7 @@ var Ctime = function(padding) {
         var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
         line += "<td>(</td><td align=center>" + relativeTime + "</td><td>)</td>";
 
-        line += "<td>[</td><td align=right>";
+        line += "<td>[</td><td>";
         var hourlyEvents = score_hourly_events(val.hourly_events);
         hourlyEvents = present_hourly_events3(hourlyEvents);
         line += hourlyEvents;
@@ -345,17 +345,11 @@ var Ctime = function(padding) {
 
         if (val.luna_events !== null && val.luna_events !== undefined) {
           line += "<td>[</td><td>";
-          if (val.luna_events.length == 1) {
-            line += val.luna_events[0];
-          } else if (val.luna_events.length == 2) {
-            line += val.luna_events[0] + " and " + val.luna_events[1];
-          } else {
-            line += "unknown: " + val.luna_events;
-          }
-          // val.luna_events.forEach((e) => {
-          //   line += "<div>" + e + "</div>";
-          // });
-          line += "</td><td>]</td>";
+          var lunaHourlyEvents = score_hourly_events(val.luna_events);
+          lunaHourlyEvents = present_hourly_events3(lunaHourlyEvents);
+          line += lunaHourlyEvents;
+          line += "</td>";
+          line += "<td>]</td>";
         }
 
         line += "</tr>";
@@ -393,7 +387,7 @@ var Ctime = function(padding) {
               "Monster Hunt": 200,
               "Guild Quests": 50
             },
-            "luna_events": [ "25x Luna's Gift Fragment" ],
+            "luna_events": { "25x Luna's Gift Fragment": 100 },
           },
           "425546": {
             "hepoch": (nowHepoch),
@@ -404,7 +398,7 @@ var Ctime = function(padding) {
               "Guild RSS Help": 25,
               "Monster": 50
             },
-            "luna_events": [ "1x Adventurers Contract","25x Luna's Gift Fragment" ]
+            "luna_events": { "1x Adventurers Contract": 200, "25x Luna's Gift Fragment": 100 }
           },
           "425547": {
             "hepoch": (nowHepoch+1),
@@ -414,7 +408,7 @@ var Ctime = function(padding) {
               "Monster Hunt": 200,
               "Guild Quests": 50
             },
-            "luna_events": ["5x Expedition Shard"]
+            "luna_events": { "5x Expedition Shard": 100 }
           },
           "425548": {
             "hepoch": (nowHepoch+2),
@@ -425,7 +419,7 @@ var Ctime = function(padding) {
               "Gather RSS": 25,
               "Hero Quests": 50
             },
-            "luna_events": ["30x 1 Minute Adventurer Speed Up"]
+            "luna_events": { "30x 1 Minute Adventurer Speed Up": 100 }
           },
           "425549": {
             "hepoch": (nowHepoch+3),
@@ -435,7 +429,7 @@ var Ctime = function(padding) {
               "Monster": 200,
               "Guild Quests": 50
             },
-            "luna_events": ["5x Expedition Fragment"]
+            "luna_events": { "5x Expedition Fragment": 100 }
           },
           "425550": {
             "hepoch": (nowHepoch+4),
@@ -446,7 +440,7 @@ var Ctime = function(padding) {
               "Guild RSS Help": 25,
               "Monster": 50
             },
-            "luna_events": ["25x Secret Gift Fragment"]
+            "luna_events": { "25x Secret Gift Fragment": 100 }
           },
           "425550": {
             "hepoch": (nowHepoch+4),
@@ -455,7 +449,7 @@ var Ctime = function(padding) {
             "hourly_events": {
               "Training": 250
             },
-            "luna_events": ["25x Luna's Gift Fragment","5x VIP Quest Shard"]
+            "luna_events": { "25x Luna's Gift Fragment": 200, "5x VIP Quest Shard": 100 }
           },
         }
       },
