@@ -6,7 +6,8 @@ const EventLoader = require('./event_loader')
 module.exports = function Clock(utcOffset) {
 
   var eventLoader = new EventLoader();
-  var forecaster = eventLoader.load("mini_events.compact.json");
+  var miniEventForecaster = eventLoader.load("mini_events.compact.json");
+  var lunaEventForecaster = eventLoader.load("luna_gifts.compact.json");
 
   this.generate_json = function () {
     var ctime = new CTime(utcOffset);
@@ -21,7 +22,9 @@ module.exports = function Clock(utcOffset) {
       jsonHour.isCurrentHepoch = (hepoch == nowHepoch);
       jsonHour.dayTime = ctime.pp().dayTime(hepoch);
       jsonHour.relativeTime = ctime.pp().asRelativeTime(hepoch * 60 * 60 - nowSepoch);
-      jsonHour.hourly_events = forecaster.forecastFor(hepoch);;
+      jsonHour.hourly_events = miniEventForecaster.forecastFor(hepoch);;
+      // fix mis-match with ui-tier (this creates a hash, the ui expects an array)
+      //jsonHour.luna_events = lunaEventForecaster.forecastFor(hepoch);;
       schedule.hepochs[hepoch] = jsonHour;
     }
 
