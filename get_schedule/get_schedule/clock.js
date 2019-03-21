@@ -6,7 +6,7 @@ const EventLoader = require('./event_loader')
 module.exports = function Clock(utcOffset) {
 
   var eventLoader = new EventLoader();
-  var forecaster = eventLoader.load("mini_events.json");
+  var forecaster = eventLoader.load("mini_events.compact.json");
 
   this.generate_json = function () {
     var ctime = new CTime(utcOffset);
