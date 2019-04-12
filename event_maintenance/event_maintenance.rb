@@ -153,9 +153,14 @@ def print_usage
   puts "l - forwards in time 1 hour"
   puts "; - forwards in time 1 day"
 
-  puts "u - selection option 1"
-  puts "i - selection option 2"
-  puts "o - selection option 3"
+  puts "u - select option 1"
+  puts "i - select option 2"
+  puts "o - select option 3"
+
+  puts "- - select set 1"
+  puts "= 0 select set 2"
+  puts "[ - select set 3"
+  puts "] 0 select set 4"
 
   puts "n - special-luna-gift mode"
   puts "m - luna-gift mode"
@@ -445,6 +450,89 @@ def print_schedule(hepoch, json)
   end
 end
 
+def lookup_set(modes, hepoch)
+  set = {}
+  found_something = false
+  modes.all_modes.each do |mode|
+    set[mode.short_file_name] = mode.json[hepoch]
+    found_something = found_something || (mode.json[hepoch] != nil)
+  end
+  if found_something
+    return set
+  end
+
+  return nil
+end
+
+def get_sets(modes, hepoch)
+  current_hepoch = hepoch = hepoch.to_i
+  sets = []
+  attempts = 0
+
+  set = nil
+  while set == nil && attempts < 100
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch - 24
+    attempts = attempts + 1
+  end
+  if set == nil
+    return sets
+  end
+  sets << set
+
+
+  set = nil
+  while set == nil && attempts < 100
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch - 24
+    attempts = attempts + 1
+  end
+  if set == nil
+    return sets
+  end
+  sets << set
+
+  set = nil
+  while set == nil && attempts < 100
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch - 24
+    attempts = attempts + 1
+  end
+  if set == nil
+    return sets
+  end
+  sets << set
+
+  hepoch = current_hepoch - (24 * 7)
+  set = nil
+  while set == nil && attempts < 100
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch.to_i - (24*7)
+    attempts = attempts + 1
+  end
+  if set == nil
+    return sets
+  end
+  sets << set
+
+
+  return sets
+end
+
+def save_set(modes, hepoch, set)
+  modes.all_modes.each do |mode|
+    event_type = mode.short_file_name
+    events = set[event_type]
+    if events != nil && events.length > 0
+      events.each do |event|
+        add_event(event).to(mode.json).at(hepoch)
+      end
+      puts mode.json[hepoch].to_json
+      write_json_file(mode.full_file_name, mode.json)
+    end
+  end
+end
+
 modes = Modes.new()
 mode = modes.luna
 
@@ -472,6 +560,20 @@ while c != "q" do
       option += (" (%.2f)" % options[key].score) + (" (%.2f)" % options[key].trend)
     end
     puts option
+  end
+
+  puts ""
+
+  sets = get_sets(modes, hepoch)
+  sets.each_with_index do |set, index|
+    puts "set #{index}"
+    modes.all_modes.each do |mode|
+      if mode != nil
+        if set[mode.short_file_name] != nil
+          puts "  #{set[mode.short_file_name]}"
+        end
+      end
+    end
   end
 
 # make %w the day-of week (monday, tuesday, wednesday...)
@@ -517,6 +619,14 @@ while c != "q" do
   elsif "q" == c
   elsif "?" == c
     print_usage
+  elsif "-" == c
+    save_set(modes, hepoch, sets[0])
+  elsif "=" == c
+    save_set(modes, hepoch, sets[1])
+  elsif "[" == c
+    save_set(modes, hepoch, sets[2])
+  elsif "]" == c
+    save_set(modes, hepoch, sets[3])
   else
     if "u" == c
       c = "1"
