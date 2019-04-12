@@ -533,6 +533,14 @@ def save_set(modes, hepoch, set)
   end
 end
 
+def lookup_set_bind_key(index)
+  return "-" if index == 0
+  return "=" if index == 1
+  return "[" if index == 2
+  return "]" if index == 3
+  raise "unknown index #{index}"
+end
+
 modes = Modes.new()
 mode = modes.luna
 
@@ -566,7 +574,7 @@ while c != "q" do
 
   sets = get_sets(modes, hepoch)
   sets.each_with_index do |set, index|
-    puts "set #{index}"
+    puts "set #{index} #{lookup_set_bind_key(index)}"
     modes.all_modes.each do |mode|
       if mode != nil
         if set[mode.short_file_name] != nil
