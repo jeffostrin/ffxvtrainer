@@ -65,6 +65,7 @@ def luna_special_gift_mode
   default_options << Option.new(:name => "1x Adventurers Contract")
   default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
   default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
+  default_options << Option.new(:name => "600000x Shadow Shield")
 
   file_name = "luna_special_gifts"
   return Mode.new(:file_name => file_name, :default_options => default_options)
