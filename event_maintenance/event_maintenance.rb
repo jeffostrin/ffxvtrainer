@@ -54,6 +54,7 @@ def luna_gift_mode
   default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
   default_options << Option.new(:name => "25x Secret Gift Fragment")
   default_options << Option.new(:name => "5x VIP Quest Shard")
+  default_options << Option.new(:name => "None")
 
   file_name = "luna_gifts"
   return Mode.new(:file_name => file_name, :default_options => default_options)
@@ -63,8 +64,10 @@ end
 def luna_special_gift_mode
   default_options = []
   default_options << Option.new(:name => "1x Adventurers Contract")
+  default_options << Option.new(:name => "1x Adventurers Contract (12 hours)")
   default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
   default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
+  default_options << Option.new(:name => "300000x Elite Magitek Shard")
   default_options << Option.new(:name => "600000x Shadow Shield")
 
   file_name = "luna_special_gifts"
@@ -91,7 +94,14 @@ end
 
 def multi_hour_event_mode
   default_options = []
-  # default_options << Option.new(:name => "Kill Monsters") # diff
+
+  default_options << Option.new(:name => "Thank the Astrals it's Friday (24 hours)") # diff
+
+  default_options << Option.new(:name => "Yeah well, it's Opposite Day (8 hours)")
+  default_options << Option.new(:name => "I Am Invincible! (8 hours)")
+
+  default_options << Option.new(:name => "Phantasmal Halls")
+
   # default_options << Option.new(:name => "Level Up Your Hero")
   # default_options << Option.new(:name => "Proving Grounds Adventure Quest")
   # default_options << Option.new(:name => "Race to VIP")
@@ -122,7 +132,7 @@ class Modes
   end
 
   def all_modes
-    return [ @luna_specials, @luna, @hourly, @mini ]
+    return [ @luna_specials, @luna, @hourly, @mini, @multi_hour ]
   end
 
   def next(current)
@@ -470,45 +480,49 @@ def get_sets(modes, hepoch)
   sets = []
   attempts = 0
 
-  set = nil
-  while set == nil && attempts < 100
-    set = lookup_set(modes, hepoch.to_s)
-    hepoch = hepoch - 24
-    attempts = attempts + 1
-  end
-  if set == nil
-    return sets
-  end
-  sets << set
-
-
-  set = nil
-  while set == nil && attempts < 100
-    set = lookup_set(modes, hepoch.to_s)
-    hepoch = hepoch - 24
-    attempts = attempts + 1
-  end
-  if set == nil
-    return sets
-  end
-  sets << set
-
-  set = nil
-  while set == nil && attempts < 100
-    set = lookup_set(modes, hepoch.to_s)
-    hepoch = hepoch - 24
-    attempts = attempts + 1
-  end
-  if set == nil
-    return sets
-  end
-  sets << set
-
+# Look back a week
   hepoch = current_hepoch - (24 * 7)
   set = nil
   while set == nil && attempts < 100
     set = lookup_set(modes, hepoch.to_s)
     hepoch = hepoch.to_i - (24*7)
+    attempts = attempts + 1
+  end
+  if set == nil
+    return sets
+  end
+  sets << set
+
+# look back a day
+
+  hepoch = current_hepoch
+  set = nil
+  while set == nil && attempts < 100
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch - 24
+    attempts = attempts + 1
+  end
+  if set == nil
+    return sets
+  end
+  sets << set
+
+
+  set = nil
+  while set == nil && attempts < 100
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch - 24
+    attempts = attempts + 1
+  end
+  if set == nil
+    return sets
+  end
+  sets << set
+
+  set = nil
+  while set == nil && attempts < 100
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch - 24
     attempts = attempts + 1
   end
   if set == nil
