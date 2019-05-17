@@ -4,3 +4,4 @@ get_schedule/generated
 */terraform/terraform.tfstate.backup
 */terraform/variables.secret.tf
 */terraform/.terraform/
+event_maintenance/*.json
