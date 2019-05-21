@@ -12,61 +12,17 @@ window.onload = function() {
     return false;
   }
 
-  // var explainTrainingLink = document.getElementById("explain_training");
-  // explainTrainingLink.onclick = function() {
-  //   var explanationText = document.getElementById("training_explanation");
-  //   if (explanationText.style.display === "none") {
-  //     explanationText.style.display = "block";
-  //   } else {
-  //     explanationText.style.display = "none";
-  //   }
-  //   return false;
-  // }
 }
 
 
 
 var Padding = function() {
   return {
-    // https://stackoverflow.com/questions/2686855/is-there-a-javascript-function-that-can-pad-a-string-to-get-to-a-determined-leng
-    _pad: function(pad, str, padLeft) {
-      if (typeof str === 'undefined')
-        return pad;
-      if (padLeft) {
-        return (pad + str).slice(-pad.length);
-      } else {
-        return (str + pad).substring(0, pad.length);
-      }
-    },
-
-    _createFormat(length, fillCharacter) {
-      var fill = "";
-      for (var i = 0; i < length; ++i) {
-        fill += fillCharacter;
-      }
-      return fill;
-    },
 
     leftPadFormat: function(paddingFormat, valueToPad) {
       return (paddingFormat + valueToPad).slice(-paddingFormat.length);
     },
-
-    rightPadFormat: function(paddingFormat, valueToPad) {
-      return (valueToPad + paddingFormat).substring(0, paddingFormat.length);
-    },
-
-    leftPad: function lpad(str, length, fillCharacter) {
-      var format = this._createFormat(Math.max(length, str.length), fillCharacter);
-      var r = this.leftPadFormat(format, str);
-      return r;
-    },
-
-
-    rightPad: function lpad(str, length, fillCharacter) {
-      var format = this._createFormat(Math.max(length, str.length), fillCharacter);
-      var r = this.rightPadFormat(format, str);
-      return r;
-    },
+    
   }
 }
 
@@ -172,27 +128,6 @@ var Ctime = function(padding) {
     return result;
   }
 
-  function present_hourly_events(hourlyEvents, padding) {
-    hourlyEvents.sort((x,y) => { return y.score - x.score });
-
-    if (hourlyEvents.length == 1) {
-      return "[ " + hourlyEvents[0].name + " ]";
-    }
-
-    return "[ " + padder.leftPad(hourlyEvents[0].name, 26, padding) + " or " + padder.rightPad(hourlyEvents[1].name, 21, padding) + " ]"
-  }
-
-  function present_hourly_events2(hourlyEvents, padding) {
-    hourlyEvents.sort((x,y) => { return y.score - x.score });
-    return hourlyEvents[0].name;
-
-    // if (hourlyEvents.length == 1) {
-    //   return hourlyEvents[0].name;
-    // }
-    //
-    // return hourlyEvents[0].name + " or " + hourlyEvents[1].name;
-  }
-
   function present_hourly_events3(hourlyEvents) {
     if (hourlyEvents.length == 0) {
       return "";
@@ -278,45 +213,6 @@ var Ctime = function(padding) {
     // console.log(response);
     // console.log(response.schedule);
     var nowSepoch = ct.nowSepoch();
-
-    // $('#updates').append($('<div id=schedule />'));
-    // Object.keys(response.schedule.hepochs).sort().forEach(
-    //   function(key) {
-    //     var line = "<div>";
-    //     var padding = " ";
-    //
-    //     var val = response.schedule.hepochs[key];
-    //
-    //     if (val.isCurrentHepoch) {
-    //       line += "=>";
-    //       padding = "=";
-    //     } else if (key % 4 == 0) {
-    //       line += "--";
-    //       padding = "-";
-    //     } else {
-    //       line += "  ";
-    //     }
-    //
-    //     line += " " + val.dayTime;
-    //     var hepoch = val.hepoch;
-    //     var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
-    //     line += lpad(" (" + relativeTime + ") ", 16, padding) + " ";
-    //
-    //     var hourlyEvents = score_hourly_events(val.hourly_events);
-    //     var hourlyOutput = present_hourly_events(hourlyEvents, padding);
-    //     line += hourlyOutput;
-    //
-    //     if (val.luna_events !== null && val.luna_events !== undefined) {
-    //       if (val.luna_events.length > 0) {
-    //         var lunaEvent = lpad(" " + val.luna_events + " ", 20, padding);
-    //         line += " " + padding + lunaEvent;
-    //       }
-    //     }
-    //
-    //     line += "</div>";
-    //     $('#schedule').append(line);
-    //   }
-    // );
 
     $('#updates').append($('<div><table id=schedule /></div>'));
     $('#schedule').append(
