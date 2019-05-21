@@ -25,7 +25,7 @@ module.exports = function Clock(utcOffset) {
       jsonHour.relativeTime = ctime.pp().asRelativeTime(hepoch * 60 * 60 - nowSepoch);
       jsonHour.hourly_events = miniEventForecaster.forecastFor(hepoch);
       jsonHour.luna_events = lunaEventForecaster.forecastFor(hepoch);
-      jsonHour.multi_hour_events = multiHourEvents.forecastFor(hepoch);
+      jsonHour.multi_hour_events = multiHourEventForecaster.forecastFor(hepoch);
       schedule.hepochs[hepoch] = jsonHour;
     }
 
