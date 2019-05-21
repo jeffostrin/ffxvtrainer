@@ -28,19 +28,24 @@ end
 
 def mini_event_mode
   default_options = []
-  default_options << Option.new(:name => "Combine Gems")
-  default_options << Option.new(:name => "Combine Materials")
-  default_options << Option.new(:name => "Gather RSS")
-  default_options << Option.new(:name => "Guild Defend")
-  default_options << Option.new(:name => "Guild Help")
-  default_options << Option.new(:name => "Guild RSS Help")
-  default_options << Option.new(:name => "Guild Quests")
-  default_options << Option.new(:name => "Hero Quests")
-  default_options << Option.new(:name => "Monster Hunt")
-  default_options << Option.new(:name => "Secret Gift")
-  default_options << Option.new(:name => "Spin the Wheel")
-  default_options << Option.new(:name => "Training")
-  default_options << Option.new(:name => "VIP Quests")
+  default_options << Option.new(:name => "Guild Event")
+  default_options << Option.new(:name => "Level Up Your Hero Event")
+  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
+  default_options << Option.new(:name => "Race to VIP")
+  default_options << Option.new(:name => "Secret Event Unlocked!")
+  # default_options << Option.new(:name => "Combine Gems")
+  # default_options << Option.new(:name => "Combine Materials")
+  # default_options << Option.new(:name => "Gather RSS")
+  # default_options << Option.new(:name => "Guild Defend")
+  # default_options << Option.new(:name => "Guild Help")
+  # default_options << Option.new(:name => "Guild RSS Help")
+  # default_options << Option.new(:name => "Guild Quests")
+  # default_options << Option.new(:name => "Hero Quests")
+  # default_options << Option.new(:name => "Monster Hunt")
+  # default_options << Option.new(:name => "Secret Gift")
+  # default_options << Option.new(:name => "Spin the Wheel")
+  # default_options << Option.new(:name => "Training")
+  # default_options << Option.new(:name => "VIP Quests")
 
   file_name = "mini_events"
   return Mode.new(:file_name => file_name, :default_options => default_options)
@@ -95,12 +100,43 @@ end
 def multi_hour_event_mode
   default_options = []
 
-  default_options << Option.new(:name => "Thank the Astrals it's Friday (24 hours)") # diff
+# 4pm Level up your hero
+# race to vip
+# proving Grounds
+# Secret Event
+# Level up your hero
+# guild event
+# race to vip
+# proving grounds
+# secret event
+# ?               level up your hero
+# guild event
+# race to vip
+# proving grounds
+# secret event
+# level up your hero
+# guild event
+# race to vip
+# proving grounds
+# secret event
+# level up your hero
+# guild event
+# race to vip
+# proving grounds
+# secret event
+# 4pm level up your hero
 
-  default_options << Option.new(:name => "Yeah well, it's Opposite Day (8 hours)")
-  default_options << Option.new(:name => "I Am Invincible! (8 hours)")
 
-  default_options << Option.new(:name => "Phantasmal Halls")
+
+  default_options << Option.new(:name => "Dark Troop T1 Training Event (6 hours)")
+  default_options << Option.new(:name => "Dark World VIP Event (6 hours)")
+
+  # default_options << Option.new(:name => "Thank the Astrals it's Friday (24 hours)") # diff
+  #
+  # default_options << Option.new(:name => "Yeah well, it's Opposite Day (8 hours)")
+  # default_options << Option.new(:name => "I Am Invincible! (8 hours)")
+  #
+  # default_options << Option.new(:name => "Phantasmal Halls")
 
   # default_options << Option.new(:name => "Level Up Your Hero")
   # default_options << Option.new(:name => "Proving Grounds Adventure Quest")
