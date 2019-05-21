@@ -22,7 +22,7 @@ var Padding = function() {
     leftPadFormat: function(paddingFormat, valueToPad) {
       return (paddingFormat + valueToPad).slice(-paddingFormat.length);
     },
-    
+
   }
 }
 
@@ -214,23 +214,27 @@ var Ctime = function(padding) {
     // console.log(response.schedule);
     var nowSepoch = ct.nowSepoch();
 
+    var eventTypes = [
+      { name: "Mini Events", events: function(hepochData) { return hepochData.hourly_events; } },
+      { name: "Luna Gifts", events: function(hepochData) { return hepochData.luna_events; } },
+      { name: "Multi Hour Events", events: function(hepochData) { return hepochData.multi_hour_events; } },
+    ]
+
     $('#updates').append($('<div><table id=schedule /></div>'));
     $('#schedule').append(
       "<th></th>" +
       "<th align=center>Start Time</th>" +
       "<th></th>" +
       "<th align=center>From Now</th>" +
-      "<th></th>" +
-      "<th></th>" +
-      "<th  align=center>Mini Events</th>" +
-      "<th></th>" +
-      "<th></th>" +
-      "<th align=center>Luna Gifts</th>" +
-      "<th></th>" +
-      "<th></th>" +
-      "<th align=center>Multi-Hour Events</th>" +
-      "<th></th>"
-    );
+      "<th></th>");
+
+    eventTypes.forEach(function (eType) {
+      $('#schedule').append(
+        "<th></th>" +
+        "<th  align=center>" + eType.name + "</th>" +
+        "<th></th>");
+    });
+
     Object.keys(response.schedule.hepochs).sort().forEach(
       function(key) {
         var line = "<tr>";
@@ -253,9 +257,9 @@ var Ctime = function(padding) {
         var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
         line += "<td>(</td><td align=center>" + relativeTime + "</td><td>)</td>";
 
-        line += bind_event_list(val.hourly_events);
-        line += bind_event_list(val.luna_events);
-        line += bind_event_list(val.multi_hour_events);
+        eventTypes.forEach(function (eType) {
+          line += bind_event_list(eType.events(val));
+        });
 
         line += "</tr>";
         $('#schedule').append(line);
