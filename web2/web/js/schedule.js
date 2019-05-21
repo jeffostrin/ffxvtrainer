@@ -361,7 +361,7 @@ var Ctime = function(padding) {
         }
 
         try {
-        if (getUrlParameter("multi_hour_events") == "true" && val.multi_hour_events !== null && val.multi_hour_events !== undefined) {
+        if (val.multi_hour_events !== null && val.multi_hour_events !== undefined) {
           line += "<td>[</td><td>";
           if (Object.keys(val.multi_hour_events).length >= 1) {
             var multiHourEvents = score_hourly_events(val.multi_hour_events);
