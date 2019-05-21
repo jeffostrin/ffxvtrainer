@@ -259,6 +259,21 @@ var Ctime = function(padding) {
     _updateClock(window.ffxv_schedule);
   }
 
+  function bind_event_list(event_list) {
+    linePart = "";
+    linePart += "<td>[</td><td>";
+    if (event_list !== null && event_list !== undefined) {
+      if (Object.keys(event_list).length >= 1) {
+        var events = score_hourly_events(event_list);
+        events = present_hourly_events3(events);
+        linePart += events;
+      }
+    }
+    linePart += "</td>";
+    linePart += "<td>]</td>";
+    return linePart;
+  }
+
   function _updateClock(response) {
     // console.log(response);
     // console.log(response.schedule);
@@ -342,38 +357,9 @@ var Ctime = function(padding) {
         var relativeTime = ct.asRelativeTime(hepoch * 60 * 60 - nowSepoch);
         line += "<td>(</td><td align=center>" + relativeTime + "</td><td>)</td>";
 
-        line += "<td>[</td><td>";
-        var hourlyEvents = score_hourly_events(val.hourly_events);
-        hourlyEvents = present_hourly_events3(hourlyEvents);
-        line += hourlyEvents;
-        line += "</td>";
-        line += "<td>]</td>";
-
-        if (val.luna_events !== null && val.luna_events !== undefined) {
-          line += "<td>[</td><td>";
-          if (Object.keys(val.luna_events).length >= 1) {
-            var lunaHourlyEvents = score_hourly_events(val.luna_events);
-            lunaHourlyEvents = present_hourly_events3(lunaHourlyEvents);
-            line += lunaHourlyEvents;
-          }
-          line += "</td>";
-          line += "<td>]</td>";
-        }
-
-        try {
-        if (val.multi_hour_events !== null && val.multi_hour_events !== undefined) {
-          line += "<td>[</td><td>";
-          if (Object.keys(val.multi_hour_events).length >= 1) {
-            var multiHourEvents = score_hourly_events(val.multi_hour_events);
-            multiHourEvents = present_hourly_events3(multiHourEvents);
-            line += multiHourEvents;
-          }
-          line += "</td>";
-          line += "<td>]</td>";
-        }
-        } catch (err) {
-          console.log(err);
-        }
+        line += bind_event_list(val.hourly_events);
+        line += bind_event_list(val.luna_events);
+        line += bind_event_list(val.multi_hour_events);
 
         line += "</tr>";
         $('#schedule').append(line);
