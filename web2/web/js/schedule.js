@@ -194,6 +194,9 @@ var Ctime = function(padding) {
   }
 
   function present_hourly_events3(hourlyEvents) {
+    if (hourlyEvents.length == 0) {
+      return "";
+    }
     hourlyEvents.sort((x,y) => { return y.score - x.score });
     return hourlyEvents[0].name;
   }
