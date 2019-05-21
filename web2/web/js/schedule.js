@@ -12,16 +12,16 @@ window.onload = function() {
     return false;
   }
 
-  var explainTrainingLink = document.getElementById("explain_training");
-  explainTrainingLink.onclick = function() {
-    var explanationText = document.getElementById("training_explanation");
-    if (explanationText.style.display === "none") {
-      explanationText.style.display = "block";
-    } else {
-      explanationText.style.display = "none";
-    }
-    return false;
-  }
+  // var explainTrainingLink = document.getElementById("explain_training");
+  // explainTrainingLink.onclick = function() {
+  //   var explanationText = document.getElementById("training_explanation");
+  //   if (explanationText.style.display === "none") {
+  //     explanationText.style.display = "block";
+  //   } else {
+  //     explanationText.style.display = "none";
+  //   }
+  //   return false;
+  // }
 }
 
 
@@ -315,6 +315,9 @@ var Ctime = function(padding) {
       "<th></th>" +
       "<th></th>" +
       "<th align=center>Luna Gifts</th>" +
+      "<th></th>" +
+      "<th></th>" +
+      "<th align=center>Multi-Hour Events</th>" +
       "<th></th>"
     );
     Object.keys(response.schedule.hepochs).sort().forEach(
@@ -355,6 +358,21 @@ var Ctime = function(padding) {
           }
           line += "</td>";
           line += "<td>]</td>";
+        }
+
+        try {
+        if (val.multi_hour_events !== null && val.multi_hour_events !== undefined) {
+          line += "<td>[</td><td>";
+          if (Object.keys(val.multi_hour_events).length >= 1) {
+            var multiHourEvents = score_hourly_events(val.multi_hour_events);
+            multiHourEvents = present_hourly_events3(multiHourEvents);
+            line += multiHourEvents;
+          }
+          line += "</td>";
+          line += "<td>]</td>";
+        }
+        } catch (err) {
+          console.log(err);
         }
 
         line += "</tr>";
