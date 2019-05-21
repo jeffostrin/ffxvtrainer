@@ -216,7 +216,7 @@ var Ctime = function(padding) {
 
     var eventTypes = [
       { name: "Mini Events", events: function(hepochData) { return hepochData.hourly_events; } },
-      { name: "Luna Gifts", events: function(hepochData) { return hepochData.luna_events; } },
+      //{ name: "Luna Gifts", events: function(hepochData) { return hepochData.luna_events; } },
       { name: "Multi Hour Events", events: function(hepochData) { return hepochData.multi_hour_events; } },
     ]
 
