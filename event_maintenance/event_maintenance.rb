@@ -53,13 +53,13 @@ end
 
 def luna_gift_mode
   default_options = []
-  default_options << Option.new(:name => "5x Expedition Fragment")
-  default_options << Option.new(:name => "5x Expedition Shard")
-  default_options << Option.new(:name => "25x Luna's Gift Fragment")
-  default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
-  default_options << Option.new(:name => "25x Secret Gift Fragment")
-  default_options << Option.new(:name => "5x VIP Quest Shard")
-  default_options << Option.new(:name => "None")
+  # default_options << Option.new(:name => "5x Expedition Fragment")
+  # default_options << Option.new(:name => "5x Expedition Shard")
+  # default_options << Option.new(:name => "25x Luna's Gift Fragment")
+  # default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
+  # default_options << Option.new(:name => "25x Secret Gift Fragment")
+  # default_options << Option.new(:name => "5x VIP Quest Shard")
+  # default_options << Option.new(:name => "None")
 
   file_name = "luna_gifts"
   return Mode.new(:file_name => file_name, :default_options => default_options)
@@ -68,12 +68,12 @@ end
 
 def luna_special_gift_mode
   default_options = []
-  default_options << Option.new(:name => "1x Adventurers Contract")
-  default_options << Option.new(:name => "1x Adventurers Contract (12 hours)")
-  default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
+  # default_options << Option.new(:name => "1x Adventurers Contract")
+  # default_options << Option.new(:name => "1x Adventurers Contract (12 hours)")
+  # default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
   default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
   default_options << Option.new(:name => "300000x Elite Magitek Shard")
-  default_options << Option.new(:name => "600000x Shadow Shield")
+  # default_options << Option.new(:name => "600000x Shadow Shield")
 
   file_name = "luna_special_gifts"
   return Mode.new(:file_name => file_name, :default_options => default_options)
@@ -81,16 +81,16 @@ end
 
 def hourly_event_mode
   default_options = []
-  default_options << Option.new(:name => "Kill Monsters") # diff
-  default_options << Option.new(:name => "Level Up Your Hero")
-  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
-  default_options << Option.new(:name => "Race to VIP")
-  default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
-  default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
-  default_options << Option.new(:name => "Raid Boss: Alpha Karlabos")
-  default_options << Option.new(:name => "Special Bonus Research Event") # diff
-  default_options << Option.new(:name => "Special Bonus Building Event")  # diff
-  default_options << Option.new(:name => "Train Troops")  # diff
+  # default_options << Option.new(:name => "Kill Monsters") # diff
+  # default_options << Option.new(:name => "Level Up Your Hero")
+  # default_options << Option.new(:name => "Proving Grounds Adventure Quest")
+  # default_options << Option.new(:name => "Race to VIP")
+  # default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
+  # default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
+  # default_options << Option.new(:name => "Raid Boss: Alpha Karlabos")
+  # default_options << Option.new(:name => "Special Bonus Research Event") # diff
+  # default_options << Option.new(:name => "Special Bonus Building Event")  # diff
+  # default_options << Option.new(:name => "Train Troops")  # diff
 
   file_name = "hourly_events"
   return Mode.new(:file_name => file_name, :default_options => default_options)
@@ -172,28 +172,30 @@ class Modes
   end
 
   def next(current)
-    if current == @luna
-      return @hourly
-    elsif current == @hourly
+    if current == @mini
+      return @multi_hour
+    elsif current = @multi_hour
       return @mini
-    elsif current == @mini
-      return @luna
     elsif current == @luna_specials
-      return @luna
-    elsif current == @multi_hour
-      return @luna
+      return @mini
     end
+    # if current == @luna
+    #   return @hourly
+    # elsif current == @hourly
+    #   return @mini
+    # elsif current == @mini
+    #   return @luna
+    # elsif current == @luna_specials
+    #   return @luna
+    # elsif current == @multi_hour
+    #   return @luna
+    # end
     raise "Unknown current mode #{current}"
   end
 end
 
 def print_usage
   puts "============================"
-
-  puts "            option-1      option-2    option-3    option-3"
-  puts "            -24-hours     -1-hour     +1-hour     +24-hours"
-  puts "xtra-luna     luna        hourly        mini"
-
 
   puts "j - backwards in time 1 day"
   puts "k - backwards in time 1 hour"
@@ -210,10 +212,10 @@ def print_usage
   puts "] 0 select set 4"
 
   puts "n - special-luna-gift mode"
-  puts "m - luna-gift mode"
-  puts ", - hourly-event mode"
-  puts ". - mini-event mode"
-  puts "/ - multi-hour-event mode"
+  puts "m - mini-event mode"
+  puts ", - multi-hour-event mode"
+  # puts ". - mini-event mode"
+  # puts "/ - multi-hour-event mode"
 
 
   puts "d - display the values for the current hour"
@@ -593,7 +595,7 @@ def lookup_set_bind_key(index)
 end
 
 modes = Modes.new()
-mode = modes.luna
+mode = modes.mini
 
 state = Navigation.new
 
@@ -645,26 +647,26 @@ while c != "q" do
 
   if "j" == c || "\e[A"  == c
   	state.backwards 24
-    mode = modes.luna
+    mode = modes.mini
   elsif "k" == c || "\e[D" == c
   	state.backwards 1
-    mode = modes.luna
+    mode = modes.mini
   elsif "l" == c || "\e[C" == c
-  	state.forwards 1
+  	state.mini 1
     mode = modes.luna
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
-    mode = modes.luna
+    mode = modes.mini
   elsif "n" == c
     mode = modes.luna_specials
   elsif "m" == c
-    mode = modes.luna
-  elsif "," == c
-    mode = modes.hourly
-  elsif "." == c
     mode = modes.mini
-  elsif "/" == c
+  elsif "," == c
     mode = modes.multi_hour
+  # elsif "." == c
+  #   mode = modes.mini
+  # elsif "/" == c
+  #   mode = modes.multi_hour
   elsif "d" == c
     display_hepoch(hepoch, mode.json)
   elsif "h" == c
