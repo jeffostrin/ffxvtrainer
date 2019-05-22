@@ -18,34 +18,27 @@ class Mode
     assert(file_name != nil, "Mode.file_name is required")
     @short_file_name = file_name
     @full_file_name = file_name + ".json"
-    @default_options = params[:default_options]
+    assert(params[:default_options] != nil, "default options is required")
+    @default_options = convert_to_event_list(params[:default_options])
     assert(@default_options != nil, "Mode.default_options is required")
     @json = read_json_file(@full_file_name)
     assert(@json != nil, "Mode.json cannot be nil, file is likely missing")
   end
+
+  private
+
+  def convert_to_event_list(events)
+    options = []
+    events.each do |event_name|
+      options << Option.new(:name => event_name)
+    end
+    return options
+  end
 end
 
-def create_event_list(events)
-  options = []
-  events.each do |event_name|
-    options << Option.new(:name => event_name)
-  end
-  return options
-end
 
 def mini_event_mode
-  file_name = "mini_events"
-  default_options = create_event_list([
-    "Guild Event",
-    "Level Up Your Hero Event",
-    "Proving Grounds Adventure Quest",
-    "Race to VIP",
-    "Secret Event Unlocked!"
-    ])
-  return Mode.new(:file_name => file_name, :default_options => default_options)
-
-  # 4pm Level up your hero
-  # race to vip
+  # 5 pm race to vip
   # proving Grounds
   # Secret Event
   # Level up your hero
@@ -69,38 +62,52 @@ def mini_event_mode
   # proving grounds
   # secret event
   # 4pm level up your hero
+  return Mode.new(
+    :file_name => "mini_events",
+    :default_options => [
+      "Guild Event",
+      "Level Up Your Hero Event",
+      "Proving Grounds Adventure Quest",
+      "Race to VIP",
+      "Secret Event Unlocked!"
+      ]
+  )
 end
 
 def luna_gift_mode
-  file_name = "luna_gifts"
-  default_options = create_event_list([])
-  return Mode.new(:file_name => file_name, :default_options => default_options)
+  return Mode.new(
+    :file_name => "luna_gifts",
+    :default_options => []
+  )
 end
 
 
 def luna_special_gift_mode
-  file_name = "luna_special_gifts"
-  default_options = create_event_list([
-    "1x Commander Recruiting Chest (from Gladious)",
-    "300000x Elite Magitek Shard"
-    ])
-  return Mode.new(:file_name => file_name, :default_options => default_options)
+  return Mode.new(
+    :file_name => "luna_special_gifts",
+    :default_options => [
+      "1x Commander Recruiting Chest (from Gladious)",
+      "300000x Elite Magitek Shard"
+    ]
+  )
 end
 
 def hourly_event_mode
-  file_name = "hourly_events"
-  default_options = create_event_list([])
-  return Mode.new(:file_name => file_name, :default_options => default_options)
+  return Mode.new(
+    :file_name => "hourly_events",
+    :default_options => []
+  )
 end
 
 
 def multi_hour_event_mode
-  file_name = "multi_hour_events"
-  default_options = create_event_list([
-    "Dark Troop T1 Training Event (6 hours)",
-    "Dark World VIP Event (6 hours)"
-    ])
-  return Mode.new(:file_name => file_name, :default_options => default_options)
+  return Mode.new(
+    :file_name => "multi_hour_events",
+    :default_options => [
+      "Dark Troop T1 Training Event (6 hours)",
+      "Dark World VIP Event (6 hours)"
+    ]
+  )
 end
 
 class Modes
