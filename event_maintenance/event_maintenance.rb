@@ -25,130 +25,81 @@ class Mode
   end
 end
 
+def create_event_list(events)
+  options = []
+  events.each do |event_name|
+    options << Option.new(:name => event_name)
+  end
+  return options
+end
 
 def mini_event_mode
-  default_options = []
-  default_options << Option.new(:name => "Guild Event")
-  default_options << Option.new(:name => "Level Up Your Hero Event")
-  default_options << Option.new(:name => "Proving Grounds Adventure Quest")
-  default_options << Option.new(:name => "Race to VIP")
-  default_options << Option.new(:name => "Secret Event Unlocked!")
-  # default_options << Option.new(:name => "Combine Gems")
-  # default_options << Option.new(:name => "Combine Materials")
-  # default_options << Option.new(:name => "Gather RSS")
-  # default_options << Option.new(:name => "Guild Defend")
-  # default_options << Option.new(:name => "Guild Help")
-  # default_options << Option.new(:name => "Guild RSS Help")
-  # default_options << Option.new(:name => "Guild Quests")
-  # default_options << Option.new(:name => "Hero Quests")
-  # default_options << Option.new(:name => "Monster Hunt")
-  # default_options << Option.new(:name => "Secret Gift")
-  # default_options << Option.new(:name => "Spin the Wheel")
-  # default_options << Option.new(:name => "Training")
-  # default_options << Option.new(:name => "VIP Quests")
-
   file_name = "mini_events"
+  default_options = create_event_list([
+    "Guild Event",
+    "Level Up Your Hero Event",
+    "Proving Grounds Adventure Quest",
+    "Race to VIP",
+    "Secret Event Unlocked!"
+    ])
   return Mode.new(:file_name => file_name, :default_options => default_options)
+
+  # 4pm Level up your hero
+  # race to vip
+  # proving Grounds
+  # Secret Event
+  # Level up your hero
+  # guild event
+  # race to vip
+  # proving grounds
+  # secret event
+  # ?               level up your hero
+  # guild event
+  # race to vip
+  # proving grounds
+  # secret event
+  # level up your hero
+  # guild event
+  # race to vip
+  # proving grounds
+  # secret event
+  # level up your hero
+  # guild event
+  # race to vip
+  # proving grounds
+  # secret event
+  # 4pm level up your hero
 end
 
 def luna_gift_mode
-  default_options = []
-  # default_options << Option.new(:name => "5x Expedition Fragment")
-  # default_options << Option.new(:name => "5x Expedition Shard")
-  # default_options << Option.new(:name => "25x Luna's Gift Fragment")
-  # default_options << Option.new(:name => "30x 1 Minute Adventurer Speed Up")
-  # default_options << Option.new(:name => "25x Secret Gift Fragment")
-  # default_options << Option.new(:name => "5x VIP Quest Shard")
-  # default_options << Option.new(:name => "None")
-
   file_name = "luna_gifts"
+  default_options = create_event_list([])
   return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 
 def luna_special_gift_mode
-  default_options = []
-  # default_options << Option.new(:name => "1x Adventurers Contract")
-  # default_options << Option.new(:name => "1x Adventurers Contract (12 hours)")
-  # default_options << Option.new(:name => "1x Bloodbath Realm Teleport (1 Hour)")
-  default_options << Option.new(:name => "1x Commander Recruiting Chest (from Gladious)")
-  default_options << Option.new(:name => "300000x Elite Magitek Shard")
-  # default_options << Option.new(:name => "600000x Shadow Shield")
-
   file_name = "luna_special_gifts"
+  default_options = create_event_list([
+    "1x Commander Recruiting Chest (from Gladious)",
+    "300000x Elite Magitek Shard"
+    ])
   return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 def hourly_event_mode
-  default_options = []
-  # default_options << Option.new(:name => "Kill Monsters") # diff
-  # default_options << Option.new(:name => "Level Up Your Hero")
-  # default_options << Option.new(:name => "Proving Grounds Adventure Quest")
-  # default_options << Option.new(:name => "Race to VIP")
-  # default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
-  # default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
-  # default_options << Option.new(:name => "Raid Boss: Alpha Karlabos")
-  # default_options << Option.new(:name => "Special Bonus Research Event") # diff
-  # default_options << Option.new(:name => "Special Bonus Building Event")  # diff
-  # default_options << Option.new(:name => "Train Troops")  # diff
-
   file_name = "hourly_events"
+  default_options = create_event_list([])
   return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
 
 def multi_hour_event_mode
-  default_options = []
-
-# 4pm Level up your hero
-# race to vip
-# proving Grounds
-# Secret Event
-# Level up your hero
-# guild event
-# race to vip
-# proving grounds
-# secret event
-# ?               level up your hero
-# guild event
-# race to vip
-# proving grounds
-# secret event
-# level up your hero
-# guild event
-# race to vip
-# proving grounds
-# secret event
-# level up your hero
-# guild event
-# race to vip
-# proving grounds
-# secret event
-# 4pm level up your hero
-
-
-
-  default_options << Option.new(:name => "Dark Troop T1 Training Event (6 hours)")
-  default_options << Option.new(:name => "Dark World VIP Event (6 hours)")
-
-  # default_options << Option.new(:name => "Thank the Astrals it's Friday (24 hours)") # diff
-  #
-  # default_options << Option.new(:name => "Yeah well, it's Opposite Day (8 hours)")
-  # default_options << Option.new(:name => "I Am Invincible! (8 hours)")
-  #
-  # default_options << Option.new(:name => "Phantasmal Halls")
-
-  # default_options << Option.new(:name => "Level Up Your Hero")
-  # default_options << Option.new(:name => "Proving Grounds Adventure Quest")
-  # default_options << Option.new(:name => "Race to VIP")
-  # default_options << Option.new(:name => "Raid Boss: Dire Quetzalcoatl")
-  # default_options << Option.new(:name => "Raid Boss: Omega Karlabos")
-  # default_options << Option.new(:name => "Raid Boss: Alpha Karlabos")
-  # default_options << Option.new(:name => "Special Bonus Research Event") # diff
-  # default_options << Option.new(:name => "Special Bonus Building Event")  # diff
-  # default_options << Option.new(:name => "Train Troops")  # diff
-
   file_name = "multi_hour_events"
+  default_options = create_event_list([
+    "Dark Troop T1 Training Event (6 hours)",
+    "Dark World VIP Event (6 hours)"
+    ])
   return Mode.new(:file_name => file_name, :default_options => default_options)
 end
 
@@ -179,17 +130,6 @@ class Modes
     elsif current == @luna_specials
       return @mini
     end
-    # if current == @luna
-    #   return @hourly
-    # elsif current == @hourly
-    #   return @mini
-    # elsif current == @mini
-    #   return @luna
-    # elsif current == @luna_specials
-    #   return @luna
-    # elsif current == @multi_hour
-    #   return @luna
-    # end
     raise "Unknown current mode #{current}"
   end
 end
@@ -652,8 +592,8 @@ while c != "q" do
   	state.backwards 1
     mode = modes.mini
   elsif "l" == c || "\e[C" == c
-  	state.mini 1
-    mode = modes.luna
+  	state.forwards 1
+    mode = modes.mini
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
     mode = modes.mini
