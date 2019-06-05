@@ -7,6 +7,8 @@ require_relative '../assert'
 require_relative 'scoring'
 require_relative 'score_merge'
 
+CLEAR_SCREEN = "\e[2J"
+
 class Mode
   attr_reader :short_file_name
   attr_reader :full_file_name
@@ -403,7 +405,7 @@ def display_hepoch(hepoch, json)
   puts "current hepoch > " + data.to_s
 end
 
-def display_entire_hepoch(hepoch, modes)
+def display_hepoch_records(hepoch, modes)
   modes.all_modes.each do |mode|
     display_hepoch(hepoch, mode.json)
   end
@@ -504,47 +506,46 @@ def get_sets(modes, hepoch)
     hepoch = hepoch.to_i - (24*7)
     attempts = attempts + 1
   end
-  if set == nil
-    return sets
+  if set != nil
+    sets << set
   end
-  sets << set
 
 # look back a day
 
   hepoch = current_hepoch
   set = nil
+  attempts = 0
   while set == nil && attempts < 100
     set = lookup_set(modes, hepoch.to_s)
     hepoch = hepoch - 24
     attempts = attempts + 1
   end
-  if set == nil
-    return sets
+  if set != nil
+    sets << set
   end
-  sets << set
 
 
   set = nil
+  attempts = 0
   while set == nil && attempts < 100
     set = lookup_set(modes, hepoch.to_s)
     hepoch = hepoch - 24
     attempts = attempts + 1
   end
-  if set == nil
-    return sets
+  if set != nil
+    sets << set
   end
-  sets << set
 
   set = nil
+  attempts = 0
   while set == nil && attempts < 100
     set = lookup_set(modes, hepoch.to_s)
     hepoch = hepoch - 24
     attempts = attempts + 1
   end
-  if set == nil
-    return sets
+  if set != nil
+    sets << set
   end
-  sets << set
 
 
   return sets
@@ -586,12 +587,14 @@ c = "x"
 
 while c != "q" do
 
-  puts
+  puts  CLEAR_SCREEN
 
   hepoch = state.get_hepoch
 
-  display_entire_hepoch(hepoch, modes)
+  display_hepoch_records(hepoch, modes)
+  puts
 
+  puts "Options:"
   options = get_options(mode, mode.json, hepoch)
   options.keys.sort.each do |key|
   	option = "  #{key} - #{options[key].name}"
