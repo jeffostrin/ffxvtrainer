@@ -493,60 +493,42 @@ def lookup_set(modes, hepoch)
   return nil
 end
 
+def find_historical_set(modes, hepoch, hour_delta, already_found)
+  current_hepoch = hepoch.to_i
+  set = nil
+  attempts = 0
+
+  hepoch = hepoch.to_i - hour_delta
+  while (set == nil && attempts < 100) || already_found.include?(set)
+    set = lookup_set(modes, hepoch.to_s)
+    hepoch = hepoch - hour_delta
+    attempts = attempts + 1
+  end
+  return set
+end
+
 def get_sets(modes, hepoch)
-  current_hepoch = hepoch = hepoch.to_i
   sets = []
-  attempts = 0
 
-# Look back a week
-  hepoch = current_hepoch - (24 * 7)
-  set = nil
-  while set == nil && attempts < 100
-    set = lookup_set(modes, hepoch.to_s)
-    hepoch = hepoch.to_i - (24*7)
-    attempts = attempts + 1
-  end
+  set = find_historical_set(modes, hepoch, (24*7), sets)
   if set != nil
     sets << set
   end
 
-# look back a day
-
-  hepoch = current_hepoch
-  set = nil
-  attempts = 0
-  while set == nil && attempts < 100
-    set = lookup_set(modes, hepoch.to_s)
-    hepoch = hepoch - 24
-    attempts = attempts + 1
-  end
+  set = find_historical_set(modes, hepoch, 24, sets)
   if set != nil
     sets << set
   end
 
-
-  set = nil
-  attempts = 0
-  while set == nil && attempts < 100
-    set = lookup_set(modes, hepoch.to_s)
-    hepoch = hepoch - 24
-    attempts = attempts + 1
-  end
+  set = find_historical_set(modes, hepoch, 24, sets)
   if set != nil
     sets << set
   end
 
-  set = nil
-  attempts = 0
-  while set == nil && attempts < 100
-    set = lookup_set(modes, hepoch.to_s)
-    hepoch = hepoch - 24
-    attempts = attempts + 1
-  end
+  set = find_historical_set(modes, hepoch, 24, sets)
   if set != nil
     sets << set
   end
-
 
   return sets
 end
