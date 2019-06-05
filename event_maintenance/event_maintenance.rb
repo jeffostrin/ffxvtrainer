@@ -65,21 +65,25 @@ def mini_event_mode
   return Mode.new(
     :file_name => "mini_events",
     :default_options => [
+      "Final Fashionsy!",
+      "Gathering Event",
       "Guild Event",
       "Level Up Your Hero Event",
+      "Monster Pen: Champion Egg Hatching Frenzy",
       "Proving Grounds Adventure Quest",
       "Race to VIP",
-      "Secret Event Unlocked!"
+      "Secret Event Unlocked!",
+      "Special Proving Grounds Event",
       ]
   )
 end
-
-def luna_gift_mode
-  return Mode.new(
-    :file_name => "luna_gifts",
-    :default_options => []
-  )
-end
+#
+# def luna_gift_mode
+#   return Mode.new(
+#     :file_name => "luna_gifts",
+#     :default_options => []
+#   )
+# end
 
 
 def luna_special_gift_mode
@@ -91,51 +95,78 @@ def luna_special_gift_mode
     ]
   )
 end
-
-def hourly_event_mode
-  return Mode.new(
-    :file_name => "hourly_events",
-    :default_options => []
-  )
-end
+#
+# def hourly_event_mode
+#   return Mode.new(
+#     :file_name => "hourly_events",
+#     :default_options => []
+#   )
+# end
 
 
 def multi_hour_event_mode
   return Mode.new(
     :file_name => "multi_hour_events",
     :default_options => [
-      "Dark Troop T1 Training Event (6 hours)",
-      "Dark World VIP Event (6 hours)"
+      "Dark Troop T1 Training Event (5+ hours left)",
+      "Dark Troop T1 Training Event (4+ hours left)",
+      "Dark Troop T1 Training Event (3+ hours left)",
+      "Dark Troop T1 Training Event (2+ hours left)",
+      "Dark Troop T1 Training Event (1+ hours left)",
+      "Dark Troop T1 Training Event (0+ hour left)",
     ]
   )
 end
 
+
+def more_multi_hour_event_mode
+  return Mode.new(
+    :file_name => "slot2",
+    :default_options => [
+      "Dark World Empire Invasion Event (5+ hours left)",
+      "Dark World Empire Invasion Event (4+ hours left)",
+      "Dark World Empire Invasion Event (3+ hours left)",
+      "Dark World Empire Invasion Event (2+ hours left)",
+      "Dark World Empire Invasion Event (1+ hours left)",
+      "Dark World Empire Invasion Event (0+ hour left)",
+
+      "Solo Dark World Guild Kill Event (3+ hours left)",
+      "Solo Dark World Guild Kill Event (2+ hours left)",
+      "Solo Dark World Guild Kill Event (1+ hours left)",
+      "Solo Dark World Guild Kill Event (0+ hour left)",
+    ]
+  )
+end
 class Modes
-  attr_reader :luna
-  attr_reader :hourly
-  attr_reader :mini
   attr_reader :luna_specials
-  attr_reader :multi_hour
+  attr_reader :slot0
+  attr_reader :slot1
+  attr_reader :slot2
 
   def initialize()
-    @luna = luna_gift_mode
-    @hourly = hourly_event_mode
-    @mini = mini_event_mode
     @luna_specials = luna_special_gift_mode
-    @multi_hour = multi_hour_event_mode
+    @slot2 = more_multi_hour_event_mode
+    @slot1 = multi_hour_event_mode
+    @slot0 = mini_event_mode
   end
 
   def all_modes
-    return [ @luna_specials, @luna, @hourly, @mini, @multi_hour ]
+    return [ @luna_specials, @slot2, @slot1, @slot0 ]
+  end
+
+  def start
+    return @slot2
   end
 
   def next(current)
-    if current == @mini
-      return @multi_hour
-    elsif current = @multi_hour
-      return @mini
-    elsif current == @luna_specials
-      return @mini
+    if current == @luna_specials
+      return @slot2
+    elsif current == @slot2
+      return @slot1
+    elsif current == @slot1
+      return @slot0
+    elsif current == @slot0
+      return @slot0
     end
     raise "Unknown current mode #{current}"
   end
@@ -542,7 +573,7 @@ def lookup_set_bind_key(index)
 end
 
 modes = Modes.new()
-mode = modes.mini
+mode = modes.slot0
 
 state = Navigation.new
 
@@ -594,22 +625,24 @@ while c != "q" do
 
   if "j" == c || "\e[A"  == c
   	state.backwards 24
-    mode = modes.mini
+    mode = modes.start
   elsif "k" == c || "\e[D" == c
   	state.backwards 1
-    mode = modes.mini
+    mode = modes.start
   elsif "l" == c || "\e[C" == c
   	state.forwards 1
-    mode = modes.mini
+    mode = modes.start
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
-    mode = modes.mini
+    mode = modes.start
   elsif "n" == c
     mode = modes.luna_specials
   elsif "m" == c
-    mode = modes.mini
+    mode = modes.slot2
   elsif "," == c
-    mode = modes.multi_hour
+    mode = modes.slot1
+  elsif "." == c
+    mode = modes.slot0
   # elsif "." == c
   #   mode = modes.mini
   # elsif "/" == c
