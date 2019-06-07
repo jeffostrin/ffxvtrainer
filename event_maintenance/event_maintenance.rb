@@ -179,20 +179,44 @@ end
 
 class DataEntryApplication
 
+  attr_reader :hourNav
+  attr_reader :eventModes
+  attr_reader :currentEventMode
+
+  def initialize()
+    @hourNav = Navigation.new()
+    @eventModes = Modes.new
+    @currentEventMode = @eventModes.slot0
+  end
+
   def handle(key)
-    if "u" == key
-      puts "option 1"
-      return true
-    elsif "i" == key
-      puts "option 2"
-      return true
-    elsif "o" == key
-      puts "option 3"
-      return true
-    elsif "p" == key
-      puts "option 4"
-      return true
+
+    if "j" == key || "\e[A"  == key
+      @hourNav.backwards 24
+      @currentEventMode = @eventModes.start
+    elsif "k" == key || "\e[D" == key
+      @hourNav.backwards 1
+      @currentEventMode = @eventModes.start
+    elsif "l" == key || "\e[C" == key
+      @hourNav.forwards 1
+      @currentEventMode = @eventModes.start
+    elsif ";" == key || "\e[B" == key
+      @hourNav.forwards 24
+      @currentEventMode = @eventModes.start
     end
+    # if "u" == key
+    #   puts "option 1"
+    #   return true
+    # elsif "i" == key
+    #   puts "option 2"
+    #   return true
+    # elsif "o" == key
+    #   puts "option 3"
+    #   return true
+    # elsif "p" == key
+    #   puts "option 4"
+    #   return true
+    # end
 
     # if options.has_key? c.to_i
     #   selection = options[c.to_i].name
@@ -634,10 +658,10 @@ c = "x"
 
 while c != "q" do
 
-  application = appControl.handle(c)
-  #continue if application.handle(c);
-
   puts  CLEAR_SCREEN
+
+  application = appControl.handle(c)
+  application.handle(c);
 
   hepoch = state.get_hepoch
 
