@@ -69,12 +69,15 @@ def mini_event_mode
     :default_options => [
       "Final Fashionsy!",
       "Gathering Event",
+      "Guild Adventures Hall Event",
       "Guild Event",
+      "Guild Gift Extravaganza!",
       "Level Up Your Hero Event",
       "Monster Pen: Champion Egg Hatching Frenzy",
       "Proving Grounds Adventure Quest",
       "Race to VIP",
       "Secret Event Unlocked!",
+      "Special Limited Time Ignis Diner Menu",
       "Special Proving Grounds Event",
       ]
   )
