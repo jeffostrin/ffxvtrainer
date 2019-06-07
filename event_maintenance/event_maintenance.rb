@@ -177,6 +177,66 @@ class Modes
   end
 end
 
+class DataEntryApplication
+
+  def handle(key)
+    if "u" == key
+      puts "option 1"
+      return true
+    elsif "i" == key
+      puts "option 2"
+      return true
+    elsif "o" == key
+      puts "option 3"
+      return true
+    elsif "p" == key
+      puts "option 4"
+      return true
+    end
+
+    # if options.has_key? c.to_i
+    #   selection = options[c.to_i].name
+    #
+    #   add_event(selection).to(mode.json).at(hepoch)
+    #
+    #   puts mode.json[hepoch].to_json
+    #   write_json_file(mode.full_file_name, mode.json)
+    #
+    #   mode = modes.next(mode)
+    #
+    #   #state.forwards 1
+    # else
+    #   puts "unknown input (#{c})"
+    # end
+    return false
+  end
+
+end
+
+class MetaControlApplication
+
+  def handle(key)
+    return false
+  end
+
+end
+
+class ApplicationControl
+
+  attr_reader :dataEntry
+  attr_reader :metaControl
+
+  def initialize()
+    @dataEntry = DataEntryApplication.new()
+    @metaControl = MetaControlApplication.new()
+  end
+
+  def handle(key)
+    return @dataEntry
+  end
+
+end
+
 def print_usage
   puts "============================"
 
@@ -558,6 +618,8 @@ def lookup_set_bind_key(index)
   raise "unknown index #{index}"
 end
 
+appControl = ApplicationControl.new()
+
 modes = Modes.new()
 mode = modes.slot0
 
@@ -571,6 +633,9 @@ state = Navigation.new
 c = "x"
 
 while c != "q" do
+
+  application = appControl.handle(c)
+  #continue if application.handle(c);
 
   puts  CLEAR_SCREEN
 
