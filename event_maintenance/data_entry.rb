@@ -16,8 +16,7 @@ end
 
 
 
-def display_data_entry_options(currentEventMode, hepoch)
-  options = get_options(currentEventMode, currentEventMode.json, hepoch)
+def display_data_entry_options(options)
   options.keys.sort.each do |key|
     option = "  #{key} - #{options[key].name}"
     if options[key].score != nil && options[key].score.length > 0
@@ -29,8 +28,7 @@ end
 
 
 
-def display_set_options(eventModes, hepoch)
-  sets = get_sets(eventModes, hepoch)
+def display_set_options(eventModes, sets)
   sets.each_with_index do |set, index|
     puts "set #{index} #{lookup_set_bind_key(index)}"
     eventModes.all_modes.each do |mode|

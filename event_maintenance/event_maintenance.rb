@@ -183,11 +183,35 @@ class DataEntryApplication
   attr_reader :hourNav
   attr_reader :eventModes
   attr_reader :currentEventMode
+  attr_reader :hepoch
+  attr_reader :options
+  attr_reader :setOptions
 
   def initialize()
     @hourNav = Navigation.new()
     @eventModes = Modes.new
     @currentEventMode = @eventModes.slot0
+  end
+
+  def show()
+    @hepoch = @hourNav.get_hepoch
+
+    display_hepoch_records(@hepoch, @eventModes)
+    puts
+
+    puts "Options:"
+    @options = get_options(@currentEventMode, @currentEventMode.json, @hepoch)
+    display_data_entry_options(@options)
+    puts
+
+    puts "Sets:"
+    @setOptions = get_sets(@eventModes, @hepoch)
+    display_set_options(@eventModes, @setOptions)
+    puts
+
+  # make %w the day-of week (monday, tuesday, wednesday...)
+    prompt = "+@ " + @hourNav.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + @hepoch + ">"
+    puts prompt
   end
 
   def handle(key)
@@ -212,25 +236,50 @@ class DataEntryApplication
       @currentEventMode = @eventModes.slot1
     elsif "." == key
       @currentEventMode = @eventModes.slot0
+
+    elsif "-" == key
+      save_set(@eventModes, @hepoch, @setOptions[0])
+    elsif "=" == key
+      save_set(@eventModes, @hepoch, @setOptions[1])
+    elsif "[" == key
+      save_set(@eventModes, @hepoch, @setOptions[2])
+    elsif "]" == key
+      save_set(@eventModes, @hepoch, @setOptions[3])
+    else
+      if "u" == key
+        key = "1"
+      elsif "i" == key
+        key = "2"
+      elsif "o" == key
+        key = "3"
+      elsif "p" == key
+        key = "4"
+      else
+        putc key
+        key = key + STDIN.readline
+        key = key.strip
+      end
+
+      if @options.has_key? key.to_i
+        selection = @options[key.to_i].name
+
+        add_event(selection).to(@currentEventMode.json).at(@hepoch)
+
+        puts @currentEventMode.json[@hepoch].to_json
+        #write_json_file(mode.full_file_name, mode.json)
+
+        @currentEventMode = @eventModes.next(@currentEventMode)
+
+        #state.forwards 1
+      else
+        puts "unknown input (#{key})"
+      end
     end
 
 
-    hepoch = @hourNav.get_hepoch
 
-    display_hepoch_records(hepoch, @eventModes)
-    puts
 
-    puts "Options:"
-    display_data_entry_options(@currentEventMode, hepoch)
-    puts
 
-    puts "Sets:"
-    display_set_options(@eventModes, hepoch)
-    puts
-
-  # make %w the day-of week (monday, tuesday, wednesday...)
-    prompt = "+@ " + @hourNav.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
-    puts prompt
 
     # if "u" == key
     #   puts "option 1"
@@ -674,9 +723,26 @@ while c != "q" do
   puts  CLEAR_SCREEN
 
   application = appControl.handle(c)
-  application.handle(c);
+  #application.show()
+  #application.handle(c);
 
   hepoch = state.get_hepoch
+
+  display_hepoch_records(hepoch, modes)
+  puts
+
+  puts "Options:"
+  options = get_options(mode, mode.json, hepoch)
+  display_data_entry_options(options)
+  puts
+
+  puts "Sets:"
+  sets = get_sets(modes, hepoch)
+  display_set_options(modes, sets)
+  puts
+
+  prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
+  puts prompt
 
   c = read_char
   # c = STDIN.readline
