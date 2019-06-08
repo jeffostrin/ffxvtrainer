@@ -6,6 +6,7 @@ require_relative '../fmt'
 require_relative '../assert'
 require_relative 'scoring'
 require_relative 'score_merge'
+require_relative 'data_entry'
 
 CLEAR_SCREEN = "\e[2J"
 
@@ -203,6 +204,14 @@ class DataEntryApplication
     elsif ";" == key || "\e[B" == key
       @hourNav.forwards 24
       @currentEventMode = @eventModes.start
+    elsif "n" == key
+      @currentEventMode = @eventModes.luna_specials
+    elsif "m" == key
+      @currentEventMode = @eventModes.slot2
+    elsif "," == key
+      @currentEventMode = @eventModes.slot1
+    elsif "." == key
+      @currentEventMode = @eventModes.slot0
     end
 
 
@@ -212,28 +221,12 @@ class DataEntryApplication
     puts
 
     puts "Options:"
-    options = get_options(@currentEventMode, @currentEventMode.json, hepoch)
-    options.keys.sort.each do |key|
-      option = "  #{key} - #{options[key].name}"
-      if options[key].score != nil && options[key].score.length > 0
-        option += (" (%.2f)" % options[key].score) + (" (%.2f)" % options[key].trend)
-      end
-      puts option
-    end
+    display_data_entry_options(@currentEventMode, hepoch)
+    puts
 
-    puts ""
-
-    sets = get_sets(@eventModes, hepoch)
-    sets.each_with_index do |set, index|
-      puts "set #{index} #{lookup_set_bind_key(index)}"
-      @eventModes.all_modes.each do |mode|
-        if mode != nil
-          if set[mode.short_file_name] != nil
-            puts "  #{set[mode.short_file_name]}"
-          end
-        end
-      end
-    end
+    puts "Sets:"
+    display_set_options(@eventModes, hepoch)
+    puts
 
   # make %w the day-of week (monday, tuesday, wednesday...)
     prompt = "+@ " + @hourNav.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
@@ -516,21 +509,6 @@ def get_options(mode, json, hepoch)
     options[index+1] = option
   end
   return options
-end
-
-def display_hepoch(hepoch, json)
-  if ! json.has_key? hepoch
-    return
-  end
-
-  data = json[hepoch]
-  puts "current hepoch > " + data.to_s
-end
-
-def display_hepoch_records(hepoch, modes)
-  modes.all_modes.each do |mode|
-    display_hepoch(hepoch, mode.json)
-  end
 end
 
 def display_hepoch_history(hepoch, json)
