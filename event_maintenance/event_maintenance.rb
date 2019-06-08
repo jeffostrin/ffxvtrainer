@@ -204,6 +204,41 @@ class DataEntryApplication
       @hourNav.forwards 24
       @currentEventMode = @eventModes.start
     end
+
+
+    hepoch = @hourNav.get_hepoch
+
+    display_hepoch_records(hepoch, @eventModes)
+    puts
+
+    puts "Options:"
+    options = get_options(@currentEventMode, @currentEventMode.json, hepoch)
+    options.keys.sort.each do |key|
+      option = "  #{key} - #{options[key].name}"
+      if options[key].score != nil && options[key].score.length > 0
+        option += (" (%.2f)" % options[key].score) + (" (%.2f)" % options[key].trend)
+      end
+      puts option
+    end
+
+    puts ""
+
+    sets = get_sets(@eventModes, hepoch)
+    sets.each_with_index do |set, index|
+      puts "set #{index} #{lookup_set_bind_key(index)}"
+      @eventModes.all_modes.each do |mode|
+        if mode != nil
+          if set[mode.short_file_name] != nil
+            puts "  #{set[mode.short_file_name]}"
+          end
+        end
+      end
+    end
+
+  # make %w the day-of week (monday, tuesday, wednesday...)
+    prompt = "+@ " + @hourNav.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
+    puts prompt
+
     # if "u" == key
     #   puts "option 1"
     #   return true
@@ -664,37 +699,6 @@ while c != "q" do
   application.handle(c);
 
   hepoch = state.get_hepoch
-
-  display_hepoch_records(hepoch, modes)
-  puts
-
-  puts "Options:"
-  options = get_options(mode, mode.json, hepoch)
-  options.keys.sort.each do |key|
-  	option = "  #{key} - #{options[key].name}"
-    if options[key].score != nil && options[key].score.length > 0
-      option += (" (%.2f)" % options[key].score) + (" (%.2f)" % options[key].trend)
-    end
-    puts option
-  end
-
-  puts ""
-
-  sets = get_sets(modes, hepoch)
-  sets.each_with_index do |set, index|
-    puts "set #{index} #{lookup_set_bind_key(index)}"
-    modes.all_modes.each do |mode|
-      if mode != nil
-        if set[mode.short_file_name] != nil
-          puts "  #{set[mode.short_file_name]}"
-        end
-      end
-    end
-  end
-
-# make %w the day-of week (monday, tuesday, wednesday...)
-  prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
-  puts prompt
 
   c = read_char
   # c = STDIN.readline
