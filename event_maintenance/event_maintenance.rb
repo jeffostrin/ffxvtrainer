@@ -149,7 +149,6 @@ def single_hour_events
   return Mode.new(
     :file_name => "slot3",
     :default_options => [
-      "Combat Dark Research Event",
       "Special Bonus Building Event",
       "Special Bonus Research Event",
       "Train Troops!",
