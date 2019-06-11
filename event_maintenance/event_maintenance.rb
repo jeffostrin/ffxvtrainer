@@ -143,29 +143,47 @@ def more_multi_hour_event_mode
     ]
   )
 end
+
+
+def single_hour_events
+  return Mode.new(
+    :file_name => "slot3",
+    :default_options => [
+      "Combat Dark Research Event",
+      "Special Bonus Building Event",
+      "Special Bonus Research Event",
+      "Train Troops!",
+    ]
+  )
+end
+
 class Modes
   attr_reader :luna_specials
   attr_reader :slot0
   attr_reader :slot1
   attr_reader :slot2
+  attr_reader :slot3
 
   def initialize()
     @luna_specials = luna_special_gift_mode
+    @slot3 = single_hour_events
     @slot2 = more_multi_hour_event_mode
     @slot1 = multi_hour_event_mode
     @slot0 = mini_event_mode
   end
 
   def all_modes
-    return [ @luna_specials, @slot2, @slot1, @slot0 ]
+    return [ @luna_specials, @slot3, @slot2, @slot1, @slot0 ]
   end
 
   def start
-    return @slot2
+    return @slot3
   end
 
   def next(current)
     if current == @luna_specials
+      return @slot3
+    elsif current == @slot3
       return @slot2
     elsif current == @slot2
       return @slot1
@@ -228,8 +246,10 @@ class DataEntryApplication
     elsif ";" == key || "\e[B" == key
       @hourNav.forwards 24
       @currentEventMode = @eventModes.start
-    elsif "n" == key
+    elsif "b" == key
       @currentEventMode = @eventModes.luna_specials
+    elsif "n" == key
+      @currentEventMode = @eventModes.slot3
     elsif "m" == key
       @currentEventMode = @eventModes.slot2
     elsif "," == key
@@ -711,6 +731,17 @@ mode = modes.slot0
 
 state = Navigation.new
 
+
+oldNav = true
+if ARGV.length > 0
+  if ARGV[0] == "newnav"
+    oldNav = false
+  end
+end
+
+
+
+
 # puts utc_hour
 # puts local_hour
 
@@ -722,9 +753,13 @@ while c != "q" do
 
   puts  CLEAR_SCREEN
 
-  application = appControl.handle(c)
-  #application.show()
-  #application.handle(c);
+  if !oldNav
+    application = appControl.handle(c)
+    application.show()
+    c = read_char
+    application.handle(c);
+    next;
+  end
 
   hepoch = state.get_hepoch
 
@@ -760,8 +795,10 @@ while c != "q" do
   elsif ";" == c || "\e[B" == c
   	state.forwards 24
     mode = modes.start
-  elsif "n" == c
+  elsif "b" == c
     mode = modes.luna_specials
+  elsif "n" == c
+    mode = modes.slot3
   elsif "m" == c
     mode = modes.slot2
   elsif "," == c
