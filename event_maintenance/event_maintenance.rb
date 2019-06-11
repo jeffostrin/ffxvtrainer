@@ -286,7 +286,7 @@ class DataEntryApplication
         add_event(selection).to(@currentEventMode.json).at(@hepoch)
 
         puts @currentEventMode.json[@hepoch].to_json
-        write_json_file(mode.full_file_name, mode.json)
+        write_json_file(@currentEventMode.full_file_name, @currentEventMode.json)
 
         @currentEventMode = @eventModes.next(@currentEventMode)
       else
@@ -717,10 +717,10 @@ while c != "q" do
 
   if !oldNav
     puts "USING NEW NAV"
-    application = appControl.get_controller(c)
-    application.show()
+    controller = appControl.get_controller(c)
+    controller.show()
     c = read_char
-    application.process(c);
+    controller.process(c);
     next;
   end
 
