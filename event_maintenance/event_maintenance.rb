@@ -232,8 +232,9 @@ class DataEntryApplication
     puts prompt
   end
 
-  def handle(key)
+  def process(key)
 
+    return if "q" == key
     if "j" == key || "\e[A"  == key
       @hourNav.backwards 24
       @currentEventMode = @eventModes.start
@@ -289,55 +290,17 @@ class DataEntryApplication
         #write_json_file(mode.full_file_name, mode.json)
 
         @currentEventMode = @eventModes.next(@currentEventMode)
-
-        #state.forwards 1
       else
         puts "unknown input (#{key})"
       end
     end
-
-
-
-
-
-
-    # if "u" == key
-    #   puts "option 1"
-    #   return true
-    # elsif "i" == key
-    #   puts "option 2"
-    #   return true
-    # elsif "o" == key
-    #   puts "option 3"
-    #   return true
-    # elsif "p" == key
-    #   puts "option 4"
-    #   return true
-    # end
-
-    # if options.has_key? c.to_i
-    #   selection = options[c.to_i].name
-    #
-    #   add_event(selection).to(mode.json).at(hepoch)
-    #
-    #   puts mode.json[hepoch].to_json
-    #   write_json_file(mode.full_file_name, mode.json)
-    #
-    #   mode = modes.next(mode)
-    #
-    #   #state.forwards 1
-    # else
-    #   puts "unknown input (#{c})"
-    # end
-    return false
   end
 
 end
 
 class MetaControlApplication
 
-  def handle(key)
-    return false
+  def process(key)
   end
 
 end
@@ -352,7 +315,7 @@ class ApplicationControl
     @metaControl = MetaControlApplication.new()
   end
 
-  def handle(key)
+  def get_controller(key)
     return @dataEntry
   end
 
@@ -754,13 +717,15 @@ while c != "q" do
   puts  CLEAR_SCREEN
 
   if !oldNav
-    application = appControl.handle(c)
+    puts "USING NEW NAV"
+    application = appControl.get_controller(c)
     application.show()
     c = read_char
-    application.handle(c);
+    application.process(c);
     next;
   end
 
+  puts "USING OLD NAV"
   hepoch = state.get_hepoch
 
   display_hepoch_records(hepoch, modes)
