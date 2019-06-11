@@ -287,7 +287,7 @@ class DataEntryApplication
         add_event(selection).to(@currentEventMode.json).at(@hepoch)
 
         puts @currentEventMode.json[@hepoch].to_json
-        #write_json_file(mode.full_file_name, mode.json)
+        write_json_file(mode.full_file_name, mode.json)
 
         @currentEventMode = @eventModes.next(@currentEventMode)
       else
