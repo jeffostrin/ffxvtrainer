@@ -1,16 +1,16 @@
 
-def display_hepoch(hepoch, json)
+def display_hepoch(hepoch, filename, json)
   if ! json.has_key? hepoch
     return
   end
 
   data = json[hepoch]
-  puts "current hepoch > " + data.to_s
+  puts "current hepoch > " + data.to_s + " (#{filename})"
 end
 
 def display_hepoch_records(hepoch, modes)
   modes.all_modes.each do |mode|
-    display_hepoch(hepoch, mode.json)
+    display_hepoch(hepoch, mode.short_file_name, mode.json)
   end
 end
 
