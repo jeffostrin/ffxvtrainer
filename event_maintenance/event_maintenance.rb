@@ -161,7 +161,30 @@ def day_long_events
   return Mode.new(
     :file_name => "slot4",
     :default_options => [
-      "Combat Dark Research Event",
+      "Combat Dark Research Event (23+ hours)",
+      "Combat Dark Research Event (22+ hours)",
+      "Combat Dark Research Event (21+ hours)",
+      "Combat Dark Research Event (20+ hours)",
+      "Combat Dark Research Event (19+ hours)",
+      "Combat Dark Research Event (18+ hours)",
+      "Combat Dark Research Event (17+ hours)",
+      "Combat Dark Research Event (16+ hours)",
+      "Combat Dark Research Event (15+ hours)",
+      "Combat Dark Research Event (14+ hours)",
+      "Combat Dark Research Event (13+ hours)",
+      "Combat Dark Research Event (12+ hours)",
+      "Combat Dark Research Event (11+ hours)",
+      "Combat Dark Research Event (10+ hours)",
+      "Combat Dark Research Event (9+ hours)",
+      "Combat Dark Research Event (8+ hours)",
+      "Combat Dark Research Event (7+ hours)",
+      "Combat Dark Research Event (6+ hours)",
+      "Combat Dark Research Event (5+ hours)",
+      "Combat Dark Research Event (4+ hours)",
+      "Combat Dark Research Event (3+ hours)",
+      "Combat Dark Research Event (2+ hours)",
+      "Combat Dark Research Event (1+ hours)",
+      "Combat Dark Research Event (0+ hours)",
     ]
   )
 end
