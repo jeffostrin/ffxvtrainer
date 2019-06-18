@@ -149,6 +149,8 @@ def single_hour_events
   return Mode.new(
     :file_name => "slot3",
     :default_options => [
+      "Bulking Up",
+      "Dark World VIP Event",
       "Special Bonus Building Event",
       "Special Bonus Research Event",
       "Train Troops!",
@@ -207,21 +209,24 @@ class Modes
   end
 
   def all_modes
-    return [ @luna_specials, @slot4, @slot3, @slot2, @slot1, @slot0 ]
+    return [ @luna_specials, @slot2, @slot3, @slot4, @slot1, @slot0 ]
   end
 
   def start
-    return @slot3
+    return @slot2
   end
 
   def next(current)
+    index = all_modes.index(current)
+    # Math.max the index
+    puts "the index is: #{index}"
     if current == @luna_specials
-      return @slot4
-    elsif current == @slot4
-      return @slot3
-    elsif current == @slot3
       return @slot2
     elsif current == @slot2
+      return @slot3
+    elsif current == @slot3
+      return @slot4
+    elsif current == @slot4
       return @slot1
     elsif current == @slot1
       return @slot0
@@ -245,6 +250,10 @@ class DataEntryApplication
     @hourNav = Navigation.new()
     @eventModes = Modes.new
     @currentEventMode = @eventModes.slot0
+  end
+
+  def display_mode()
+    puts "DATA ENTRY MODE"
   end
 
   def show()
@@ -337,6 +346,11 @@ class DataEntryApplication
 end
 
 class MetaControlApplication
+
+  def display_mode()
+    puts "META CONTROL MODE"
+  end
+
 
   def show()
   end
@@ -770,6 +784,7 @@ controller = appControl.get_controller(c)
 while c != "q" do
   puts  CLEAR_SCREEN
 
+  controller.display_mode()
   controller.show()
   c = read_char
 
@@ -783,105 +798,105 @@ while c != "q" do
     controller.process(c);
     next;
   else
-    puts "USING OLD NAV"
-    hepoch = state.get_hepoch
-
-    display_hepoch_records(hepoch, modes)
-    puts
-
-    puts "Options:"
-    options = get_options(mode, mode.json, hepoch)
-    display_data_entry_options(options)
-    puts
-
-    puts "Sets:"
-    sets = get_sets(modes, hepoch)
-    display_set_options(modes, sets)
-    puts
-
-    prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
-    puts prompt
-
-    c = read_char
-    # c = STDIN.readline
-    # c = c.strip
-
+    # puts "USING OLD NAV"
+    # hepoch = state.get_hepoch
+    #
+    # display_hepoch_records(hepoch, modes)
+    # puts
+    #
+    # puts "Options:"
+    # options = get_options(mode, mode.json, hepoch)
+    # display_data_entry_options(options)
+    # puts
+    #
+    # puts "Sets:"
+    # sets = get_sets(modes, hepoch)
+    # display_set_options(modes, sets)
+    # puts
+    #
+    # prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
+    # puts prompt
+    #
+    # c = read_char
+    # # c = STDIN.readline
+    # # c = c.strip
+    #
     if "j" == c || "\e[A"  == c
     	state.backwards 24
       mode = modes.start
-    elsif "k" == c || "\e[D" == c
-    	state.backwards 1
-      mode = modes.start
-    elsif "l" == c || "\e[C" == c
-    	state.forwards 1
-      mode = modes.start
-    elsif ";" == c || "\e[B" == c
-    	state.forwards 24
-      mode = modes.start
-    elsif "b" == c
-      mode = modes.luna_specials
-    elsif "n" == c
-      mode = modes.slot3
-    elsif "m" == c
-      mode = modes.slot2
-    elsif "," == c
-      mode = modes.slot1
-    elsif "." == c
-      mode = modes.slot0
+    # elsif "k" == c || "\e[D" == c
+    # 	state.backwards 1
+    #   mode = modes.start
+    # elsif "l" == c || "\e[C" == c
+    # 	state.forwards 1
+    #   mode = modes.start
+    # elsif ";" == c || "\e[B" == c
+    # 	state.forwards 24
+    #   mode = modes.start
+    # elsif "b" == c
+    #   mode = modes.luna_specials
+    # elsif "n" == c
+    #   mode = modes.slot3
+    # elsif "m" == c
+    #   mode = modes.slot2
+    # elsif "," == c
+    #   mode = modes.slot1
     # elsif "." == c
-    #   mode = modes.mini
-    # elsif "/" == c
-    #   mode = modes.multi_hour
-    elsif "d" == c
-      display_hepoch(hepoch, mode.json)
-    elsif "h" == c
-      display_hepoch_history(hepoch, mode.json)
+    #   mode = modes.slot0
+    # # elsif "." == c
+    # #   mode = modes.mini
+    # # elsif "/" == c
+    # #   mode = modes.multi_hour
+    # elsif "d" == c
+    #   display_hepoch(hepoch, mode.json)
+    # elsif "h" == c
+    #   display_hepoch_history(hepoch, mode.json)
     elsif "g" == c
       generate_compact_files(modes)
-    elsif "e" == c
-      edit_hepoch(hepoch, mode.json)
-    elsif "p" == c
-      print_schedule(hepoch, mode.json)
-    elsif "q" == c
-    elsif "?" == c
-      print_usage
-    elsif "-" == c
-      save_set(modes, hepoch, sets[0])
-    elsif "=" == c
-      save_set(modes, hepoch, sets[1])
-    elsif "[" == c
-      save_set(modes, hepoch, sets[2])
-    elsif "]" == c
-      save_set(modes, hepoch, sets[3])
-    else
-      if "u" == c
-        c = "1"
-      elsif "i" == c
-        c = "2"
-      elsif "o" == c
-        c = "3"
-      elsif "p" == c
-        c = "4"
-      else
-        putc c
-        c = c + STDIN.readline
-        c = c.strip
-      end
-
-      if options.has_key? c.to_i
-    	  selection = options[c.to_i].name
-
-        add_event(selection).to(mode.json).at(hepoch)
-
-        puts mode.json[hepoch].to_json
-        write_json_file(mode.full_file_name, mode.json)
-
-        mode = modes.next(mode)
-
-        #state.forwards 1
-      else
-      	puts "unknown input (#{c})"
-      end
+    # elsif "e" == c
+    #   edit_hepoch(hepoch, mode.json)
+    # elsif "p" == c
+    #   print_schedule(hepoch, mode.json)
+    # elsif "q" == c
+    # elsif "?" == c
+    #   print_usage
+    # elsif "-" == c
+    #   save_set(modes, hepoch, sets[0])
+    # elsif "=" == c
+    #   save_set(modes, hepoch, sets[1])
+    # elsif "[" == c
+    #   save_set(modes, hepoch, sets[2])
+    # elsif "]" == c
+    #   save_set(modes, hepoch, sets[3])
+    # else
+    #   if "u" == c
+    #     c = "1"
+    #   elsif "i" == c
+    #     c = "2"
+    #   elsif "o" == c
+    #     c = "3"
+    #   elsif "p" == c
+    #     c = "4"
+    #   else
+    #     putc c
+    #     c = c + STDIN.readline
+    #     c = c.strip
+    #   end
+    #
+    #   if options.has_key? c.to_i
+    # 	  selection = options[c.to_i].name
+    #
+    #     add_event(selection).to(mode.json).at(hepoch)
+    #
+    #     puts mode.json[hepoch].to_json
+    #     write_json_file(mode.full_file_name, mode.json)
+    #
+    #     mode = modes.next(mode)
+    #
+    #     #state.forwards 1
+    #   else
+    #   	puts "unknown input (#{c})"
+    #   end
     end
   end
 end
