@@ -798,7 +798,7 @@ while c != "q" do
     controller.process(c);
     next;
   else
-    # puts "USING OLD NAV"
+    puts "USING OLD NAV"
     # hepoch = state.get_hepoch
     #
     # display_hepoch_records(hepoch, modes)
