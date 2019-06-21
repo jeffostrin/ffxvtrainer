@@ -390,6 +390,8 @@ end
 def print_usage
   puts "============================"
 
+  puts "s - switch modes (data entry vs meta-data)"
+
   puts "j - backwards in time 1 day"
   puts "k - backwards in time 1 hour"
   puts "l - forwards in time 1 hour"
