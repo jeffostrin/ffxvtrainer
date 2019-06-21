@@ -609,12 +609,12 @@ def get_options(mode, json, hepoch)
   return options
 end
 
-def display_hepoch_history(hepoch, json)
+def display_hepoch_history(hepoch, filename, json)
   max_tries = json.keys.size
 
   (0..max_tries).each do |counter|
     probe_hepoch = (hepoch.to_i - (24 * counter)).to_s
-    display_hepoch(probe_hepoch, json)
+    display_hepoch(probe_hepoch, filename, json)
   end
 end
 
@@ -799,104 +799,25 @@ while c != "q" do
     next;
   else
     puts "USING OLD NAV"
-    # hepoch = state.get_hepoch
+    hepoch = state.get_hepoch
     #
     # display_hepoch_records(hepoch, modes)
     # puts
-    #
-    # puts "Options:"
-    # options = get_options(mode, mode.json, hepoch)
-    # display_data_entry_options(options)
-    # puts
-    #
-    # puts "Sets:"
-    # sets = get_sets(modes, hepoch)
-    # display_set_options(modes, sets)
-    # puts
-    #
-    # prompt = "+@ " + state.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + hepoch + ">"
-    # puts prompt
-    #
-    # c = read_char
-    # # c = STDIN.readline
-    # # c = c.strip
-    #
-    if "j" == c || "\e[A"  == c
-    	state.backwards 24
-      mode = modes.start
-    # elsif "k" == c || "\e[D" == c
-    # 	state.backwards 1
-    #   mode = modes.start
-    # elsif "l" == c || "\e[C" == c
-    # 	state.forwards 1
-    #   mode = modes.start
-    # elsif ";" == c || "\e[B" == c
-    # 	state.forwards 24
-    #   mode = modes.start
-    # elsif "b" == c
-    #   mode = modes.luna_specials
-    # elsif "n" == c
-    #   mode = modes.slot3
-    # elsif "m" == c
-    #   mode = modes.slot2
-    # elsif "," == c
-    #   mode = modes.slot1
-    # elsif "." == c
-    #   mode = modes.slot0
-    # # elsif "." == c
-    # #   mode = modes.mini
-    # # elsif "/" == c
-    # #   mode = modes.multi_hour
-    # elsif "d" == c
-    #   display_hepoch(hepoch, mode.json)
-    # elsif "h" == c
-    #   display_hepoch_history(hepoch, mode.json)
+
+    if "d" == c
+      display_hepoch(hepoch, mode.short_file_name, mode.json)
+    elsif "h" == c
+      display_hepoch_history(hepoch, mode.short_file_name, mode.json)
     elsif "g" == c
       generate_compact_files(modes)
     # elsif "e" == c
     #   edit_hepoch(hepoch, mode.json)
-    # elsif "p" == c
-    #   print_schedule(hepoch, mode.json)
-    # elsif "q" == c
-    # elsif "?" == c
-    #   print_usage
-    # elsif "-" == c
-    #   save_set(modes, hepoch, sets[0])
-    # elsif "=" == c
-    #   save_set(modes, hepoch, sets[1])
-    # elsif "[" == c
-    #   save_set(modes, hepoch, sets[2])
-    # elsif "]" == c
-    #   save_set(modes, hepoch, sets[3])
-    # else
-    #   if "u" == c
-    #     c = "1"
-    #   elsif "i" == c
-    #     c = "2"
-    #   elsif "o" == c
-    #     c = "3"
-    #   elsif "p" == c
-    #     c = "4"
-    #   else
-    #     putc c
-    #     c = c + STDIN.readline
-    #     c = c.strip
-    #   end
-    #
-    #   if options.has_key? c.to_i
-    # 	  selection = options[c.to_i].name
-    #
-    #     add_event(selection).to(mode.json).at(hepoch)
-    #
-    #     puts mode.json[hepoch].to_json
-    #     write_json_file(mode.full_file_name, mode.json)
-    #
-    #     mode = modes.next(mode)
-    #
-    #     #state.forwards 1
-    #   else
-    #   	puts "unknown input (#{c})"
-    #   end
+    elsif "p" == c
+      print_schedule(hepoch, mode.json)
+    elsif "q" == c
+    elsif "?" == c
+      print_usage
+
     end
   end
 end
