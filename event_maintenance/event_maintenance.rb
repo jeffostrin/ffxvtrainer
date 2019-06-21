@@ -209,7 +209,7 @@ class Modes
   end
 
   def all_modes
-    return [ @luna_specials, @slot2, @slot3, @slot4, @slot1, @slot0 ]
+    return [ @luna_specials, @slot3, @slot2, @slot4, @slot1, @slot0 ]
   end
 
   def start
@@ -245,11 +245,13 @@ class DataEntryApplication
   attr_reader :hepoch
   attr_reader :options
   attr_reader :setOptions
+  attr_reader :editing
 
   def initialize()
     @hourNav = Navigation.new()
     @eventModes = Modes.new
     @currentEventMode = @eventModes.slot0
+    @editing = true
   end
 
   def display_mode()
@@ -271,6 +273,8 @@ class DataEntryApplication
     @setOptions = get_sets(@eventModes, @hepoch)
     display_set_options(@eventModes, @setOptions)
     puts
+
+    puts "EDIT MODE #{@editing}"
 
   # make %w the day-of week (monday, tuesday, wednesday...)
     prompt = "+@ " + @hourNav.get_local_time.strftime("%Y/%m/%d | %A %I:%M %p | %H:%M") + " " + @hepoch + ">"
@@ -306,13 +310,17 @@ class DataEntryApplication
       @currentEventMode = @eventModes.slot0
 
     elsif "-" == key
-      save_set(@eventModes, @hepoch, @setOptions[0])
+      save_set(@eventModes, @hepoch, @setOptions[0]) if @editing
     elsif "=" == key
-      save_set(@eventModes, @hepoch, @setOptions[1])
+      save_set(@eventModes, @hepoch, @setOptions[1]) if @editing
     elsif "[" == key
-      save_set(@eventModes, @hepoch, @setOptions[2])
+      save_set(@eventModes, @hepoch, @setOptions[2]) if @editing
     elsif "]" == key
-      save_set(@eventModes, @hepoch, @setOptions[3])
+      save_set(@eventModes, @hepoch, @setOptions[3]) if @editing
+
+    elsif "e" == key
+      @editing = ! @editing
+
     else
       if "u" == key
         key = "1"
@@ -334,7 +342,9 @@ class DataEntryApplication
         add_event(selection).to(@currentEventMode.json).at(@hepoch)
 
         puts @currentEventMode.json[@hepoch].to_json
-        write_json_file(@currentEventMode.full_file_name, @currentEventMode.json)
+        if @editing
+          write_json_file(@currentEventMode.full_file_name, @currentEventMode.json)
+        end
 
         @currentEventMode = @eventModes.next(@currentEventMode)
       else
