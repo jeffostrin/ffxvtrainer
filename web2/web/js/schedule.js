@@ -215,9 +215,12 @@ var Ctime = function(padding) {
     var nowSepoch = ct.nowSepoch();
 
     var eventTypes = [
-      { name: "Mini Events", events: function(hepochData) { return hepochData.hourly_events; } },
+      { name: "Mini Events", events: function(hepochData) { return hepochData.forecast.slot0; } },
       //{ name: "Luna Gifts", events: function(hepochData) { return hepochData.luna_events; } },
-      { name: "Multi Hour Events", events: function(hepochData) { return hepochData.multi_hour_events; } },
+      { name: "Multi Hour Events", events: function(hepochData) { return hepochData.forecast.slot1; } },
+      { name: "Slot 2", events: function(hepochData) { return hepochData.forecast.slot2; } },
+      { name: "Slot 3", events: function(hepochData) { return hepochData.forecast.slot3; } },
+      { name: "Slot 4", events: function(hepochData) { return hepochData.forecast.slot4; } },
     ]
 
     $('#updates').append($('<div><table id=schedule /></div>'));
@@ -297,6 +300,13 @@ var Ctime = function(padding) {
               "Guild Quests": 50
             },
             "luna_events": { "25x Luna's Gift Fragment": 100 },
+            "forecast": {
+              "slot0": { "Monster Hunt": 200, "Guild Quests": 50 },
+              "slot1": { "Dark Troop T1 Training Event (5+ hours left)": 100 },
+              "slot2": { "Slot 2 thing": 100 },
+              "slot3": { "Slot 3 thing": 100 },
+              "slot4": { "Slot 4 thing": 100 },
+            },
           },
           "425546": {
             "hepoch": (nowHepoch),
@@ -307,7 +317,14 @@ var Ctime = function(padding) {
               "Guild RSS Help": 25,
               "Monster": 50
             },
-            "luna_events": { "1x Adventurers Contract": 200, "25x Luna's Gift Fragment": 100 }
+            "luna_events": { "1x Adventurers Contract": 200, "25x Luna's Gift Fragment": 100 },
+            "forecast": {
+              "slot0": { "Guild Quests": 250, "Guild RSS Help": 25, },
+              "slot1": { "Dark Troop T1 Training Event (4+ hours left)": 100 },
+              "slot2": { "Slot 2 thing": 100 },
+              "slot3": { "Slot 3 thing": 100 },
+              "slot4": { "Slot 4 thing": 100 },
+            },
           },
           "425547": {
             "hepoch": (nowHepoch+1),
@@ -317,7 +334,14 @@ var Ctime = function(padding) {
               "Monster Hunt": 200,
               "Guild Quests": 50
             },
-            "luna_events": { "5x Expedition Shard": 100 }
+            "luna_events": { "5x Expedition Shard": 100 },
+            "forecast": {
+              "slot0": { "Monster Hunt": 200, "Guild Quests": 50 },
+              "slot1": { "Dark Troop T1 Training Event (3+ hours left)": 100 },
+              "slot2": { "Slot 2 thing": 100 },
+              "slot3": { "Slot 3 thing": 100 },
+              "slot4": { "Slot 4 thing": 100 },
+            },
           },
           "425548": {
             "hepoch": (nowHepoch+2),
@@ -328,7 +352,14 @@ var Ctime = function(padding) {
               "Gather RSS": 25,
               "Hero Quests": 50
             },
-            "luna_events": { "30x 1 Minute Adventurer Speed Up": 100 }
+            "luna_events": { "30x 1 Minute Adventurer Speed Up": 100 },
+            "forecast": {
+              "slot0": { "Combine Gems": 250, "Gather RSS": 25 },
+              "slot1": { "Dark Troop T1 Training Event (2+ hours left)": 100 },
+              "slot2": { "Slot 2 thing": 100 },
+              "slot3": { "Slot 3 thing": 100 },
+              "slot4": { "Slot 4 thing": 100 },
+            },
           },
           "425549": {
             "hepoch": (nowHepoch+3),
@@ -338,7 +369,14 @@ var Ctime = function(padding) {
               "Monster": 200,
               "Guild Quests": 50
             },
-            "luna_events": { "5x Expedition Fragment": 100 }
+            "luna_events": { "5x Expedition Fragment": 100 },
+            "forecast": {
+              "slot0": { "Monster": 200, "Guild Quests": 50 },
+              "slot1": { "Dark Troop T1 Training Event (1+ hours left)": 100 },
+              "slot2": { "Slot 2 thing": 100 },
+              "slot3": { "Slot 3 thing": 100 },
+              "slot4": { "Slot 4 thing": 100 },
+            },
           },
           "425550": {
             "hepoch": (nowHepoch+4),
@@ -349,7 +387,14 @@ var Ctime = function(padding) {
               "Guild RSS Help": 25,
               "Monster": 50
             },
-            "luna_events": { "25x Secret Gift Fragment": 100 }
+            "luna_events": { "25x Secret Gift Fragment": 100 },
+            "forecast": {
+              "slot0": { "Hero Quests": 200, "Guild RSS Help": 50 },
+              "slot1": { "Dark Troop T1 Training Event (0+ hours left)": 100 },
+              "slot2": { "Slot 2 thing": 100 },
+              "slot3": { "Slot 3 thing": 100 },
+              "slot4": { "Slot 4 thing": 100 },
+            },
           },
           "425550": {
             "hepoch": (nowHepoch+4),
@@ -358,7 +403,14 @@ var Ctime = function(padding) {
             "hourly_events": {
               "Training": 250
             },
-            "luna_events": { "25x Luna's Gift Fragment": 200, "5x VIP Quest Shard": 100 }
+            "luna_events": { "25x Luna's Gift Fragment": 200, "5x VIP Quest Shard": 100 },
+            "forecast": {
+              "slot0": { "Training": 250 },
+              "slot1": { "Dark Troop T1 Training Event (5+ hours left)": 100 },
+              "slot2": { "Slot 2 thing": 100 },
+              "slot3": { "Slot 3 thing": 100 },
+              "slot4": { "Slot 4 thing": 100 },
+            },
           },
         }
       },
