@@ -6,9 +6,12 @@ const EventLoader = require('./event_loader')
 module.exports = function Clock(utcOffset) {
 
   var eventLoader = new EventLoader();
-  var miniEventForecaster = eventLoader.load("mini_events.compact.json");
   var lunaEventForecaster = eventLoader.load("luna_gifts.compact.json");
-  var multiHourEventForecaster = eventLoader.load("multi_hour_events.compact.json");
+  var slot0Forecaster = eventLoader.load("slot0.compact.json");
+  var slot1Forecaster = eventLoader.load("slot1.compact.json");
+  var slot2Forecaster = eventLoader.load("slot2.compact.json");
+  var slot3Forecaster = eventLoader.load("slot3.compact.json");
+  var slot4Forecaster = eventLoader.load("slot4.compact.json");
 
   this.generate_json = function () {
     var ctime = new CTime(utcOffset);
@@ -23,9 +26,16 @@ module.exports = function Clock(utcOffset) {
       jsonHour.isCurrentHepoch = (hepoch == nowHepoch);
       jsonHour.dayTime = ctime.pp().dayTime(hepoch);
       jsonHour.relativeTime = ctime.pp().asRelativeTime(hepoch * 60 * 60 - nowSepoch);
-      jsonHour.hourly_events = miniEventForecaster.forecastFor(hepoch);
+      jsonHour.hourly_events = slot0Forecaster.forecastFor(hepoch);
+      jsonHour.multi_hour_events = slot1Forecaster.forecastFor(hepoch);
+      jsonHour.forecast = {
+        slot0: slot0Forecaster.forecastFor(hepoch),
+        slot1: slot1Forecaster.forecastFor(hepoch),
+        slot2: slot2Forecaster.forecastFor(hepoch),
+        slot3: slot3Forecaster.forecastFor(hepoch),
+        slot4: slot4Forecaster.forecastFor(hepoch),
+      }
       jsonHour.luna_events = lunaEventForecaster.forecastFor(hepoch);
-      jsonHour.multi_hour_events = multiHourEventForecaster.forecastFor(hepoch);
       schedule.hepochs[hepoch] = jsonHour;
     }
 
