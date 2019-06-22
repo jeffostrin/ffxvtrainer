@@ -66,7 +66,7 @@ def mini_event_mode
   # secret event
   # 4pm level up your hero
   return Mode.new(
-    :file_name => "mini_events",
+    :file_name => "slot0",
     :default_options => [
       "Final Fashionsy!",
       "Gathering Event",
@@ -112,7 +112,7 @@ end
 
 def multi_hour_event_mode
   return Mode.new(
-    :file_name => "multi_hour_events",
+    :file_name => "slot1",
     :default_options => [
       "Dark Troop T1 Training Event (5+ hours left)",
       "Dark Troop T1 Training Event (4+ hours left)",
@@ -247,9 +247,9 @@ class DataEntryApplication
   attr_reader :setOptions
   attr_reader :editing
 
-  def initialize()
+  def initialize(modes)
     @hourNav = Navigation.new()
-    @eventModes = Modes.new
+    @eventModes = modes
     @currentEventMode = @eventModes.slot0
     @editing = true
   end
@@ -259,6 +259,7 @@ class DataEntryApplication
   end
 
   def show()
+    puts  CLEAR_SCREEN
     @hepoch = @hourNav.get_hepoch
 
     display_hepoch_records(@hepoch, @eventModes)
@@ -357,6 +358,12 @@ end
 
 class MetaControlApplication
 
+  attr_reader :eventModes
+
+  def initialize(modes)
+    @eventModes = modes
+  end
+
   def display_mode()
     puts "META CONTROL MODE"
   end
@@ -366,6 +373,26 @@ class MetaControlApplication
   end
 
   def process(key)
+    #hepoch = state.get_hepoch
+    #
+    # display_hepoch_records(hepoch, modes)
+    # puts
+
+    # if "d" == c
+    #   display_hepoch(hepoch, mode.short_file_name, mode.json)
+    # elsif "h" == c
+    #   display_hepoch_history(hepoch, mode.short_file_name, mode.json)
+    if "g" == key
+      generate_compact_files(@eventModes)
+    # elsif "e" == c
+    #   edit_hepoch(hepoch, mode.json)
+    # elsif "p" == c
+    #   print_schedule(hepoch, mode.json)
+    # elsif "q" == c
+    elsif "?" == key
+      print_usage
+
+    end
   end
 
 end
@@ -377,8 +404,9 @@ class ApplicationControl
   attr_reader :current
 
   def initialize()
-    @dataEntry = DataEntryApplication.new()
-    @metaControl = MetaControlApplication.new()
+    modes = Modes.new()
+    @dataEntry = DataEntryApplication.new(modes)
+    @metaControl = MetaControlApplication.new(modes)
     @current = @dataEntry
   end
 
@@ -757,44 +785,13 @@ def save_set(modes, hepoch, set)
   end
 end
 
-def lookup_set_bind_key(index)
-  return "-" if index == 0
-  return "=" if index == 1
-  return "[" if index == 2
-  return "]" if index == 3
-  raise "unknown index #{index}"
-end
-
-appControl = ApplicationControl.new()
-
-modes = Modes.new()
-mode = modes.slot0
-
-state = Navigation.new
-
-
-oldNav = true
-if ARGV.length > 0
-  if ARGV[0] == "newnav"
-    oldNav = false
-  end
-end
-
-
-
-
-# puts utc_hour
-# puts local_hour
-
-# utc_hour_epoch = utc_hour.tv_sec / SECONDS_IN_HOUR
 
 c = "x"
 
-puts "USING NEW NAV"
+appControl = ApplicationControl.new()
 controller = appControl.get_controller(c)
 
 while c != "q" do
-  puts  CLEAR_SCREEN
 
   controller.display_mode()
   controller.show()
@@ -803,33 +800,9 @@ while c != "q" do
   if "s" == c
     controller = appControl.get_controller(c)
   elsif "q" == c
-  elsif !oldNav
-    puts "USING NEW NAV"
-    controller = appControl.get_controller(c)
+  else
     controller.show()
     controller.process(c);
     next;
-  else
-    puts "USING OLD NAV"
-    hepoch = state.get_hepoch
-    #
-    # display_hepoch_records(hepoch, modes)
-    # puts
-
-    if "d" == c
-      display_hepoch(hepoch, mode.short_file_name, mode.json)
-    elsif "h" == c
-      display_hepoch_history(hepoch, mode.short_file_name, mode.json)
-    elsif "g" == c
-      generate_compact_files(modes)
-    # elsif "e" == c
-    #   edit_hepoch(hepoch, mode.json)
-    elsif "p" == c
-      print_schedule(hepoch, mode.json)
-    elsif "q" == c
-    elsif "?" == c
-      print_usage
-
-    end
   end
 end
