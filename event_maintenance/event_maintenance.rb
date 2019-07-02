@@ -211,11 +211,45 @@ def day_long_events
       "Level Up Titan (3+ hours)",
       "Level Up Titan (2+ hours)",
       "Level Up Titan (1+ hours)",
-      "Level Up Titan (0+ hours)",    ]
+      "Level Up Titan (0+ hours)",
+    ]
   )
 end
 
 
+def guild_empire_invasion
+  return Mode.new(
+    :file_name => "slot5",
+    :default_options => [
+      "Guild Dark World Empire Invasion Event (23+ hours)",
+      "Guild Dark World Empire Invasion Event (22+ hours)",
+      "Guild Dark World Empire Invasion Event (21+ hours)",
+      "Guild Dark World Empire Invasion Event (20+ hours)",
+      "Guild Dark World Empire Invasion Event (19+ hours)",
+      "Guild Dark World Empire Invasion Event (18+ hours)",
+      "Guild Dark World Empire Invasion Event (17+ hours)",
+      "Guild Dark World Empire Invasion Event (16+ hours)",
+      "Guild Dark World Empire Invasion Event (15+ hours)",
+      "Guild Dark World Empire Invasion Event (14+ hours)",
+      "Guild Dark World Empire Invasion Event (13+ hours)",
+      "Guild Dark World Empire Invasion Event (12+ hours)",
+      "Guild Dark World Empire Invasion Event (11+ hours)",
+      "Guild Dark World Empire Invasion Event (10+ hours)",
+      "Guild Dark World Empire Invasion Event (9+ hours)",
+      "Guild Dark World Empire Invasion Event (8+ hours)",
+      "Guild Dark World Empire Invasion Event (7+ hours)",
+      "Guild Dark World Empire Invasion Event (6+ hours)",
+      "Guild Dark World Empire Invasion Event (5+ hours)",
+      "Guild Dark World Empire Invasion Event (4+ hours)",
+      "Guild Dark World Empire Invasion Event (3+ hours)",
+      "Guild Dark World Empire Invasion Event (2+ hours)",
+      "Guild Dark World Empire Invasion Event (1+ hours)",
+      "Guild Dark World Empire Invasion Event (0+ hours)",
+    ]
+  )
+end
+
+# Guild Dark World Empire Invasion Event
 # Dark World Empire Invastion Event (slot 2)  |   "Auxiliary Kill Event" (slot 3)
 # Level Up Titan   (slot 4)
 # Final Fashionsy  (slot 0)
@@ -227,9 +261,11 @@ class Modes
   attr_reader :slot2
   attr_reader :slot3
   attr_reader :slot4
+  attr_reader :slot5
 
   def initialize()
     @luna_specials = luna_special_gift_mode
+    @slot5 = guild_empire_invasion
     @slot4 = day_long_events
     @slot3 = single_hour_events
     @slot2 = more_multi_hour_event_mode
@@ -238,7 +274,7 @@ class Modes
   end
 
   def all_modes
-    return [ @luna_specials, @slot4, @slot3, @slot2, @slot1, @slot0 ]
+    return [ @luna_specials, @slot5, @slot4, @slot3, @slot2, @slot1, @slot0 ]
   end
 
   def start
@@ -251,6 +287,8 @@ class Modes
     puts "the index is: #{index}"
     if current == @luna_specials
       return @slot2
+    elsif current == @slot5
+      return @slot4
     elsif current == @slot4
       return @slot3
     elsif current == @slot3
@@ -326,8 +364,10 @@ class DataEntryApplication
     elsif ";" == key || "\e[B" == key
       @hourNav.forwards 24
       @currentEventMode = @eventModes.start
-    elsif "v" == key
+    elsif "c" == key
       @currentEventMode = @eventModes.luna_specials
+    elsif "v" == key
+      @currentEventMode = @eventModes.slot5
     elsif "b" == key
       @currentEventMode = @eventModes.slot4
     elsif "n" == key
