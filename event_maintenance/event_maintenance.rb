@@ -149,6 +149,7 @@ def single_hour_events
   return Mode.new(
     :file_name => "slot3",
     :default_options => [
+      "Auxiliary Kill Event",
       "Bulking Up",
       "Dark World VIP Event",
       "Special Bonus Building Event",
@@ -187,9 +188,37 @@ def day_long_events
       "Combat Dark Research Event (2+ hours)",
       "Combat Dark Research Event (1+ hours)",
       "Combat Dark Research Event (0+ hours)",
-    ]
+      "Level Up Titan (23+ hours)",
+      "Level Up Titan (22+ hours)",
+      "Level Up Titan (21+ hours)",
+      "Level Up Titan (20+ hours)",
+      "Level Up Titan (19+ hours)",
+      "Level Up Titan (18+ hours)",
+      "Level Up Titan (17+ hours)",
+      "Level Up Titan (16+ hours)",
+      "Level Up Titan (15+ hours)",
+      "Level Up Titan (14+ hours)",
+      "Level Up Titan (13+ hours)",
+      "Level Up Titan (12+ hours)",
+      "Level Up Titan (11+ hours)",
+      "Level Up Titan (10+ hours)",
+      "Level Up Titan (9+ hours)",
+      "Level Up Titan (8+ hours)",
+      "Level Up Titan (7+ hours)",
+      "Level Up Titan (6+ hours)",
+      "Level Up Titan (5+ hours)",
+      "Level Up Titan (4+ hours)",
+      "Level Up Titan (3+ hours)",
+      "Level Up Titan (2+ hours)",
+      "Level Up Titan (1+ hours)",
+      "Level Up Titan (0+ hours)",    ]
   )
 end
+
+
+# Dark World Empire Invastion Event (slot 2)  |   "Auxiliary Kill Event" (slot 3)
+# Level Up Titan   (slot 4)
+# Final Fashionsy  (slot 0)
 
 class Modes
   attr_reader :luna_specials
@@ -209,7 +238,7 @@ class Modes
   end
 
   def all_modes
-    return [ @luna_specials, @slot3, @slot2, @slot4, @slot1, @slot0 ]
+    return [ @luna_specials, @slot4, @slot3, @slot2, @slot1, @slot0 ]
   end
 
   def start
@@ -222,11 +251,11 @@ class Modes
     puts "the index is: #{index}"
     if current == @luna_specials
       return @slot2
-    elsif current == @slot2
+    elsif current == @slot4
       return @slot3
     elsif current == @slot3
-      return @slot4
-    elsif current == @slot4
+      return @slot2
+    elsif current == @slot2
       return @slot1
     elsif current == @slot1
       return @slot0
