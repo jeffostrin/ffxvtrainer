@@ -245,13 +245,36 @@ def guild_empire_invasion
       "Guild Dark World Empire Invasion Event (2+ hours)",
       "Guild Dark World Empire Invasion Event (1+ hours)",
       "Guild Dark World Empire Invasion Event (0+ hours)",
-    ]
+      "Guild Event (23+ hours)",
+      "Guild Event (22+ hours)",
+      "Guild Event (21+ hours)",
+      "Guild Event (20+ hours)",
+      "Guild Event (19+ hours)",
+      "Guild Event (18+ hours)",
+      "Guild Event (17+ hours)",
+      "Guild Event (16+ hours)",
+      "Guild Event (15+ hours)",
+      "Guild Event (14+ hours)",
+      "Guild Event (13+ hours)",
+      "Guild Event (12+ hours)",
+      "Guild Event (11+ hours)",
+      "Guild Event (10+ hours)",
+      "Guild Event (9+ hours)",
+      "Guild Event (8+ hours)",
+      "Guild Event (7+ hours)",
+      "Guild Event (6+ hours)",
+      "Guild Event (5+ hours)",
+      "Guild Event (4+ hours)",
+      "Guild Event (3+ hours)",
+      "Guild Event (2+ hours)",
+      "Guild Event (1+ hours)",
+      "Guild Event (0+ hours)",    ]
   )
 end
 
-# Guild Dark World Empire Invasion Event
-# Dark World Empire Invastion Event (slot 2)  |   "Auxiliary Kill Event" (slot 3)
-# Level Up Titan   (slot 4)
+# Guild Dark World Empire Invasion Event | Guild Event (slot5)
+# Dark World Empire Invasion Event (slot 2)  |   "Auxiliary Kill Event" (slot 3) | Guild Event
+# Level Up Titan   (slot 4) | Dark Troop T1 Training (slot 1)
 # Final Fashionsy  (slot 0)
 
 class Modes
