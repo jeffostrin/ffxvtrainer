@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "repository": "https://github.com/aws-samples/cookiecutter-aws-sam-hello-nodejs",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "chai-deep-match": "^1.2.1",
     "moment": "^2.23.0",
     "moment-timezone": "^0.5.23"
