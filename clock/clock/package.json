@@ -8,7 +8,7 @@
     "axios": "^0.18.0",
     "chai-deep-match": "^1.2.1",
     "moment": "^2.23.0",
-    "moment-timezone": "^0.5.23"
+    "moment-timezone": "^0.5.35"
   },
   "scripts": {
     "test": "mocha tests/unit/"
